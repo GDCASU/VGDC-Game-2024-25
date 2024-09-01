@@ -1,0 +1,27 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+/* -----------------------------------------------------------
+ * Author:
+ * 
+ * 
+ * Modified By:
+ * 
+ */// --------------------------------------------------------
+
+/* -----------------------------------------------------------
+ * Pupose:
+ * 
+ */// --------------------------------------------------------
+
+
+    #ROOTNAMESPACEBEGIN#
+/// <summary>
+/// 
+/// </summary>
+public class #SCRIPTNAME#
+{
+    #NOTRIM#
+}
+#ROOTNAMESPACEEND#

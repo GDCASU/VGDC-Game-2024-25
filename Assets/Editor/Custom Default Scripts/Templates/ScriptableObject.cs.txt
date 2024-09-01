@@ -1,0 +1,29 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+/* -----------------------------------------------------------
+ * Author:
+ * 
+ * 
+ * Modified By:
+ * 
+ */// --------------------------------------------------------
+
+/* -----------------------------------------------------------
+ * Pupose:
+ * 
+ */// --------------------------------------------------------
+
+
+    #ROOTNAMESPACEBEGIN#
+/// <summary>
+/// 
+/// </summary>
+[CreateAssetMenu(fileName = "#SCRIPTNAME#", menuName = "ScriptableObjects/#SCRIPTNAME#")]
+public class #SCRIPTNAME# : ScriptableObject
+{
+    [Header("Data")]
+    public int placeholder;
+}
+#ROOTNAMESPACEEND#
