@@ -26,16 +26,16 @@ public class InputManager : MonoBehaviour
     public static InputManager Instance;
 
     [Header("Input Settings")]
-    [SerializeField] private float tempVal;
+    [SerializeField] private float _tempVal;
 
     [Header("Debugging")]
-    [SerializeField] private bool doDebugLog;
+    [SerializeField] private bool _doDebugLog;
 
     // Input-Updated Values
     [HideInInspector] public Vector2 movementInput; // Vector2 for movement
 
     // Local Variables
-    private PlayerControls playerControls;
+    private PlayerControls _playerControls;
 
     #region Player Events
 
@@ -48,7 +48,7 @@ public class InputManager : MonoBehaviour
     private void BindPlayerEvents()
     {
         // Subscribe to input events
-        playerControls.OnFoot.Move.performed += i => HandleMovementInput(i);
+        _playerControls.OnFoot.Move.performed += i => HandleMovementInput(i);
     }
 
     #endregion
@@ -78,15 +78,15 @@ public class InputManager : MonoBehaviour
         Instance = this;
 
         // Control handling
-        if (playerControls == null)
+        if (_playerControls == null)
         {
-            playerControls = new PlayerControls();
+            _playerControls = new PlayerControls();
             BindPlayerEvents();
             BindUIEvents();
         }
 
         // Enable controls once all setup is done
-        playerControls.Enable();
+        _playerControls.Enable();
     }
 
     private void OnDestroy()
@@ -111,7 +111,7 @@ public class InputManager : MonoBehaviour
     {
         // Read value from input and set the movementInput Vector to it
         movementInput = context.ReadValue<Vector2>();
-        if (doDebugLog) Debug.Log("The Movement Input read was = " + movementInput);
+        if (_doDebugLog) Debug.Log("The Movement Input read was = " + movementInput);
     }
 
     #endregion

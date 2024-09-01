@@ -24,7 +24,7 @@ public class PlayerStats : MonoBehaviour
 {
     // Use this bool to gate all your Debug.Log Statements please
     [Header("Debugging")]
-    [SerializeField] private bool doDebugLog;
+    [SerializeField] private bool _doDebugLog;
     
     // Start is called before the first frame update
     void Start()
