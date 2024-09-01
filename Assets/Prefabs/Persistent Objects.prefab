@@ -135,6 +135,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4126068093052163385}
+  - component: {fileID: 5846787636344005788}
   m_Layer: 0
   m_Name: Sound Manager
   m_TagString: Untagged
@@ -157,6 +158,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5060238407036317655}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5846787636344005788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6582798097405661628}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 330c09cedadc3b84e8e7c3ced16b3e75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _masterVCAString: Master
+  _musicVCAString: Music
+  _sfxVCAString: SFX
+  _sfxGroupPath: SFX
+  _musicGroupPath: Music
+  _combatGroupPath: SFX/Combat
+  _masterSlider: 0.5
+  _musicSlider: 0.5
+  _sfxSlider: 0.5
+  _disableSliders: 0
+  _doDebugLog: 0
 --- !u!1 &6873539003090431019
 GameObject:
   m_ObjectHideFlags: 0
