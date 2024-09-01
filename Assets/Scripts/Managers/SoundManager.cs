@@ -4,6 +4,19 @@ using System.Drawing;
 using UnityEngine;
 using UnityEngine.Rendering;
 
+/* -----------------------------------------------------------
+ * Author:
+ * Ian Fletcher
+ * 
+ * Modified By:
+ * 
+ */// --------------------------------------------------------
+
+/* -----------------------------------------------------------
+ * Pupose:
+ * Manage everything related to sound in the game
+ */// --------------------------------------------------------
+
 // VCA Enums, necessary if we want outsider scripts modifying the VCA volumes
 public enum SoundControllers
 {
@@ -23,6 +36,9 @@ public enum SoundGroups
     Combat
 }
 
+/// <summary>
+/// Manages the sound of the game
+/// </summary>
 public class SoundManager : MonoBehaviour
 {
     // Singleton

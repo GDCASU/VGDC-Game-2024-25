@@ -48,6 +48,7 @@ public class InputManager : MonoBehaviour
     private void BindPlayerEvents()
     {
         // Subscribe to input events
+        playerControls.OnFoot.Move.performed += i => HandleMovementInput(i);
     }
 
     #endregion
