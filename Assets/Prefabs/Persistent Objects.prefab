@@ -35,6 +35,7 @@ Transform:
   - {fileID: 5785375537310438386}
   - {fileID: 4126068093052163385}
   - {fileID: 4544945410429107015}
+  - {fileID: 7633045495273352961}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7577359883684354587
@@ -124,8 +125,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d36acdfb15208b4481a35d1d0fdb82d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tempVal: 0
-  doDebugLog: 0
+  _tempVal: 0
+  _doDebugLog: 0
   movementInput: {x: 0, y: 0}
 --- !u!1 &6276298767917627750
 GameObject:
@@ -244,3 +245,52 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5060238407036317655}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8073951784231983500
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7633045495273352961}
+  - component: {fileID: 2825154835907985673}
+  m_Layer: 0
+  m_Name: Serialized Data Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7633045495273352961
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8073951784231983500}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5060238407036317655}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2825154835907985673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8073951784231983500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fe8a4311da94194bbf97163346e27fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  doDebugLog: 0
+  saveFileName: PlayerSaveData.json
+  configFileName: PlayerConfigData.json
+  hasLoaded: 0
+  objectsWithDataOpened: 0
