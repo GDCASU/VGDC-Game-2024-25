@@ -103,3 +103,9 @@ fmod_editor.log
 
 # Built Visual Studio Code Extensions
 *.vsix
+
+# CLUB IGNORE LIST
+
+# Ignore the save file location on the assets folder
+/[Aa]ssets/VGDC2024-25 SaveData/
+/[Aa]ssets/VGDC2024-25 SaveData.meta
