@@ -18,7 +18,7 @@ using UnityEngine;
 
 
 /// <summary>
-/// 
+/// InventorySystem has been tested and turned out to be fully functional with expected results (9/14 2:20 PM)
 /// </summary>
 public class InventorySystem : MonoBehaviour
 {
