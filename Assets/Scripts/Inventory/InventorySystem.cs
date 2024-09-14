@@ -27,11 +27,11 @@ public class InventorySystem : MonoBehaviour
     [SerializeField] private bool doDebugLog;
 
     // Create a Dictionary to store ItemData with InventoryItem(s)
-    // Create a List to store the InventoryItem(s) called inventory
+    List<InventoryItem> inventory { get; private set; }
 
     private void Awake()
     {
-        // Set the List here
+        inventory = new List<InventoryItem> ();
         // Set the Dictionary here
     }
 
