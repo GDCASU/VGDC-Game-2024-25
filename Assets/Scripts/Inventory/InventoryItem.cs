@@ -27,12 +27,14 @@ public class InventoryItem
     [SerializeField] private bool doDebugLog;
     
     // Make a ItemData instance
+    public ItemData_Placeholder data { get; private set; }
     public int stackSize {  get; private set; }
 
     // Constructor
-    public InventoryItem(//ItemData)
+    public InventoryItem(ItemData_Placeholder itemData)
     {
         // Set ItemData instance
+        data = itemData;
         AddToStack();
     }
 
