@@ -12,7 +12,9 @@ using UnityEngine.Events;
 public class PlayerData : Singleton<PlayerData>
 {
     private PlayerStats player;
-
+    public int health;
+    public int mana;
+    public int experience;
     public PlayerStats Player { 
         get { return player; } 
         set 
