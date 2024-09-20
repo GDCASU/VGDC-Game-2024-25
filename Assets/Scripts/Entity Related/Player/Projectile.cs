@@ -30,7 +30,7 @@ public class Projectile : MonoBehaviour
 
 	// Inspector modifiable values
 	[SerializeField] private float speed = 1f;
-	// The time in seconds this projectile can last. If set to 0, disappears upon colliding with something
+	// The time in seconds this projectile can last
 	[SerializeField] private float lifetime = 5f;
 
     // Private variables
