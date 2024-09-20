@@ -12,15 +12,14 @@ using UnityEngine;
 
 /* -----------------------------------------------------------
  * Pupose:
- * Handle the status of the player, health, available weapons,
- * money, etc.
+ * Interface to the player object in the scene
  */// --------------------------------------------------------
 
 
 /// <summary>
 /// Handles the status of the player
 /// </summary>
-public class PlayerStats : MonoBehaviour
+public class Player : MonoBehaviour
 {
     // Use this bool to gate all your Debug.Log Statements please
     [Header("Debugging")]
