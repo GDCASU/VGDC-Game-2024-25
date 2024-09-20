@@ -7,7 +7,7 @@ public class PlayerSetReference : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        PlayerData.Instance.player = this;
+        PlayerData.Instance.Player = this.gameObject.GetComponent<PlayerStats>();
     }
 
     // Update is called once per frame
