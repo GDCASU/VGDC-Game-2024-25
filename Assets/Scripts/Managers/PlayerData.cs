@@ -12,17 +12,48 @@ using UnityEngine.Events;
 public class PlayerData : Singleton<PlayerData>
 {
     private PlayerStats player;
-    public int health;
-    public int mana;
-    public int experience;
-    public PlayerStats Player { 
-        get { return player; } 
-        set 
-        {
-            OnPlayerConnectToPlayerData.Invoke();
-            player = value; 
 
-        } }
+    private int health;
+
+    public int Health
+    {
+        get
+        {
+            return health;
+        }
+        set
+        {
+            OnHealthChange?.Invoke();
+            health = value;
+        }
+    }
+
+    public UnityEvent OnHealthChange;
+
+
+    public int maxHealth;
+
+    private int mana;
+
+    public int Mana { get; set; }
+
+    public int maxMana;
+
+    public int experience;
+
+    public int level;
+
+
+    public PlayerStats Player
+    {
+        get { return player; }
+        set
+        {
+            OnPlayerConnectToPlayerData?.Invoke();
+            player = value;
+
+        }
+    }
 
 
     private PlayerController playerController;
@@ -41,6 +72,7 @@ public class PlayerData : Singleton<PlayerData>
     void Start()
     {
         OnPlayerConnectToPlayerData.AddListener(CheckMultiPlayerCase);
+        //OnHealthChange.AddListener(DisplayMessage);
     }
 
     // Update is called once per frame
@@ -49,8 +81,10 @@ public class PlayerData : Singleton<PlayerData>
 
     }
 
+    void CheckMultiPlayerCase()
+    {
+       
 
-    void CheckMultiPlayerCase() {
         if (player != null)
             Debug.LogWarning("It seems there is two player on the scene.");
     }
