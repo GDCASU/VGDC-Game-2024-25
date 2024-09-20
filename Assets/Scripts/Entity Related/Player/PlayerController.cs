@@ -34,8 +34,13 @@ public class PlayerController : MonoBehaviour
     // this, so script the movement system ourselves later for more granular control
     [SerializeField] private CharacterController _characterController;
 
-    // Update is called once per frame
-    void Update()
+	private void Start()
+	{
+		InputManager.OnAttack += AttackAction;
+	}
+
+	// Update is called once per frame
+	void Update()
     {
         // Get Vector2 Input from Input Manager
         Vector3 input = InputManager.Instance.movementInput;
@@ -50,24 +55,18 @@ public class PlayerController : MonoBehaviour
 
         // Move Player
         _characterController.Move(Time.deltaTime * _speed * moveDirWorldSpace);
-
-        // Temporary code for testing the attack action
-        if(Input.GetMouseButtonDown(0))
-        {
-            AttackAction();
-        }
     }
 
-    void AttackAction()
-    {
+	private void AttackAction()
+	{
 		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
+		RaycastHit hit;
 		if(Physics.Raycast(ray, out hit, 100f))
 		{
-            // Spawn projectile prefab and set its target to the raycast hit location
-            GameObject projectile = Instantiate(_projectilePrefab);
-            projectile.transform.position = _projectileSpawnPoint.position;
+			// Spawn projectile prefab and set its target to the raycast hit location
+			GameObject projectile = Instantiate(_projectilePrefab);
+			projectile.transform.position = _projectileSpawnPoint.position;
 			projectile.GetComponent<Projectile>().target = hit.point;
-        }
+		}
 	}
 }

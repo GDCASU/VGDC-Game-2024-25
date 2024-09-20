@@ -120,7 +120,7 @@ public class InputManager : MonoBehaviour
 
     private void HandleAttackInput(InputAction.CallbackContext context)
     {
-        if (_doDebugLog) Debug.Log("attackInput Value: " + attackInput);
+        if (_doDebugLog) Debug.Log("Attacked");
         OnAttack?.Invoke();
     }
 
