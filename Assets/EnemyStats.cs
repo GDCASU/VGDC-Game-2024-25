@@ -6,9 +6,9 @@ using UnityEngine;
 public class EnemyStats : MonoBehaviour
 {
     [SerializeField]
-    double enemyHealth = 100;
+    float enemyHealth = 100;
     [SerializeField]
-    double enemyMaxHealth = 100;
+    float enemyMaxHealth = 100;
     
     // Start is called before the first frame update
     void Start()
