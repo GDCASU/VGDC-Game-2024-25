@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 /* -----------------------------------------------------------
  * Author:
@@ -23,6 +24,8 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Values")]
     [SerializeField] private float _speed;
+    [SerializeField] Animator moveController;
+    [SerializeField] SpriteRenderer playerRenderer;
     
     // Use this bool to gate all your Debug.Log Statements please
     [Header("Debugging")]
@@ -48,5 +51,17 @@ public class PlayerController : MonoBehaviour
 
         // Move Player
         _characterController.Move(Time.deltaTime * _speed * moveDirWorldSpace);
+
+        //Set speed for walking animation
+        moveController.SetFloat("HorizSpeed", Math.Abs(moveDirWorldSpace.x));
+
+        //Set sprite direction
+        if (moveDirWorldSpace.x < 0)
+        {
+            playerRenderer.flipX = true;
+        } else if (moveDirWorldSpace.x > 0)
+        {
+            playerRenderer.flipX = false;
+        }
     }
 }
