@@ -6,7 +6,7 @@ using UnityEngine;
  * Author:
  * Ian Fletcher
  * 
- * Modified By:
+ * Modified By: William Peng
  * 
  */// --------------------------------------------------------
 
@@ -23,6 +23,8 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Values")]
     [SerializeField] private float _speed;
+    [SerializeField] private GameObject _projectilePrefab;
+    [SerializeField] private Transform _projectileSpawnPoint;
     
     // Use this bool to gate all your Debug.Log Statements please
     [Header("Debugging")]
@@ -48,5 +50,24 @@ public class PlayerController : MonoBehaviour
 
         // Move Player
         _characterController.Move(Time.deltaTime * _speed * moveDirWorldSpace);
+
+        // Temporary code for testing the attack action
+        if(Input.GetMouseButtonDown(0))
+        {
+            AttackAction();
+        }
     }
+
+    void AttackAction()
+    {
+		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+		if(Physics.Raycast(ray, out hit, 100f))
+		{
+            // Spawn projectile prefab and set its target to the raycast hit location
+            GameObject projectile = Instantiate(_projectilePrefab);
+            projectile.transform.position = _projectileSpawnPoint.position;
+			projectile.GetComponent<Projectile>().target = hit.point;
+        }
+	}
 }
