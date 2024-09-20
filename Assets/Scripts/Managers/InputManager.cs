@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 /* -----------------------------------------------------------
  * Author:
@@ -41,6 +42,7 @@ public class InputManager : MonoBehaviour
 
     /// <summary> Player's Move Event </summary>
     public static event System.Action OnMove;
+    public static event System.Action OnAttack;
 
     /// <summary>
     /// Binds all of the Players' controls to their respective events.
@@ -49,6 +51,7 @@ public class InputManager : MonoBehaviour
     {
         // Subscribe to input events
         _playerControls.OnFoot.Move.performed += i => HandleMovementInput(i);
+        _playerControls.PlayerActions.Attack.performed += i => HandleAttackInput(i);
        
     }
 
@@ -113,6 +116,12 @@ public class InputManager : MonoBehaviour
         // Read value from input and set the movementInput Vector to it
         movementInput = context.ReadValue<Vector2>();
         if (_doDebugLog) Debug.Log("The Movement Input read was = " + movementInput);
+    }
+
+    private void HandleAttackInput(InputAction.CallbackContext context)
+    {
+        if (_doDebugLog) Debug.Log("attackInput Value: " + attackInput);
+        OnAttack?.Invoke();
     }
 
     #endregion
