@@ -20,7 +20,7 @@ using UnityEngine;
 /// 
 /// </summary>
 [System.Serializable]
-public class InventoryItem
+public class InventorySlot
 {
     // Use this bool to gate all your Debug.Log Statements please
     [Header("Debugging")]
@@ -31,7 +31,7 @@ public class InventoryItem
     public int stackSize {  get; private set; }
 
     // Constructor
-    public InventoryItem(ItemData_Placeholder itemData)
+    public InventorySlot(ItemData_Placeholder itemData)
     {
         // Set ItemData instance
         data = itemData;
@@ -48,5 +48,10 @@ public class InventoryItem
     public void RemoveFromStack()
     {
         stackSize--;
+    }
+
+    public int getStackSize()
+    {
+        return stackSize;
     }
 }

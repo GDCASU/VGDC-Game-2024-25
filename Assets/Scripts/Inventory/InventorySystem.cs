@@ -27,46 +27,56 @@ public class InventorySystem : MonoBehaviour
     [SerializeField] private bool doDebugLog;
 
     // Create a private Dictionary to store ItemData with InventoryItem(s)
-    private Dictionary<ItemData_Placeholder, InventoryItem> itemDictionary;
-    public List<InventoryItem> inventory { get; private set; }
+    private Dictionary<ItemData_Placeholder, InventorySlot> itemDictionary;
+    public List<InventorySlot> inventory { get; private set; }
+
+    public InventorySystem inventorySystem;
 
     private void Awake()
     {
-        inventory = new List<InventoryItem> ();
+        inventory = new List<InventorySlot> ();
         // Set the Dictionary here
-        itemDictionary = new Dictionary<ItemData_Placeholder, InventoryItem> ();
+        itemDictionary = new Dictionary<ItemData_Placeholder, InventorySlot> ();
+
+        // Set the Singleton
+        inventorySystem = this;
     }
 
     public void Add(ItemData_Placeholder itemData) // argument: ItemData
     {
         // If item already exists in Dictionary, add to stack
-        if(itemDictionary.TryGetValue(itemData, out InventoryItem value)) //Dictionary.TryGetValue(ItemData, out InventoryItem value
+        if(itemDictionary.TryGetValue(itemData, out InventorySlot value)) //Dictionary.TryGetValue(ItemData, out InventorySlot value
         {
             // Add to stack
             value.AddToStack();
+            Debug.Log("item added = " + itemData.displayName);
+            Debug.Log("Stack = " + value.stackSize);
         }
         // Create new InventoryItem instance if item doesn't exist
         else
         {
-            // InventoryItem name = new InventoryItem(ItemData)
-            InventoryItem newItem = new InventoryItem(itemData);
+            // InventoryItem name = new InventorySlot(ItemData)
+            InventorySlot newItem = new InventorySlot(itemData);
             // Add item to inventory
             inventory.Add(newItem);
             // Add Item with ItemData to dictionary
             itemDictionary.Add(itemData, newItem);
+            Debug.Log("New object detected = " + itemData.displayName);
         }
     }
 
     public void Remove(ItemData_Placeholder itemData) // argument: ItemData
     {
         // If item already exists in Dictionary, remove from stack
-        if (itemDictionary.TryGetValue(itemData, out InventoryItem value)) //Dictionary.TryGetValue(ItemData, out InventoryItem value
+        if (itemDictionary.TryGetValue(itemData, out InventorySlot value)) //Dictionary.TryGetValue(ItemData, out InventorySlot value
         {
             // Remove from stack
             value.RemoveFromStack();
-            
+            Debug.Log("item removed = " + itemData.displayName);
+            Debug.Log("Stack = " + value.stackSize);
+
             //If stack == 0, remove item instance
-            if(value.stackSize == 0) // value stack == 0
+            if (value.stackSize == 0) // value stack == 0
             {
                 // Remove value from inventory
                 inventory.Remove(value);
@@ -74,5 +84,14 @@ public class InventorySystem : MonoBehaviour
                 itemDictionary.Remove(itemData);
             }
         }
+    }
+    
+    // InventorySlot getter
+    public InventorySlot getSlot(ItemData_Placeholder itemData)
+    {
+        if (itemDictionary.TryGetValue(itemData, out InventorySlot value))
+            return value;
+        else 
+            return null;
     }
 }

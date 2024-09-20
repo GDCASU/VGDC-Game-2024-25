@@ -20,12 +20,13 @@ using UnityEngine;
 /// <summary>
 /// 
 /// </summary>
-public class ItemData_Placeholder : GGScriptableObject
-{
-    // Use this bool to gate all your Debug.Log Statements please
-    [Header("Debugging")]
-    [SerializeField] private bool doDebugLog;
+public class ItemData_Placeholder { 
 
     public string id;
-    public string displaName;
+    public string displayName;
+
+    public void Awake()
+    {
+        
+    }
 }
