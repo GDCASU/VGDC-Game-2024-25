@@ -6,8 +6,8 @@ public class MagnetAttraction : MonoBehaviour
 //Summary: Attracts objects that has the tag collectible to collect them (applies to all collectable objects/enemy drops)
 //Made by Eliza Chook
 {
-    public float attractionSpeed = 5f;  // Speed at which objects are pulled towards the player
-    public float collectionThreshold = 40f; // Distance threshold for collecting the object
+    public float attractionSpeed;  // Speed at which objects are pulled towards the player
+    public float collectionThreshold; // Distance threshold for collecting the object
 
     private List<Transform> collectiblesInRange = new List<Transform>();
 
