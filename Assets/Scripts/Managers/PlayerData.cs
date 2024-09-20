@@ -11,11 +11,11 @@ using UnityEngine.Events;
 
 public class PlayerData : Singleton<PlayerData>
 {
-    private PlayerStats player;
+    private Player player;
     public int health;
     public int mana;
     public int experience;
-    public PlayerStats Player { 
+    public Player Player { 
         get { return player; } 
         set 
         {
