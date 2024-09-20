@@ -1,32 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SearchService;
 using UnityEngine;
 
 public class FaceCamera : MonoBehaviour
 {
-    [SerializeField] Camera mainCamera;
-    [SerializeField] SpriteRenderer spriteRenderer;
+   [SerializeField] SpriteRenderer spriteRenderer;
 
-    [Header("Lock Roataion")]
-    [SerializeField] private bool lockX;
-    [SerializeField] private bool lockY;
-    [SerializeField] private bool lockZ;
+   private Camera mainCamera;
 
-    private Vector3 originalRotation;
+   [Header("Lock Roataion")]
+   [SerializeField] private bool lockX;
+   [SerializeField] private bool lockY;
+   [SerializeField] private bool lockZ;
 
-    private void Awake(){
-        originalRotation = spriteRenderer.transform.rotation.eulerAngles;
-    }
+   private Vector3 originalRotation;
 
-    void LateUpdate(){
-        //Face object toward camera
-        spriteRenderer.transform.LookAt(mainCamera.transform.position, Vector3.up);
+   private void Awake(){
+      originalRotation = spriteRenderer.transform.rotation.eulerAngles;
+      mainCamera = Camera.main;
+   }
 
-        //Lock object from rotating in specified direction
-        Vector3 rotation = spriteRenderer.transform.rotation.eulerAngles;
-        if (lockX) {rotation.x = originalRotation.x;}
-        if (lockY) {rotation.x = originalRotation.x;}
-        if (lockZ) {rotation.x = originalRotation.x;} 
-        spriteRenderer.transform.rotation = Quaternion.Euler(rotation);
-    }
+   void LateUpdate(){
+      //Face object toward camera
+      spriteRenderer.transform.LookAt(mainCamera.transform.position, Vector3.up);
+
+      //Lock object from rotating in specified direction
+      Vector3 rotation = spriteRenderer.transform.rotation.eulerAngles;
+      if (lockX) {rotation.x = originalRotation.x;}
+      if (lockY) {rotation.y = originalRotation.y;}
+      if (lockZ) {rotation.z = originalRotation.z;} 
+      spriteRenderer.transform.rotation = Quaternion.Euler(rotation);
+   }
 }
