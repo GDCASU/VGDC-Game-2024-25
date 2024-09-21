@@ -85,7 +85,51 @@ public class InventorySystem : MonoBehaviour
             }
         }
     }
-    
+
+    public void Add(ItemData_Placeholder itemData, int amount) // argument: ItemData
+    {
+        // If item already exists in Dictionary, add to stack
+        if (itemDictionary.TryGetValue(itemData, out InventorySlot value)) //Dictionary.TryGetValue(ItemData, out InventorySlot value
+        {
+            // Add to stack
+            value.AddToStack(amount);
+            Debug.Log("item added = " + itemData.displayName);
+            Debug.Log("Stack = " + value.stackSize);
+        }
+        // Create new InventoryItem instance if item doesn't exist
+        else
+        {
+            // InventoryItem name = new InventorySlot(ItemData)
+            InventorySlot newItem = new InventorySlot(itemData);
+            // Add item to inventory
+            inventory.Add(newItem);
+            // Add Item with ItemData to dictionary
+            itemDictionary.Add(itemData, newItem);
+            Debug.Log("New object detected = " + itemData.displayName);
+        }
+    }
+
+    public void Remove(ItemData_Placeholder itemData, int amount) // argument: ItemData
+    {
+        // If item already exists in Dictionary, remove from stack
+        if (itemDictionary.TryGetValue(itemData, out InventorySlot value)) //Dictionary.TryGetValue(ItemData, out InventorySlot value
+        {
+            // Remove from stack
+            value.RemoveFromStack(amount);
+            Debug.Log("item removed = " + itemData.displayName);
+            Debug.Log("Stack = " + value.stackSize);
+
+            //If stack == 0, remove item instance
+            if (value.stackSize == 0) // value stack == 0
+            {
+                // Remove value from inventory
+                inventory.Remove(value);
+                // Remove Item with ItemData from dictionary
+                itemDictionary.Remove(itemData);
+            }
+        }
+    }
+
     // InventorySlot getter
     public InventorySlot getSlot(ItemData_Placeholder itemData)
     {

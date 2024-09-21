@@ -50,6 +50,17 @@ public class InventorySlot
         stackSize--;
     }
 
+    public void AddToStack(int amount)
+    {
+        stackSize += amount;
+    }
+
+    // Removes 1 from item stack
+    public void RemoveFromStack(int amount)
+    {
+        stackSize -= amount;
+    }
+
     public int getStackSize()
     {
         return stackSize;
