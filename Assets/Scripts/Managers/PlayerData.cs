@@ -11,17 +11,16 @@ using UnityEngine.Events;
 
 public class PlayerData : Singleton<PlayerData>
 {
-    private Player player;
+    private PlayerObject player;
     public int health;
     public int mana;
     public int experience;
-    public Player Player { 
+    public PlayerObject Player { 
         get { return player; } 
         set 
         {
             OnPlayerConnectToPlayerData.Invoke();
             player = value; 
-
         } }
 
 
