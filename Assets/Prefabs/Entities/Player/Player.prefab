@@ -180,6 +180,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 1.5
+  moveController: {fileID: 2344377123844442254}
   _doDebugLog: 0
   _characterController: {fileID: 2928181521467997156}
 --- !u!143 &2928181521467997156
