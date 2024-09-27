@@ -64,4 +64,6 @@ public class PlayerController : MonoBehaviour
             playerRenderer.flipX = false;
         }
     }
+
+
 }
