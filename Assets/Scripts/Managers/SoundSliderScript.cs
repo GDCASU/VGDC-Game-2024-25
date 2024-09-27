@@ -38,12 +38,8 @@ public class SoundSliderScript : MonoBehaviour
         if (!PlayerPrefs.HasKey(volumePrefKey))
         {
             PlayerPrefs.SetFloat(volumePrefKey, 1);
-            Load();
         }
-        else
-        {
-            Load();
-        }
+        Load();
     }
 
     // Set to trigger when slider value changes
