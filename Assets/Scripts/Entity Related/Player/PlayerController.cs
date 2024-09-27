@@ -63,10 +63,10 @@ public class PlayerController : MonoBehaviour
         moveController.SetFloat("HorizSpeed", Math.Abs(moveDirWorldSpace.x));
 
         //Set sprite direction
-        if (moveDirWorldSpace.x < 0)
+        if (input.x < 0)
         {
             playerRenderer.flipX = true;
-        } else if (moveDirWorldSpace.x > 0)
+        } else if (input.x > 0)
         {
             playerRenderer.flipX = false;
         }
