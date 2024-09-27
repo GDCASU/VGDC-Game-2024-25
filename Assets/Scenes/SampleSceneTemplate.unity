@@ -644,12 +644,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 6152133294446301502}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &1701816374 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 608102882232420975, guid: 3929c72507c5b98469226ce0caeccc72,
-    type: 3}
-  m_PrefabInstance: {fileID: 6152133294446301502}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1991421161
 GameObject:
   m_ObjectHideFlags: 0
@@ -718,16 +712,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 418254115473192536, guid: 7a27a01553aa4f34e848cabda38d6d75,
-        type: 3}
-      propertyPath: m_Follow
-      value: 
-      objectReference: {fileID: 1701816374}
-    - target: {fileID: 418254115473192536, guid: 7a27a01553aa4f34e848cabda38d6d75,
-        type: 3}
-      propertyPath: m_LookAt
-      value: 
-      objectReference: {fileID: 1701816374}
     - target: {fileID: 3537906395151739932, guid: 7a27a01553aa4f34e848cabda38d6d75,
         type: 3}
       propertyPath: attenuationObject

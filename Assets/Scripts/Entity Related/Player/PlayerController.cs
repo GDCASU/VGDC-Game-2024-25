@@ -7,7 +7,7 @@ using System;
  * Author:
  * Ian Fletcher
  * 
- * Modified By:
+ * Modified By: William Peng
  * 
  */// --------------------------------------------------------
 
@@ -24,8 +24,10 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Values")]
     [SerializeField] private float _speed;
-    [SerializeField] Animator moveController;
-    [SerializeField] SpriteRenderer playerRenderer;
+    [SerializeField] private GameObject _projectilePrefab;
+    [SerializeField] private Transform _projectileSpawnPoint;
+    [SerializeField] private Animator moveController;
+    [SerializeField] private SpriteRenderer playerRenderer;
     
     // Use this bool to gate all your Debug.Log Statements please
     [Header("Debugging")]
@@ -35,8 +37,13 @@ public class PlayerController : MonoBehaviour
     // this, so script the movement system ourselves later for more granular control
     [SerializeField] private CharacterController _characterController;
 
-    // Update is called once per frame
-    void Update()
+	private void Start()
+	{
+		InputManager.OnAttack += AttackAction;
+	}
+
+	// Update is called once per frame
+	void Update()
     {
         // Get Vector2 Input from Input Manager
         Vector3 input = InputManager.Instance.movementInput;
@@ -65,5 +72,25 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        // Un-subscribe from events
+        InputManager.OnAttack -= AttackAction;
+    }
+
+    private void AttackAction()
+	{
+        if (Camera.main == null) Debug.Log("CAMERA WAS NULL!");
+        
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		RaycastHit hit;
+		if(Physics.Raycast(ray, out hit, 100f))
+		{
+			// Spawn projectile prefab and set its target to the raycast hit location
+			GameObject projectile = Instantiate(_projectilePrefab);
+			projectile.transform.position = _projectileSpawnPoint.position;
+			projectile.GetComponent<Projectile>().target = hit.point;
+		}
+	}
 
 }
