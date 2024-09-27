@@ -27,15 +27,16 @@ public class InventorySlot
     [SerializeField] private bool doDebugLog;
     
     // Make a ItemData instance
-    public ItemData_Placeholder data { get; private set; }
+    public ItemData data { get; private set; }
     public int stackSize {  get; private set; }
 
     // Constructor
-    public InventorySlot(ItemData_Placeholder itemData)
+    public InventorySlot(ItemData itemData)
     {
         // Set ItemData instance
         data = itemData;
-        AddToStack();
+        data.displayName = data.id;
+        AddToStack(data.value);
     }
 
     public void AddToStack(int amount)

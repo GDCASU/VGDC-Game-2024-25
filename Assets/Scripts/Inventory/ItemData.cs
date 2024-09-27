@@ -28,11 +28,9 @@ public class ItemData : GGScriptableObject
     [Header("Debugging")]
     [SerializeField] private bool doDebugLog;
 
-    [SerializeField] private string id;
-    [SerializeField] public string name;
+    [SerializeField] public string id;
+    [SerializeField] public string displayName;
     [SerializeField] public Sprite image;
     [SerializeField] public int value;
     [SerializeField] public GameObject prefab;
-
-    public string GetID() { return id; }
 }

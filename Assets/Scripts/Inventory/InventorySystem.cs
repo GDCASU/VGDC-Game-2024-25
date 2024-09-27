@@ -27,25 +27,29 @@ public class InventorySystem : MonoBehaviour
     [SerializeField] private bool doDebugLog;
 
     // Create a private Dictionary to store ItemData with InventoryItem(s)
-    private Dictionary<ItemData, InventorySlot> itemDictionary;
+    private Dictionary<string, InventorySlot> itemDictionary;
     public List<InventorySlot> inventory { get; private set; }
 
-    public InventorySystem Instance;
+    public static InventorySystem Instance { get; private set; }
 
     private void Awake()
     {
         inventory = new List<InventorySlot> ();
         // Set the Dictionary here
-        itemDictionary = new Dictionary<ItemData, InventorySlot> ();
+        itemDictionary = new Dictionary<string, InventorySlot> ();
 
         // Set the Singleton
-        Instance = this;
+        if(Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else { Instance = this; }
     }
 
     public void Add(ItemData itemData) // argument: ItemData
     {
         // If item already exists in Dictionary, add to stack
-        if (itemDictionary.TryGetValue(itemData, out InventorySlot value)) //Dictionary.TryGetValue(ItemData, out InventorySlot value
+        if (itemDictionary.TryGetValue(itemData.id, out InventorySlot value)) //Dictionary.TryGetValue(ItemData, out InventorySlot value
         {
             int amount = itemData.value;
             // Add to stack
@@ -61,15 +65,16 @@ public class InventorySystem : MonoBehaviour
             // Add item to inventory
             inventory.Add(newItem);
             // Add Item with ItemData to dictionary
-            itemDictionary.Add(itemData, newItem);
+            itemDictionary.Add(itemData.id, newItem);
             Debug.Log("New object detected = " + itemData.displayName);
+            Debug.Log("Stack = " + newItem.stackSize);
         }
     }
 
-    public void Remove(ItemData itemData, int amount) // argument: ItemData
+    public void Remove(ItemData itemData) // argument: ItemData
     {
         // If item already exists in Dictionary, remove from stack
-        if (itemDictionary.TryGetValue(itemData, out InventorySlot value)) //Dictionary.TryGetValue(ItemData, out InventorySlot value
+        if (itemDictionary.TryGetValue(itemData.id, out InventorySlot value)) //Dictionary.TryGetValue(ItemData, out InventorySlot value
         {
             int amount = itemData.value;
             // Remove from stack
@@ -83,7 +88,7 @@ public class InventorySystem : MonoBehaviour
                 // Remove value from inventory
                 inventory.Remove(value);
                 // Remove Item with ItemData from dictionary
-                itemDictionary.Remove(itemData);
+                itemDictionary.Remove(itemData.id);
             }
         }
     }
@@ -91,7 +96,7 @@ public class InventorySystem : MonoBehaviour
     // InventorySlot getter
     public InventorySlot getSlot(ItemData itemData)
     {
-        if (itemDictionary.TryGetValue(itemData, out InventorySlot value))
+        if (itemDictionary.TryGetValue(itemData.id, out InventorySlot value))
             return value;
         else 
             return null;
