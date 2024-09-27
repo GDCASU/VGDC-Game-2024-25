@@ -27,70 +27,27 @@ public class InventorySystem : MonoBehaviour
     [SerializeField] private bool doDebugLog;
 
     // Create a private Dictionary to store ItemData with InventoryItem(s)
-    private Dictionary<ItemData_Placeholder, InventorySlot> itemDictionary;
+    private Dictionary<ItemData, InventorySlot> itemDictionary;
     public List<InventorySlot> inventory { get; private set; }
 
-    public InventorySystem inventorySystem;
+    public InventorySystem Instance;
 
     private void Awake()
     {
         inventory = new List<InventorySlot> ();
         // Set the Dictionary here
-        itemDictionary = new Dictionary<ItemData_Placeholder, InventorySlot> ();
+        itemDictionary = new Dictionary<ItemData, InventorySlot> ();
 
         // Set the Singleton
-        inventorySystem = this;
+        Instance = this;
     }
 
-    public void Add(ItemData_Placeholder itemData) // argument: ItemData
-    {
-        // If item already exists in Dictionary, add to stack
-        if(itemDictionary.TryGetValue(itemData, out InventorySlot value)) //Dictionary.TryGetValue(ItemData, out InventorySlot value
-        {
-            // Add to stack
-            value.AddToStack();
-            Debug.Log("item added = " + itemData.displayName);
-            Debug.Log("Stack = " + value.stackSize);
-        }
-        // Create new InventoryItem instance if item doesn't exist
-        else
-        {
-            // InventoryItem name = new InventorySlot(ItemData)
-            InventorySlot newItem = new InventorySlot(itemData);
-            // Add item to inventory
-            inventory.Add(newItem);
-            // Add Item with ItemData to dictionary
-            itemDictionary.Add(itemData, newItem);
-            Debug.Log("New object detected = " + itemData.displayName);
-        }
-    }
-
-    public void Remove(ItemData_Placeholder itemData) // argument: ItemData
-    {
-        // If item already exists in Dictionary, remove from stack
-        if (itemDictionary.TryGetValue(itemData, out InventorySlot value)) //Dictionary.TryGetValue(ItemData, out InventorySlot value
-        {
-            // Remove from stack
-            value.RemoveFromStack();
-            Debug.Log("item removed = " + itemData.displayName);
-            Debug.Log("Stack = " + value.stackSize);
-
-            //If stack == 0, remove item instance
-            if (value.stackSize == 0) // value stack == 0
-            {
-                // Remove value from inventory
-                inventory.Remove(value);
-                // Remove Item with ItemData from dictionary
-                itemDictionary.Remove(itemData);
-            }
-        }
-    }
-
-    public void Add(ItemData_Placeholder itemData, int amount) // argument: ItemData
+    public void Add(ItemData itemData) // argument: ItemData
     {
         // If item already exists in Dictionary, add to stack
         if (itemDictionary.TryGetValue(itemData, out InventorySlot value)) //Dictionary.TryGetValue(ItemData, out InventorySlot value
         {
+            int amount = itemData.value;
             // Add to stack
             value.AddToStack(amount);
             Debug.Log("item added = " + itemData.displayName);
@@ -109,11 +66,12 @@ public class InventorySystem : MonoBehaviour
         }
     }
 
-    public void Remove(ItemData_Placeholder itemData, int amount) // argument: ItemData
+    public void Remove(ItemData itemData, int amount) // argument: ItemData
     {
         // If item already exists in Dictionary, remove from stack
         if (itemDictionary.TryGetValue(itemData, out InventorySlot value)) //Dictionary.TryGetValue(ItemData, out InventorySlot value
         {
+            int amount = itemData.value;
             // Remove from stack
             value.RemoveFromStack(amount);
             Debug.Log("item removed = " + itemData.displayName);
@@ -131,7 +89,7 @@ public class InventorySystem : MonoBehaviour
     }
 
     // InventorySlot getter
-    public InventorySlot getSlot(ItemData_Placeholder itemData)
+    public InventorySlot getSlot(ItemData itemData)
     {
         if (itemDictionary.TryGetValue(itemData, out InventorySlot value))
             return value;
