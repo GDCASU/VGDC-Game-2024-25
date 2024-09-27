@@ -17,9 +17,9 @@ using UnityEngine;
 
 
 /// <summary>
-/// Handles the status of the player
+/// Handles the interaction between the player object and its inventory, data, etc.
 /// </summary>
-public class Player : MonoBehaviour
+public class PlayerObject : MonoBehaviour
 {
     // Use this bool to gate all your Debug.Log Statements please
     [Header("Debugging")]
