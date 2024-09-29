@@ -21,10 +21,21 @@ using UnityEngine;
 /// </summary>
 public class PlayerObject : MonoBehaviour
 {
+
+    private static PlayerObject Instance {get; set;}
     // Use this bool to gate all your Debug.Log Statements please
     [Header("Debugging")]
     [SerializeField] private bool _doDebugLog;
     
+    void Awake(){
+        if (Instance != null && Instance != this){
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
     // Start is called before the first frame update
     void Start()
     {
