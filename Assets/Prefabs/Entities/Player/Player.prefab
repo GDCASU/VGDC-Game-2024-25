@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5585123453138985615}
   - component: {fileID: 1781024244057459271}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player Virtual Cam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82,7 +82,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2062494646552693392}
   - component: {fileID: 81367034800111157}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -165,7 +165,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 608102882232420975}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Camera Follow Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -298,7 +298,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7007761719522431672}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Projectile Spawn Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -334,9 +334,9 @@ GameObject:
   - component: {fileID: 2928181521467997156}
   - component: {fileID: 5704535376199298561}
   - component: {fileID: 2344377123844442254}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -373,6 +373,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cbf384ebe488144596115502eadbc57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  capsuleCollider: {fileID: 5704535376199298561}
   _doDebugLog: 0
 --- !u!114 &6697751668706597001
 MonoBehaviour:
@@ -475,7 +476,7 @@ GameObject:
   - component: {fileID: 3856963139735298393}
   - component: {fileID: 7796865786678521673}
   - component: {fileID: 1775747800354945811}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}

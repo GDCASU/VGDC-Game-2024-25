@@ -21,19 +21,24 @@ using UnityEngine;
 /// </summary>
 public class PlayerObject : MonoBehaviour
 {
+    // Singleton
+    public static PlayerObject Instance;
+
+    [Header("References")]
+    public CapsuleCollider capsuleCollider;
+    
     // Use this bool to gate all your Debug.Log Statements please
     [Header("Debugging")]
     [SerializeField] private bool _doDebugLog;
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+    private void Awake()
     {
-        
+        // Set the singleton
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
     }
 }
