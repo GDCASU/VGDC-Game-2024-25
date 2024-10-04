@@ -66,14 +66,14 @@ public class PlayerController : MonoBehaviour
         // Move Player
         _characterController.Move(Time.deltaTime * _speed * moveDirWorldSpace);
 
-        //Set speed for walking animation
-        moveController.SetFloat("HorizSpeed", Math.Abs(moveDirWorldSpace.x));
+        // Play walking animation if moving
+        moveController.SetBool("IsMoving", Mathf.Abs(input.x) > 0 || Mathf.Abs(input.y) > 0);
 
         //Set sprite direction
-        if (moveDirWorldSpace.x < 0)
+        if (input.x < 0)
         {
             playerRenderer.flipX = true;
-        } else if (moveDirWorldSpace.x > 0)
+        } else if (input.x > 0)
         {
             playerRenderer.flipX = false;
         }
