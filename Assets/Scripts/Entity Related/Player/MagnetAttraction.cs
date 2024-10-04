@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class MagnetAttraction : MonoBehaviour
 //Summary: Attracts objects that has the tag collectible to collect them (applies to all collectable objects/enemy drops)
+//Make sure attraction speed = 1, collectionthreshold(area whcih collects the objects) = 0.4, and capsule collider radius = 0.69
 //Made by Eliza Chook
 {
-    public float attractionSpeed = 5f;  // Speed at which objects are pulled towards the player
-    public float collectionThreshold = 40f; // Distance threshold for collecting the object
+    public float attractionSpeed = 1f;  // Speed at which objects are pulled towards the player
+    public float collectionThreshold = 0.4f; // Distance threshold for collecting the object
 
     private List<Transform> collectiblesInRange = new List<Transform>();
 
