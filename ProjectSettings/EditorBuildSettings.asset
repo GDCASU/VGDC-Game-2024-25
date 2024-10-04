@@ -8,4 +8,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleSceneTemplate.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/Testing/Matthew Testing.unity
+    guid: 5f0eed510835509499a9537ebc02f9cc
+  - enabled: 1
+    path: Assets/Scenes/Testing/Matthew Dungeon Testing Scene.unity
+    guid: a90db92c861f9f74d8b230092bec8de3
   m_configObjects: {}
