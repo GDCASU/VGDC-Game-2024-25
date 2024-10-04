@@ -23,7 +23,7 @@ public class FaceCamera : MonoBehaviour
 
    void LateUpdate(){
       //Face object toward camera
-      spriteRenderer.transform.LookAt(mainCamera.transform.position, Vector3.up);
+      spriteRenderer.transform.rotation = mainCamera.transform.rotation;
 
       //Lock object from rotating in specified direction
       Vector3 rotation = spriteRenderer.transform.rotation.eulerAngles;
