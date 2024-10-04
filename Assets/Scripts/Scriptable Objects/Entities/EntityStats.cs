@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Enums;
 
 /* -----------------------------------------------------------
  * Author: William
@@ -25,15 +24,14 @@ using static Enums;
 public class EntityStats : ScriptableObject
 {
     [Header("Data")]
-    public int placeholder;
     [SerializeField] private DamageMultiplier[] damageMultipliers = new DamageMultiplier[]
     {
-        new DamageMultiplier{ element = Element.Neutral, multiplier = 1f },
-        new DamageMultiplier{ element = Element.Fungus, multiplier = 1f },
+        new DamageMultiplier{ element = Elements.fire, multiplier = 1f },
+        new DamageMultiplier{ element = Elements.neutral, multiplier = 1f },
     };
     [HideInInspector]
-    private Dictionary<Element, float> damageMultiplierDict;
-    public Dictionary<Element, float> getDamageMultipliers()
+    private Dictionary<Elements, float> damageMultiplierDict;
+    public Dictionary<Elements, float> getDamageMultipliers()
     {
 		// If the damage multiplier dict already exists, return it
 		if(damageMultiplierDict != null)
@@ -41,7 +39,7 @@ public class EntityStats : ScriptableObject
 			return damageMultiplierDict;
 		}
 
-        damageMultiplierDict = new Dictionary<Element, float>();
+        damageMultiplierDict = new Dictionary<Elements, float>();
 		// Create damage multiplier dict based on values set in the Unity inspector
 		foreach(DamageMultiplier dm in damageMultipliers)
 		{
@@ -54,7 +52,7 @@ public class EntityStats : ScriptableObject
 [Serializable]
 public struct DamageMultiplier
 {
-    public Element element;
+    public Elements element;
     public float multiplier;
 }
 
