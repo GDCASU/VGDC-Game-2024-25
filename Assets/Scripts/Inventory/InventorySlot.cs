@@ -39,7 +39,10 @@ public class InventorySlot: MonoBehaviour
         RefreshUI();
     }
 
-    // Constructor
+    /// <summary>
+    /// Assigns an ItemData object to the inventory slot
+    /// </summary>
+    /// <param name="itemData"></param>
     public void SetInventorySlot(ItemData itemData)
     {
         // Set ItemData instance
@@ -49,24 +52,36 @@ public class InventorySlot: MonoBehaviour
         RefreshUI();
     }
 
+    /// <summary>
+    /// Adds a certain ammount to the stack
+    /// </summary>
+    /// <param name="amount"></param>
     public void AddToStack(int amount)
     {
         stackSize += amount;
         RefreshUI();
     }
 
-    // Removes 1 from item stack
+    /// <summary>
+    /// Removes a certain amount from the stack
+    /// </summary>
+    /// <param name="amount"></param>
     public void RemoveFromStack(int amount)
     {
         stackSize -= amount;
         RefreshUI();
     }
-
+    /// <summary>
+    /// Gets stack size
+    /// </summary>
+    /// <returns></returns>
     public int GetStackSize()
     {
         return stackSize;
     }
-
+    /// <summary>
+    /// Refreshes the inventory slot's UI
+    /// </summary>
     public void RefreshUI()
     {
         try
@@ -88,7 +103,9 @@ public class InventorySlot: MonoBehaviour
             UISlot.GetChild(1).GetComponent<TMP_Text>().enabled = false;
         }
     }
-
+    /// <summary>
+    /// Resets the inventory slot back to being empty
+    /// </summary>
     public void ResetSlot()
     {
         data = null;

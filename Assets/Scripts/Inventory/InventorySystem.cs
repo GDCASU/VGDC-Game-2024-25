@@ -140,10 +140,13 @@ public class InventorySystem : MonoBehaviour
     }
 
     /// <summary>
-    /// Can be used if there are any errors
+    /// Can be used if there are any errors; Removes all items from the Inventory
     /// </summary>
     public void ResetInventory()
     {
-        inventory = new List<InventorySlot>();
+        for(int i  = 0; i < inventory.Count; i++)
+        {
+            inventory[i].ResetSlot();
+        }
     }
 }
