@@ -93,6 +93,7 @@ public class InventorySlot: MonoBehaviour
             }
             else
                 UISlot.GetChild(1).GetComponent<TMP_Text>().enabled = false;
+
             UISlot.GetChild(0).GetComponent<Image>().enabled = true;
             UISlot.GetChild(0).GetComponent<Image>().sprite = data.image;
         }

@@ -144,9 +144,16 @@ public class InventorySystem : MonoBehaviour
     /// </summary>
     public void ResetInventory()
     {
-        for(int i  = 0; i < inventory.Count; i++)
+        for (int i = 0; i < slots.Length; i++)
         {
-            inventory[i].ResetSlot();
+            InventorySlot slot = slots[i].GetComponent<InventorySlot>();
+            try
+            {
+                inventory.Remove(slot);
+                itemDictionary.Remove(slot.data.id);
+                slot.ResetSlot();
+            }
+            catch { }
         }
     }
 }
