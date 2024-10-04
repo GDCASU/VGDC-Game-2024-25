@@ -41,4 +41,10 @@ public class PlayerObject : MonoBehaviour
         }
         Instance = this;
     }
+
+    private void OnDestroy()
+    {
+        // Clear singleton
+        Instance = null;
+    }
 }

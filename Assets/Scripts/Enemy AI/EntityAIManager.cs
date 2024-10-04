@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
+using Unity.Mathematics;
 using UnityEngine;
-using static EntityAIManager;
 
 /// <summary>
 /// Class that will handle the raycasts performed by the enemies using Unitys' Job System
@@ -16,13 +16,11 @@ public class EntityAIManager : MonoBehaviour
 
     [Header("Settings")]
     [Tooltip("Should be a layer that only the player is in")]
-    [SerializeField] private LayerMask playerLayerMask; 
+    [SerializeField] private LayerMask playerLayerMask;
     [Tooltip("Should be a layer with only things that block the enemy being able to see the player")]
     [SerializeField] private LayerMask obstructionMask;
     [Tooltip("The amount of results to return per spherecast done")]
-    [SerializeField] [Range(1, 100)] private int maxHitsPerSphereCast;
-    [Tooltip("The amount of results to return per raycast done")]
-    [SerializeField] [Range(1, 100)] private int maxHitsPerRaycast;
+    [SerializeField][Range(1, 100)] private int maxHitsPerSphereCast;
 
     // Keep a list of all active enemies that need to perform raycasts
     private List<AIBrain> enemies = new List<AIBrain>();
@@ -31,12 +29,6 @@ public class EntityAIManager : MonoBehaviour
     private NativeArray<OverlapSphereCommand> sphereCastCommands;
     private NativeArray<ColliderHit> sphereCastResults;
     private NativeArray<bool> sphereCastFoundPlayer;
-
-    // Since the amount of raycasts done is only the amount of enemies that found the player
-    // We manage the memory per frame instead of using persistent allocation
-    private NativeArray<RaycastCommand> raycastCommands;
-    private NativeArray<RaycastHit> raycastResults;
-    private NativeArray<bool> raycastFoundPlayer;
 
     // This array never changes size since its used to count how many sphere casts
     // Found the player
@@ -48,10 +40,6 @@ public class EntityAIManager : MonoBehaviour
 
     // Local Variables
     private int playerColliderInstanceID = 0;
-
-
-    // TODO: IMPLEMENT LOGIC TO HANLDE THE OBSTRUCTION RAYCASTS AS WELL
-
 
     // Store the number of enemies using the FOV Job in case it changes
     private int previousEnemyCount = 0;
@@ -83,22 +71,14 @@ public class EntityAIManager : MonoBehaviour
         };
     }
 
-    private void Start()
-    {
-        // Get the current player instance ID
-        if (PlayerObject.Instance != null)
-        {
-            playerColliderInstanceID = PlayerObject.Instance.capsuleCollider.GetInstanceID();
-        }
-    }
-
     void Update()
     {
         // Dont do anything if the enemy count is 0
         if (enemies.Count <= 0) return;
 
-        // If the player instance is not set, dont execute
+        // If the player instance is not set, dont execute, else get collider ID
         if (PlayerObject.Instance == null) return;
+        else playerColliderInstanceID = PlayerObject.Instance.capsuleCollider.GetInstanceID();
 
         // Make sure the player instance ID is set, if not dont do anything
         if (playerColliderInstanceID == 0)
@@ -107,7 +87,7 @@ public class EntityAIManager : MonoBehaviour
             Debug.Log("Player collider instance ID has not been set!");
             return;
         }
-        
+
         // Check if the number of enemies has changed
         if (previousEnemyCount != enemies.Count)
         {
@@ -153,8 +133,6 @@ public class EntityAIManager : MonoBehaviour
         JobHandle sphereFoundHandle = sphereFoundJob.Schedule(sphereCastFoundPlayer.Length, 64);
         sphereFoundHandle.Complete();
 
-        // HACK: Multithread this one day as well
-
         // Go through results array and check if the player is in proximity
         for (int i = 0; i < sphereCastFoundPlayer.Length; i++)
         {
@@ -165,13 +143,7 @@ public class EntityAIManager : MonoBehaviour
             }
         }
 
-        // Allocate memory for the raycast commands and its results
-        int playerFoundCountInt = playerFoundCount[0];
-        raycastCommands = new NativeArray<RaycastCommand>(playerFoundCountInt, Allocator.TempJob);
-        raycastResults = new NativeArray<RaycastHit>(playerFoundCountInt * maxHitsPerRaycast, Allocator.TempJob);
-        raycastFoundPlayer = new NativeArray<bool>(playerFoundCountInt, Allocator.TempJob);
-
-        // HACK: Should multithread this forloop as well at some point
+        // Figure out what enemies found the player
         List<AIBrain> enemiesWhoFoundPlayer = new List<AIBrain>();
         for (int i = 0; i < sphereCastFoundPlayer.Length; i++)
         {
@@ -183,83 +155,110 @@ public class EntityAIManager : MonoBehaviour
             }
         }
 
-        // Set up raycast commands
-        for (int i = 0; i < playerFoundCountInt; i++)
+        // Allocate memory for the raycast commands and its results, each enemy performs 3 raycasts:
+        // One to center of player, one to the left and one to the right
+        int playerFoundCountInt = playerFoundCount[0];
+        NativeArray<RaycastCommand> raycastCommands = new NativeArray<RaycastCommand>(playerFoundCountInt * 3, Allocator.TempJob);
+        NativeArray<RaycastHit> raycastResults = new NativeArray<RaycastHit>(playerFoundCountInt * 3, Allocator.TempJob);
+        NativeArray<bool> raycastFoundPlayer = new NativeArray<bool>(playerFoundCountInt, Allocator.TempJob);
+        NativeArray<float3> enemyPositions = new NativeArray<float3>(playerFoundCountInt, Allocator.TempJob);
+        NativeArray<float> enemyDetectionRadiuses = new NativeArray<float>(playerFoundCountInt, Allocator.TempJob);
+
+        // This part is very error prone, so its enclosed in a try and catch
+        try
         {
-            // Setup the command for each enemy
-            AIBrain currentEnemy = enemiesWhoFoundPlayer[i];
-            Vector3 enemyPos = currentEnemy.gameObject.transform.position;
-            float enemyDetectionRadius = currentEnemy.aiDetectionScript.detectionRadius;
-            Vector3 direction = (PlayerObject.Instance.transform.position - currentEnemy.transform.position).normalized;
-            raycastCommands[i] = new RaycastCommand(enemyPos, direction, obstructionAndPlayerQuery, enemyDetectionRadius);
+            // Declare some variables for the raycast setup
+            float sidecastOffset = 0.12f;
+            float playerCapsuleRadius = PlayerObject.Instance.capsuleCollider.radius * PlayerObject.Instance.transform.localScale.x - sidecastOffset;
+            Vector3 playerPos = PlayerObject.Instance.transform.position;
+
+            // Get enemy data to perform raycasts
+            for (int i = 0; i < enemiesWhoFoundPlayer.Count; i++)
+            {
+                AIBrain currentEnemy = enemiesWhoFoundPlayer[i];
+                enemyPositions[i] = currentEnemy.gameObject.transform.position;
+                enemyDetectionRadiuses[i] = currentEnemy.aiDetectionScript.detectionRadius;
+            }
+
+            // Setup the raycast commands through a job
+            SetupRaycastsCommandsJob raycastSetupJob = new SetupRaycastsCommandsJob
+            {
+                // Variables
+                sideCastOffset = sidecastOffset, // Used to separate the sidecasts from the center cast
+                playerCapsuleRadius = playerCapsuleRadius,
+                playerPos = playerPos,
+                // Arrays
+                raycastCommands = raycastCommands,
+                enemyPositions = enemyPositions,
+                enemyDetectionRadiuses = enemyDetectionRadiuses,
+                // Queries
+                obstructionAndPlayerQuery = obstructionAndPlayerQuery
+            };
+            JobHandle raycastSetupHandle = raycastSetupJob.Schedule(raycastCommands.Length, 64);
+            raycastSetupHandle.Complete();
+
+            // Perform raycasts to see if there's any obstruction
+            JobHandle raycastHandle = RaycastCommand.ScheduleBatch(raycastCommands, raycastResults, 1, 1);
+            raycastHandle.Complete();
+
+            // Figure out which enemies found the player
+            RaycastFoundPlayerJob raycastFoundJob = new RaycastFoundPlayerJob
+            {
+                raycastResults = raycastResults,
+                raycastFoundPlayer = raycastFoundPlayer,
+                castPerEnemy = 3,
+                playerColliderInstanceID = playerColliderInstanceID
+            };
+            JobHandle raycastFoundHandle = raycastFoundJob.Schedule(raycastFoundPlayer.Length, 64);
+            raycastFoundHandle.Complete();
+
+            // IAN NOTE: This part could also be multithreaded, but I find it
+            // to be a meaningless, tedious memory bomb just to do so...
+
+            // Loop through the results, if an enemy has a line of sight to the player, set its canSeePlayer bool, else false
+            for (int i = 0; i < playerFoundCountInt; i++)
+            {
+                // Check if this raycast wasnt stopped by obstruction
+                if (!raycastFoundPlayer[i])
+                {
+                    // Was obstructed
+                    enemiesWhoFoundPlayer[i].aiDetectionScript.canSeePlayer = false;
+                    continue;
+                }
+
+                // raycast did find player, check if is within field of vision
+                bool check1 = CheckFOV(enemiesWhoFoundPlayer[i], raycastCommands[i].direction, raycastResults[i].point);
+                bool check2 = CheckFOV(enemiesWhoFoundPlayer[i], raycastCommands[i + 1].direction, raycastResults[i + 1].point);
+                bool check3 = CheckFOV(enemiesWhoFoundPlayer[i], raycastCommands[i + 2].direction, raycastResults[i + 2].point);
+
+                if (check1 || check2 || check3)
+                {
+                    // Enemy can see the player
+                    enemiesWhoFoundPlayer[i].aiDetectionScript.canSeePlayer = true;
+                }
+                else
+                {
+                    // player wasnt within field of view
+                    enemiesWhoFoundPlayer[i].aiDetectionScript.canSeePlayer = false;
+                }
+            }
+
+            // When finished, free the arrays from memory
+            raycastCommands.Dispose();
+            raycastResults.Dispose();
+            raycastFoundPlayer.Dispose();
+            enemyPositions.Dispose();
+            enemyDetectionRadiuses.Dispose();
         }
-
-        // Perform raycasts to see if there's any obstruction
-        JobHandle raycastHandle = RaycastCommand.ScheduleBatch(raycastCommands, raycastResults, 1, maxHitsPerRaycast);
-        raycastHandle.Complete();
-
-        // Figure out which enemies found the player
-        RaycastFoundPlayerJob raycastFoundJob = new RaycastFoundPlayerJob
+        catch (System.Exception e)
         {
-            raycastResults = raycastResults,
-            raycastFoundPlayer = raycastFoundPlayer,
-            maxHitsPerRaycast = maxHitsPerRaycast,
-            playerColliderInstanceID = playerColliderInstanceID
-};
-        JobHandle raycastFoundHandle = raycastFoundJob.Schedule(raycastFoundPlayer.Length, 64);
-        raycastFoundHandle.Complete();
-
-        // HACK: multithread this one day as well
-
-        // Loop through the results, if an enemy has a line of sight to the player, set its canSeePlayer bool, else false
-        for (int i = 0; i < enemiesWhoFoundPlayer.Count; i++)
-        {
-            // Check if this raycast wasnt stopped by obstruction
-            if (!raycastFoundPlayer[i])
-            {
-                // Was obstructed
-                enemiesWhoFoundPlayer[i].aiDetectionScript.canSeePlayer = false;
-                continue;
-            }
-
-            // raycast did find player, check if is within field of vision
-            Vector3 directionToTarget = raycastCommands[i].direction;
-            bool canSee = CheckFOV(enemiesWhoFoundPlayer[i], directionToTarget);
-
-            if (canSee)
-            {
-                // Enemy can see the player
-                enemiesWhoFoundPlayer[i].aiDetectionScript.canSeePlayer = true;
-            }
-            else
-            {
-                // player wasnt within field of view
-                enemiesWhoFoundPlayer[i].aiDetectionScript.canSeePlayer = false;
-            }
+            Debug.LogError(e);
+            if (raycastCommands.IsCreated) raycastCommands.Dispose();
+            if (raycastResults.IsCreated) raycastResults.Dispose();
+            if (raycastFoundPlayer.IsCreated) raycastResults.Dispose();
+            if (enemyPositions.IsCreated) enemyPositions.Dispose();
+            if (enemyDetectionRadiuses.IsCreated) enemyDetectionRadiuses.Dispose();
         }
-
-        // When raycasts are no longer needed, free the arrays from memory
-        raycastCommands.Dispose();
-        raycastResults.Dispose();
-        raycastFoundPlayer.Dispose();
-
-        /*
-
-        // HACK: Testing logs
-        for (int i = 0; i < sphereCastResults.Length; i++)
-        {
-            // Check if there was a hit
-            if (sphereCastResults[i].instanceID == 0)
-            {
-                // No hits detected, skip to next one
-                i += maxHitsPerSphereCast;
-                continue;
-            }
-            // else there was a hit
-            Debug.Log("We Hit = " + sphereCastResults[i].collider.name);
-        }
-
-        */
     }
 
     void OnDestroy()
@@ -270,18 +269,17 @@ public class EntityAIManager : MonoBehaviour
         if (playerFoundCount.IsCreated) playerFoundCount.Dispose();
     }
 
-    // HACK: This function should use multithreading as well
     /// <summary>
     /// Function to perform a check on the enemies to see if the player is within field of view
     /// </summary>
-    private bool CheckFOV(AIBrain enemy, Vector3 directionToTarget)
+    private bool CheckFOV(AIBrain enemy, Vector3 directionToTarget, Vector3 targetPoint)
     {
         // Bool to check both within field of view and proximity
         bool FOVDetected = false;
         bool proximityDetected = false;
 
         // Compute distance to player
-        float distanceToTarget = Vector3.Distance(enemy.transform.position, PlayerObject.Instance.transform.position);
+        float distanceToTarget = Vector3.Distance(enemy.transform.position, targetPoint);
 
         // Check if the player is within the field of view
         if (!(Vector3.Angle(enemy.transform.forward, directionToTarget) > enemy.aiDetectionScript.viewAngle / 2))
@@ -294,6 +292,11 @@ public class EntityAIManager : MonoBehaviour
         if (distanceToTarget <= enemy.aiDetectionScript.proximityRadius)
         {
             proximityDetected = true;
+            enemy.aiDetectionScript.isProximityTriggered = true;
+        }
+        else
+        {
+            enemy.aiDetectionScript.isProximityTriggered = false;
         }
 
         // All checks have been made, evaluate the result
@@ -346,7 +349,7 @@ public class EntityAIManager : MonoBehaviour
             Debug.LogError("ERROR! YOU ARE SUPPOSED TO FREE THE NATIVE ARRAYS BEFORE CALLING ALLOC");
             return;
         }
-        
+
         // Allocate sphere cast commands
         sphereCastCommands = new NativeArray<OverlapSphereCommand>(enemies.Count, Allocator.Persistent);
 
@@ -388,6 +391,62 @@ public class EntityAIManager : MonoBehaviour
     }
 
     #region JOBS
+
+    public struct SetupRaycastsCommandsJob : IJobParallelFor // Length should be 3 times the amount of enemies (3 raycasts per enemy)
+    {
+        // Variables
+        [ReadOnly] public float sideCastOffset; // Used to separate the sidecasts from the center cast
+        [ReadOnly] public float playerCapsuleRadius;
+        [ReadOnly] public float3 playerPos;
+
+        // Arrays
+        [WriteOnly] public NativeArray<RaycastCommand> raycastCommands;
+        [ReadOnly] public NativeArray<float3> enemyPositions;
+        [ReadOnly] public NativeArray<float> enemyDetectionRadiuses;
+
+        // Queries
+        [ReadOnly] public QueryParameters obstructionAndPlayerQuery;
+
+        // Ian Note: Unity's burst and job system block writing to indexes other than the one
+        // running withing Execute, so I have to run this per raycast command and not per enemy..
+
+        public void Execute(int raycastIndex)
+        {
+            // Get the enemy index based on the raycast index
+            int enemyIndex = raycastIndex / 3; // Every 3 raycasts belong to the same enemy
+
+            // Set up the "up" vector for cross product later
+            float3 upVector = new float3(0f, 1f, 0f);
+
+            // Compute direction to center of player
+            float3 dirCenter = math.normalize(playerPos - enemyPositions[enemyIndex]);
+
+            // Cross product to create two points to the sides of the player
+            float3 crossVect = math.cross(dirCenter, upVector);
+
+            // Determine which raycast this is (center, point1, or point2)
+            if (raycastIndex % 3 == 0)
+            {
+                // To center
+                raycastCommands[raycastIndex] = new RaycastCommand(enemyPositions[enemyIndex], dirCenter, obstructionAndPlayerQuery, enemyDetectionRadiuses[enemyIndex]);
+            }
+            else if (raycastIndex % 3 == 1)
+            {
+                // To point 1
+                float3 point1 = playerPos + playerCapsuleRadius * crossVect;
+                float3 dirPoint1 = math.normalize(point1 - enemyPositions[enemyIndex]);
+                raycastCommands[raycastIndex] = new RaycastCommand(enemyPositions[enemyIndex], dirPoint1, obstructionAndPlayerQuery, enemyDetectionRadiuses[enemyIndex]);
+            }
+            else if (raycastIndex % 3 == 2)
+            {
+                // To point 2
+                float3 point2 = playerPos + (-playerCapsuleRadius) * crossVect;
+                float3 dirPoint2 = math.normalize(point2 - enemyPositions[enemyIndex]);
+                raycastCommands[raycastIndex] = new RaycastCommand(enemyPositions[enemyIndex], dirPoint2, obstructionAndPlayerQuery, enemyDetectionRadiuses[enemyIndex]);
+            }
+        }
+    }
+
 
     /// <summary>
     /// Array Reset Job for the Sphere Cast Commands
@@ -487,26 +546,19 @@ public class EntityAIManager : MonoBehaviour
     [BurstCompile]
     public struct RaycastFoundPlayerJob : IJobParallelFor
     {
-        public NativeArray<RaycastHit> raycastResults;
-        public NativeArray<bool> raycastFoundPlayer;
-        public int maxHitsPerRaycast;
+        [ReadOnly] public NativeArray<RaycastHit> raycastResults;
+        [WriteOnly] public NativeArray<bool> raycastFoundPlayer;
+        public int castPerEnemy;
         public int playerColliderInstanceID;
 
         public void Execute(int index)
         {
-            // Iterate on the results of the array starting from index * maxHits,
-            // up to index + maxHits
+            // Iterate on the results of the array starting from index * castPerEnemy,
+            // up to index + castPerEnemy
             // If we find a collider with an instance ID of 0, stop
-            int startIdxOnResultArr = index * maxHitsPerRaycast;
-            for (int i = startIdxOnResultArr; i < startIdxOnResultArr + maxHitsPerRaycast; i++)
+            int startIdxOnResultArr = index * castPerEnemy;
+            for (int i = startIdxOnResultArr; i < startIdxOnResultArr + castPerEnemy; i++)
             {
-                // Check if its an invalid collider, break loop if so and report false as found
-                if (raycastResults[i].colliderInstanceID == 0)
-                {
-                    // Collider list ended, player was not found
-                    raycastFoundPlayer[index] = false;
-                    return;
-                }
                 // Check if its the player, if so, break loop and report true as found
                 if (raycastResults[i].colliderInstanceID == playerColliderInstanceID)
                 {
@@ -515,7 +567,6 @@ public class EntityAIManager : MonoBehaviour
                     return;
                 }
             }
-
             // SphereCast found other objects, but none of them were the player
             raycastFoundPlayer[index] = false;
         }

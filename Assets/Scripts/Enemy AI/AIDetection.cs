@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using DG.Tweening;
 
 /// <summary>
 /// Script to be attached to AI enemies so they can detect the player 
@@ -25,7 +26,7 @@ public class AIDetection : MonoBehaviour
     [SerializeField] private GameObject detectionCanvas;
 
     [Header("Main Settings")]
-    public string targetTag;
+    public float rotationSpeed;
     public LayerMask targetMask;
     public LayerMask obstructionMask;
 
@@ -44,8 +45,8 @@ public class AIDetection : MonoBehaviour
     [Range(0, 100)] public float proximityRadius;
 
     [Header("Current Values")]
-    public GameObject playerRef;
     public bool canSeePlayer;
+    public bool isProximityTriggered;
 
     [Header("Debugging")]
     public bool doDebugLog;
@@ -55,12 +56,21 @@ public class AIDetection : MonoBehaviour
     // Local Variables
     [HideInInspector] public float detectionRadius = 0;
 
+    // The player reference is special and should be able to handle the player not being
+    // In the current scene
+    public Transform playerTranformRef
+    {
+        get 
+        {
+            // Return the enemy's own transform if player not present in scene
+            if (PlayerObject.Instance == null) return transform;
+            return PlayerObject.Instance.transform;
+        }
+    }
+
 
     private void Start()
     {
-        // Find player in the scene
-        playerRef = GameObject.FindGameObjectWithTag(targetTag);
-
         // Check that the settings were correctly setup, if not, dont execute
         bool correctSetup = CheckDependencies();
         if (!correctSetup) return;
@@ -94,6 +104,13 @@ public class AIDetection : MonoBehaviour
 
         while (count < timeToDetect)
         {
+            // If touching player, go immediatly into alert
+            if (isProximityTriggered)
+            {
+                StartCoroutine(DetectedRoutine());
+                yield break;
+            }
+            
             if (canSeePlayer)
             {
                 // We can see the player, Count
@@ -131,9 +148,6 @@ public class AIDetection : MonoBehaviour
             }
         }
         // Player has been fully discovered, go to detected routine
-        detectionRadius = alertRadius;
-        discoveringParent.SetActive(false);
-        // TODO: PLAY DETECTED SOUND
         StartCoroutine(DetectedRoutine());
     }
 
@@ -143,6 +157,10 @@ public class AIDetection : MonoBehaviour
     /// <returns></returns>
     private IEnumerator DetectedRoutine()
     {
+        detectionRadius = alertRadius;
+        discoveringParent.SetActive(false);
+        // TODO: PLAY DETECTED SOUND
+
         float count = timeToForget;
         float holdCount = 0;
         detectedParent.SetActive(true);
@@ -153,7 +171,7 @@ public class AIDetection : MonoBehaviour
         float rateOfChange = detectedMask.rect.height / timeToForget;
 
         // Start chasing player since we discovered them
-        aiBrain.destinationSetter.target = playerRef.transform;
+        aiBrain.destinationSetter.target = playerTranformRef;
         
         // Counts down until forget time has been met
         while (count > 0)
@@ -161,11 +179,13 @@ public class AIDetection : MonoBehaviour
             if (canSeePlayer)
             {
                 // We can see the player, set counter to full
-                aiBrain.destinationSetter.target = playerRef.transform;
+                aiBrain.destinationSetter.target = playerTranformRef;
                 count = timeToForget;
                 holdCount = holdDetectionTime;
                 fillSizeDelta.y = rateOfChange * count;
                 detectedFill.sizeDelta = fillSizeDelta;
+                // Rotate enemy towards player
+                RotateTowardsPlayer();
                 yield return null;
                 continue;
             }
@@ -175,6 +195,8 @@ public class AIDetection : MonoBehaviour
             if (holdCount > 0)
             {
                 holdCount -= Time.deltaTime;
+                // While holding, still rotate to player
+                RotateTowardsPlayer();
                 yield return null;
                 continue;
             }
@@ -203,10 +225,27 @@ public class AIDetection : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Helper function to make enemy look at player even when not in FOV
+    /// </summary>
+    private void RotateTowardsPlayer()
+    {
+        // Get direction to player on the XZ plane
+        Vector3 direction = playerTranformRef.position - transform.position;
+        direction.y = 0; // Ignore the Y-axis, making sure rotation is only on the horizontal plane
+        direction.Normalize();
+
+        // Calculate the target rotation towards the player
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+        // Gradually rotate towards the target rotation
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+    }
+
     private IEnumerator AggressionAlertRoutine()
     {
         // Compute a path from the enemy to player
-        Path path = aiBrain.seekerScript.StartPath(transform.position, playerRef.transform.position);
+        Path path = aiBrain.seekerScript.StartPath(transform.position, playerTranformRef.position);
         // Wait for path computation
         yield return StartCoroutine(path.WaitForPath());
         // Path has been computed, go to point
@@ -227,13 +266,6 @@ public class AIDetection : MonoBehaviour
         bool messageChanged = false;
         bool isAllGood = true;
         string consoleMsg = errorColor + "ERRORS FOUND ON " + objName + "!\n" + colorReset;
-        // Check that player was found
-        if (playerRef == null)
-        {
-            consoleMsg += errorColor + "Player object wasnt found on scene! Maybe try checking the target tag.\n" + colorReset;
-            isAllGood = false;
-            messageChanged = true;
-        }
         // Check target Mask
         if (targetMask == 0)
         {

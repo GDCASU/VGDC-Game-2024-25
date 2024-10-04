@@ -208,8 +208,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 1.01, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 5427438489285487520}
+  m_Children: []
   m_Father: {fileID: 5899179079516307943}
   m_LocalEulerAnglesHint: {x: 0, y: -91.293, z: 0}
 --- !u!33 &4702587525476633618
@@ -374,78 +373,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 1
---- !u!1 &2367755028852305316
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5427438489285487520}
-  - component: {fileID: 2676618739043800130}
-  m_Layer: 7
-  m_Name: Detection System
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5427438489285487520
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2367755028852305316}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.01, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7798225504274139146}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2676618739043800130
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2367755028852305316}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ed0524ba0b0ad24e9381ce81551dc1f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  aiBrain: {fileID: 996488373232326110}
-  discoveringParent: {fileID: 7299302133056743384}
-  discoveringMask: {fileID: 2784416141465479897}
-  discoveringFill: {fileID: 3863686537681015067}
-  detectedParent: {fileID: 4342435537611246947}
-  detectedMask: {fileID: 6103585989480974884}
-  detectedFill: {fileID: 5210196675398892170}
-  detectionCanvas: {fileID: 666544804930558356}
-  targetTag: Player
-  targetMask:
-    serializedVersion: 2
-    m_Bits: 128
-  obstructionMask:
-    serializedVersion: 2
-    m_Bits: 64
-  timeToDetect: 2
-  holdDiscoverTime: 1
-  timeToForget: 4
-  holdDetectionTime: 1
-  viewRadius: 7
-  alertRadius: 14
-  viewAngle: 75
-  proximityRadius: 1.5
-  playerRef: {fileID: 0}
-  canSeePlayer: 0
-  doDebugLog: 0
-  doLogWarnings: 0
-  detectionRadius: 0
 --- !u!1 &3280757819819726260
 GameObject:
   m_ObjectHideFlags: 0
@@ -456,6 +383,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5899179079516307943}
   - component: {fileID: 996488373232326110}
+  - component: {fileID: 5932962073961141751}
   - component: {fileID: 8389688796482088337}
   - component: {fileID: 2809290885112022280}
   - component: {fileID: 8718758908097164451}
@@ -475,7 +403,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3280757819819726260}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.71504223, z: -0, w: 0.6990813}
+  m_LocalRotation: {x: 0, y: -0.7150403, z: 0, w: 0.69908327}
   m_LocalPosition: {x: -13.74, y: 0.042, z: 16.010002}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -496,11 +424,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc34edf32494d2941b05be8c44493fdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aiDetectionScript: {fileID: 2676618739043800130}
+  aiDetectionScript: {fileID: 5932962073961141751}
   destinationSetter: {fileID: 8389688796482088337}
   AIPathScript: {fileID: 3278804802457257765}
   seekerScript: {fileID: 8718758908097164451}
   enemyMaxSpeed: 2
+--- !u!114 &5932962073961141751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3280757819819726260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ed0524ba0b0ad24e9381ce81551dc1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aiBrain: {fileID: 996488373232326110}
+  discoveringParent: {fileID: 7299302133056743384}
+  discoveringMask: {fileID: 2784416141465479897}
+  discoveringFill: {fileID: 3863686537681015067}
+  detectedParent: {fileID: 4342435537611246947}
+  detectedMask: {fileID: 6103585989480974884}
+  detectedFill: {fileID: 5210196675398892170}
+  detectionCanvas: {fileID: 666544804930558356}
+  rotationSpeed: 2
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 128
+  obstructionMask:
+    serializedVersion: 2
+    m_Bits: 64
+  timeToDetect: 2
+  holdDiscoverTime: 1
+  timeToForget: 4
+  holdDetectionTime: 1
+  viewRadius: 7
+  alertRadius: 14
+  viewAngle: 75
+  proximityRadius: 1.5
+  canSeePlayer: 0
+  doDebugLog: 0
+  doLogWarnings: 0
+  detectionRadius: 0
 --- !u!114 &8389688796482088337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -522,7 +489,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3280757819819726260}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cb6a34d769a1e4ac7b0b30e433aa443c, type: 3}
   m_Name: 
