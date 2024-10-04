@@ -15,7 +15,7 @@ MonoBehaviour:
   verboseLogs: 1
   doDebugLog: 0
   id: Crystals
-  displayName: Bag of Crystals
-  image: {fileID: 0}
+  displayName: Crystals
+  image: {fileID: 21300000, guid: ccccb08dcf5fd354497353aaf3895b42, type: 3}
   value: 3
   prefab: {fileID: 0}

@@ -1,7 +1,11 @@
+using FMOD;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEditor.SceneManagement;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
+using UnityEngine.UI;
 
 /* -----------------------------------------------------------
  * Author: TJ (Yousuf)
@@ -18,7 +22,7 @@ using UnityEngine;
 
 
 /// <summary>
-/// InventorySystem has been tested and turned out to be fully functional with expected results (9/14 2:20 PM)
+/// The class that manages the whole inventory system
 /// </summary>
 public class InventorySystem : MonoBehaviour
 {
@@ -32,8 +36,13 @@ public class InventorySystem : MonoBehaviour
 
     public static InventorySystem Instance { get; private set; }
 
+    // Access the UI for slots
+    [SerializeField] private GameObject slotsHolder;
+    private GameObject[] slots;
+
     private void Awake()
     {
+        UnityEngine.Debug.Log("Inventory Awake");
         inventory = new List<InventorySlot> ();
         // Set the Dictionary here
         itemDictionary = new Dictionary<string, InventorySlot> ();
@@ -44,8 +53,19 @@ public class InventorySystem : MonoBehaviour
             Destroy(this);
         }
         else { Instance = this; }
+
+        // Sets UI slots
+        slots = new GameObject[slotsHolder.transform.childCount];
+        for (int i = 0; i < slotsHolder.transform.childCount; i++)
+        {
+            slots[i] = slotsHolder.transform.GetChild(i).gameObject;
+        }
     }
 
+    /// <summary>
+    /// Adds an item to the inventory
+    /// </summary>
+    /// <param name="itemData"></param>
     public void Add(ItemData itemData) // argument: ItemData
     {
         // If item already exists in Dictionary, add to stack
@@ -54,23 +74,35 @@ public class InventorySystem : MonoBehaviour
             int amount = itemData.value;
             // Add to stack
             value.AddToStack(amount);
-            Debug.Log("item added = " + itemData.displayName);
-            Debug.Log("Stack = " + value.stackSize);
+            UnityEngine.Debug.Log("item added = " + itemData.displayName);
+            UnityEngine.Debug.Log("Stack = " + value.stackSize);
         }
         // Create new InventoryItem instance if item doesn't exist
         else
         {
-            // InventoryItem name = new InventorySlot(ItemData)
-            InventorySlot newItem = new InventorySlot(itemData);
-            // Add item to inventory
-            inventory.Add(newItem);
-            // Add Item with ItemData to dictionary
-            itemDictionary.Add(itemData.id, newItem);
-            Debug.Log("New object detected = " + itemData.displayName);
-            Debug.Log("Stack = " + newItem.stackSize);
+            for (int i = 0; i < slots.Length; i++)
+            {
+                InventorySlot component = slots[i].GetComponent<InventorySlot>();
+                UnityEngine.Debug.Log(component.data);
+                if (component.data == null)
+                {
+                    component.SetInventorySlot(itemData);
+                    // Add item to inventory
+                    inventory.Add(component);
+                    // Add Item with ItemData to dictionary
+                    itemDictionary.Add(itemData.id, component);
+                    UnityEngine.Debug.Log("New object detected = " + itemData.displayName);
+                    UnityEngine.Debug.Log("Stack = " + component.stackSize);
+                    break;
+                }
+            }
         }
     }
 
+    /// <summary>
+    /// Removes an item from the inventory
+    /// </summary>
+    /// <param name="itemData"></param>
     public void Remove(ItemData itemData) // argument: ItemData
     {
         // If item already exists in Dictionary, remove from stack
@@ -79,26 +111,39 @@ public class InventorySystem : MonoBehaviour
             int amount = itemData.value;
             // Remove from stack
             value.RemoveFromStack(amount);
-            Debug.Log("item removed = " + itemData.displayName);
-            Debug.Log("Stack = " + value.stackSize);
+            UnityEngine.Debug.Log("item removed = " + itemData.displayName);
+            UnityEngine.Debug.Log("Stack = " + value.stackSize);
 
             //If stack == 0, remove item instance
-            if (value.stackSize == 0) // value stack == 0
+            if (value.stackSize <= 0) // value stack == 0
             {
                 // Remove value from inventory
                 inventory.Remove(value);
                 // Remove Item with ItemData from dictionary
                 itemDictionary.Remove(itemData.id);
+                value.ResetSlot();
             }
         }
     }
 
-    // InventorySlot getter
+    /// <summary>
+    /// Gets a the first inventory slot containing ItemData
+    /// </summary>
+    /// <param name="itemData"></param>
+    /// <returns></returns>
     public InventorySlot getSlot(ItemData itemData)
     {
         if (itemDictionary.TryGetValue(itemData.id, out InventorySlot value))
             return value;
         else 
             return null;
+    }
+
+    /// <summary>
+    /// Can be used if there are any errors
+    /// </summary>
+    public void ResetInventory()
+    {
+        inventory = new List<InventorySlot>();
     }
 }

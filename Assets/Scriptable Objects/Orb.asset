@@ -15,7 +15,7 @@ MonoBehaviour:
   verboseLogs: 1
   doDebugLog: 0
   id: Orbs
-  displayName: Orb
-  image: {fileID: 0}
+  displayName: Orbs
+  image: {fileID: 21300000, guid: a644121a3a99b084abe16ae85c3cc4d7, type: 3}
   value: 1
   prefab: {fileID: 0}

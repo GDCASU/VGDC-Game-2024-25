@@ -19,12 +19,12 @@ using UnityEngine;
 /// <summary>
 /// 
 /// </summary>
-public class buttonscript : MonoBehaviour
+public class Removebuttonscript : MonoBehaviour
 {
     public ItemData data;
 
     public void buttonPressed()
     {
-        InventorySystem.Instance.Add(data);
+        InventorySystem.Instance.Remove(data);
     }
 }
