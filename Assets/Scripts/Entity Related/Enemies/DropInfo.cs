@@ -4,26 +4,26 @@ using UnityEngine;
 
 /* -----------------------------------------------------------
  * Author:
- * Ian Fletcher
+ * 
  * 
  * Modified By:
  * 
  */// --------------------------------------------------------
 
 /* -----------------------------------------------------------
- * Pupose:
- * Interface to the player object in the scene
+ * Purpose:
+ * 
  */// --------------------------------------------------------
 
 
 /// <summary>
-/// Handles the status of the player
+/// 
 /// </summary>
-public class Player : MonoBehaviour
+public class DropInfo : MonoBehaviour
 {
     // Use this bool to gate all your Debug.Log Statements please
     [Header("Debugging")]
-    [SerializeField] private bool _doDebugLog;
+    [SerializeField] private bool doDebugLog;
     
     // Start is called before the first frame update
     void Start()
