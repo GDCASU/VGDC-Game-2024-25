@@ -43,6 +43,7 @@ public class InputManager : MonoBehaviour
     /// <summary> Player's Move Event </summary>
     public static event System.Action OnMove;
     public static event System.Action OnAttack;
+    public static event System.Action ChangeElement;
 
     /// <summary>
     /// Binds all of the Players' controls to their respective events.
@@ -52,7 +53,7 @@ public class InputManager : MonoBehaviour
         // Subscribe to input events
         _playerControls.OnFoot.Move.performed += i => HandleMovementInput(i);
         _playerControls.PlayerActions.Attack.performed += i => HandleAttackInput(i);
-       
+        _playerControls.PlayerActions.ChangeElement.performed += i => HandleChangeElementInput(i);
     }
 
     #endregion
@@ -122,6 +123,12 @@ public class InputManager : MonoBehaviour
     {
         if (_doDebugLog) Debug.Log("Attacked");
         OnAttack?.Invoke();
+    }
+
+    private void HandleChangeElementInput(InputAction.CallbackContext context)
+    {
+        if(_doDebugLog) Debug.Log("Change");
+        ChangeElement?.Invoke();
     }
 
     #endregion

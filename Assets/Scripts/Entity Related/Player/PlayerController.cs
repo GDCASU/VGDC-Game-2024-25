@@ -24,10 +24,15 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Values")]
     [SerializeField] private float _speed;
-    [SerializeField] private GameObject _projectilePrefab;
+    [SerializeField] private GameObject _projectileNeutralPrefab;
+    [SerializeField] private GameObject _projectileFirePrefab;
+    [SerializeField] private GameObject _projectileWaterPrefab;
+    [SerializeField] private GameObject _projectileSparksPrefab;
     [SerializeField] private Transform _projectileSpawnPoint;
     [SerializeField] private Animator moveController;
     [SerializeField] private SpriteRenderer playerRenderer;
+    private GameObject _projectilePrefab;
+    private int magicChange = 0;
     
     // Use this bool to gate all your Debug.Log Statements please
     [Header("Debugging")]
@@ -40,6 +45,8 @@ public class PlayerController : MonoBehaviour
 	private void Start()
 	{
 		InputManager.OnAttack += AttackAction;
+        InputManager.ChangeElement += ChangeElementAction;
+        _projectilePrefab = _projectileNeutralPrefab;
 	}
 
 	// Update is called once per frame
@@ -76,6 +83,7 @@ public class PlayerController : MonoBehaviour
     {
         // Un-subscribe from events
         InputManager.OnAttack -= AttackAction;
+        InputManager.ChangeElement -= ChangeElementAction;
     }
 
     private void AttackAction()
@@ -86,11 +94,35 @@ public class PlayerController : MonoBehaviour
 		RaycastHit hit;
 		if(Physics.Raycast(ray, out hit, 100f))
 		{
+            
 			// Spawn projectile prefab and set its target to the raycast hit location
 			GameObject projectile = Instantiate(_projectilePrefab);
 			projectile.transform.position = _projectileSpawnPoint.position;
 			projectile.GetComponent<Projectile>().target = hit.point;
 		}
 	}
+
+    private void ChangeElementAction(){
+        //change between 4 elements of nothing(aka physical prolly), fire, water, sparks. More of a test feature as the game seems to not include switching. Prolly
+        magicChange++;
+        magicChange%=4;
+        switch(magicChange){
+            case 0: 
+                _projectilePrefab = _projectileNeutralPrefab;
+                break;
+            case 1:
+                _projectilePrefab = _projectileFirePrefab;
+                break;
+            case 2:
+                _projectilePrefab = _projectileWaterPrefab;
+                break;
+            case 3:
+                _projectilePrefab = _projectileSparksPrefab;
+                break;
+            default:
+                Debug.Log("Something broke, it is over. This is the issue ---> " + magicChange);
+                break;
+        }
+    }
 
 }
