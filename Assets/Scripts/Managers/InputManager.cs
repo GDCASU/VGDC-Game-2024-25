@@ -1,13 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.XInput;
+using UnityEngine.UI;
 
 /* -----------------------------------------------------------
  * Author:
  * Ian Fletcher
  * 
  * Modified By:
+ * Cami Lee
  * 
  */// --------------------------------------------------------
 
@@ -41,6 +45,10 @@ public class InputManager : MonoBehaviour
 
     /// <summary> Player's Move Event </summary>
     public static event System.Action OnMove;
+    public static event System.Action OnAttack;
+
+    /// <summary> Player's UI Event </summary>
+    public static event System.Action OnInteract;
 
     /// <summary>
     /// Binds all of the Players' controls to their respective events.
@@ -49,6 +57,7 @@ public class InputManager : MonoBehaviour
     {
         // Subscribe to input events
         _playerControls.OnFoot.Move.performed += i => HandleMovementInput(i);
+        _playerControls.PlayerActions.Attack.performed += i => HandleAttackInput(i);
        
     }
 
@@ -62,6 +71,7 @@ public class InputManager : MonoBehaviour
     private void BindUIEvents()
     {
         // Subscribe to input events
+        _playerControls.UI.Interaction.performed += i => HandleInteractionInput(i);
     }
 
     #endregion
@@ -99,8 +109,7 @@ public class InputManager : MonoBehaviour
 
     #region Input Map Change
 
-    // TBD
-
+    /// <summary> TBD </summary>
     #endregion
 
     #region Event Handlers
@@ -113,6 +122,18 @@ public class InputManager : MonoBehaviour
         // Read value from input and set the movementInput Vector to it
         movementInput = context.ReadValue<Vector2>();
         if (_doDebugLog) Debug.Log("The Movement Input read was = " + movementInput);
+    }
+
+    private void HandleAttackInput(InputAction.CallbackContext context)
+    {
+        if (_doDebugLog) Debug.Log("Attacked");
+        OnAttack?.Invoke();
+    }
+
+    private void HandleInteractionInput(InputAction.CallbackContext context)
+    {
+        if (_doDebugLog) Debug.Log("Interacted");
+        OnInteract?.Invoke();
     }
 
     #endregion
