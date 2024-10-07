@@ -32,7 +32,7 @@ public class InventorySystem : MonoBehaviour
 
     // Create a private Dictionary to store ItemData with InventoryItem(s)
     private Dictionary<string, InventorySlot> itemDictionary;
-    public List<InventorySlot> inventory { get; private set; }
+    public List<InventorySlot> inventory { get; set; }
 
     public static InventorySystem Instance { get; private set; }
 
@@ -154,6 +154,20 @@ public class InventorySystem : MonoBehaviour
                 slot.ResetSlot();
             }
             catch { }
+        }
+    }
+
+    public void UpdateInventory()
+    {
+        Dictionary<string, InventorySlot> temp = itemDictionary;
+        itemDictionary = new Dictionary<string, InventorySlot>();
+        foreach (string ids in temp.Keys)
+        {
+            for(int i = 0; i < inventory.Count; i++)
+            {
+                if(inventory[i].data.id.Equals(ids))
+                    itemDictionary.Add(ids, inventory[i]);
+            }
         }
     }
 }

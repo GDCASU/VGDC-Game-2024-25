@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using System.Xml.Serialization;
 
 /* -----------------------------------------------------------
  * Author: TJ (Yousuf)
@@ -32,11 +34,13 @@ public class InventorySlot: MonoBehaviour
     public ItemData data { get; set; }
     public int stackSize {  get; private set; }
     public Transform UISlot;
+    [SerializeField] private MouseSlotFollower mouseFollower;
 
     public void Awake()
     {
         UISlot = this.transform;
         RefreshUI();
+        mouseFollower = transform.parent.parent.GetChild(2).GetComponent<MouseSlotFollower>();
     }
 
     /// <summary>
@@ -49,6 +53,16 @@ public class InventorySlot: MonoBehaviour
         data = itemData;
         data.displayName = data.id;
         AddToStack(data.value);
+        RefreshUI();
+    }
+
+    /// <summary>
+    /// Imitates this InventorySlot; Used for MouseSlotFollower
+    /// </summary>
+    /// <param name="itemData"></param>
+    public void ImitateSlot(ItemData itemData)
+    {
+        data = itemData;
         RefreshUI();
     }
 
@@ -79,6 +93,9 @@ public class InventorySlot: MonoBehaviour
     {
         return stackSize;
     }
+
+    public void SetStackSize(int amount) { stackSize = amount; RefreshUI();}
+
     /// <summary>
     /// Refreshes the inventory slot's UI
     /// </summary>
@@ -112,5 +129,31 @@ public class InventorySlot: MonoBehaviour
         data = null;
         stackSize = 0;
         RefreshUI();
+    }
+
+    public void onBeginDrag()
+    {
+        if (data != null)
+        {
+            mouseFollower.Toggle(true);
+            mouseFollower.SetSlot(this);
+            mouseFollower.selected = this;
+        }
+    }
+
+    public void onEndDrag()
+    {
+        mouseFollower.Toggle(false);
+    }
+
+    public void onDrop()
+    {
+        ItemData temp = data;
+        int tempStack = stackSize;
+        ImitateSlot(mouseFollower.GetSlot().data);
+        SetStackSize(mouseFollower.GetSlot().stackSize);
+        mouseFollower.selected.ImitateSlot(temp);
+        mouseFollower.selected.SetStackSize(tempStack);
+        InventorySystem.Instance.UpdateInventory();
     }
 }
