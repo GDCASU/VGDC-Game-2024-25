@@ -21,10 +21,6 @@ using UnityEngine.UI;
  */// --------------------------------------------------------
 
 
-/// <summary>
-/// Class that will protect all objects that are meant to be present on all scenes
-/// </summary>
-/// 
 public class InteractionManager : MonoBehaviour
 {
     [Header("HitScan")]
@@ -45,6 +41,8 @@ public class InteractionManager : MonoBehaviour
     {
         Detect();
     }
+    
+    /// <summary> Determines if player is close enough to a detectable object </summary>
     private void Detect()
     {
         GameObject tempObject = null;
@@ -53,12 +51,7 @@ public class InteractionManager : MonoBehaviour
         Collider[] colliders = Physics.OverlapSphere(player.transform.position, radius);
         foreach (Collider collider in colliders)
         {
-            if (collider.gameObject.GetComponent<Interactions>() != null)
-            {
-                Debug.Log($"{collider.gameObject.name} is nearby");
-
-                tempObject = collider.gameObject;
-            }
+            if (collider.gameObject.GetComponent<Interactions>() != null) { tempObject = collider.gameObject; }
         }
 
         //-- If there is a new collision --//
@@ -67,6 +60,9 @@ public class InteractionManager : MonoBehaviour
             // Reset Old Highlight
             if (highlightedObject != null)
             {
+                interactions = highlightedObject.GetComponent<Interactions>(); // get interaction type
+                interactions.EndInteraction(); // prevent interactions
+
                 DisableHighlight(highlightedObject);
             }
 
@@ -83,6 +79,7 @@ public class InteractionManager : MonoBehaviour
             }
         }
     }
+    /// <summary> Highlights closest object </summary>
     private void ToggleHighlight(GameObject newObject)
     {
         // Fade in
@@ -99,6 +96,7 @@ public class InteractionManager : MonoBehaviour
 
         highlightedObject = newObject; // stores highlighted object.
     }
+    /// <summary> Disables out of range highlights </summary>
     private void DisableHighlight(GameObject oldObject)
     {
         // Fade out
@@ -114,6 +112,7 @@ public class InteractionManager : MonoBehaviour
 
         highlightedObject = oldObject; // updates highlighted object.
     }
+    /// <summary> Fades menu and text out </summary>
     IEnumerator Fade(bool fadeIn)
     {
         isRunning = true;
