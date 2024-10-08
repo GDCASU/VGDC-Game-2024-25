@@ -21,18 +21,26 @@ using UnityEngine;
 public class TestInteraction : MonoBehaviour
 {
     [SerializeField] Interactions interactions;
+    [SerializeField] bool isWalking; // placeholder bool to change functions
 
     // Start is called before the first frame update
     void Start()
     {
-        interactions.ChangeInteraction(Run); // Makes it so the function Run will be called with the interaction key
+        if (isWalking)
+        {
+            interactions.ChangeInteraction(Run); // Makes it so the function Run will be called with the interaction key
+        }
+        else { interactions.ChangeInteraction(Walk); }
     }
 
-    /// <summary>
-    /// Sample Function
-    /// </summary>
+    /// <summary> Sample Functions </summary>
     public void Run()
     {
         Debug.Log("is running");
+    }
+
+    public void Walk()
+    {
+        Debug.Log("is walking");
     }
 }
