@@ -336,6 +336,7 @@ GameObject:
   - component: {fileID: 2344377123844442254}
   - component: {fileID: 3504954473736029066}
   - component: {fileID: -7416005117584024738}
+  - component: {fileID: 5072699675534324342}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -389,8 +390,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 1.5
-  _projectilePrefab: {fileID: 3053767172377724150, guid: 0aeb2228e055e364dad5a90567bf3cfd,
-    type: 3}
+  _projectileNeutralPrefab: {fileID: 0}
+  _projectileFirePrefab: {fileID: 0}
+  _projectileWaterPrefab: {fileID: 0}
+  _projectileSparksPrefab: {fileID: 0}
   _projectileSpawnPoint: {fileID: 7007761719522431672}
   moveController: {fileID: 2344377123844442254}
   playerRenderer: {fileID: 81367034800111157}
@@ -501,6 +504,28 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.76
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5072699675534324342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5486136789815482219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77df278db5de32740a157e17d4622cad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  doDebugLog: 0
+  _damageMultipliers:
+  - element: 1
+    multiplier: 1
+  - element: 2
+    multiplier: 1
+  - element: 3
+    multiplier: 1
+  - element: 5
+    multiplier: 1
 --- !u!1 &8270913110982333668
 GameObject:
   m_ObjectHideFlags: 0
