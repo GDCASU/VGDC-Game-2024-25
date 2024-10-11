@@ -199,6 +199,12 @@ public class InventorySystem : MonoBehaviour
             return null;
     }
 
+    public bool CheckForAmmo()
+    {
+        if(ammoDictionary.Count <= 0) return false;
+        else return true;
+    }
+
     /// <summary>
     /// Can be used if there are any errors; Removes all items from the Inventory
     /// </summary>
