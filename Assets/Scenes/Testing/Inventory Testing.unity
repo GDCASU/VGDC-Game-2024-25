@@ -833,6 +833,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   doDebugLog: 0
+  UISlot: {fileID: 0}
 --- !u!1 &378237835
 GameObject:
   m_ObjectHideFlags: 0
@@ -3100,6 +3101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   doDebugLog: 0
   slotsHolder: {fileID: 650731822}
+  ammoSlotHolder: {fileID: 1327376607}
 --- !u!1 &1327376607
 GameObject:
   m_ObjectHideFlags: 0
