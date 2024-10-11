@@ -41,6 +41,7 @@ public class InventorySystem : MonoBehaviour
     // Access the UI for slots
     [SerializeField] private GameObject slotsHolder;
     [SerializeField] private GameObject ammoSlotHolder;
+    [SerializeField] private Transform MainAmmoSlot;
     private GameObject[] slots;
     private GameObject[] ammoSlots;
 
@@ -207,7 +208,7 @@ public class InventorySystem : MonoBehaviour
 
     public AmmoType GetSelectedAmmo()
     {
-        ItemData selectedAmmo = ammoSlots.GetChild(0).transform.GetComponent<AmmoSlot>().data;
+        ItemData selectedAmmo = MainAmmoSlot.GetComponent<AmmoSlot>().data;
         return selectedAmmo.element;
     }
 

@@ -65,6 +65,11 @@ public class AmmoSlot : MonoBehaviour
         RefreshUI();
     }
 
+    public int GetStackSize()
+    {
+        return stackSize;
+    }
+
     public void ResetSlot()
     {
         data = null;
