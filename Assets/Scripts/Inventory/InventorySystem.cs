@@ -172,7 +172,7 @@ public class InventorySystem : MonoBehaviour
             // Remove from stack
             avalue.RemoveFromStack(amount);
             UnityEngine.Debug.Log("item removed = " + itemData.displayName);
-            UnityEngine.Debug.Log("Stack = " + value.stackSize);
+            UnityEngine.Debug.Log("Stack = " + avalue.stackSize);
 
             //If stack == 0, remove item instance
             if (avalue.stackSize <= 0) // value stack == 0
