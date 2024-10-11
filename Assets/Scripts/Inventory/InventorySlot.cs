@@ -154,6 +154,6 @@ public class InventorySlot: MonoBehaviour
         SetStackSize(mouseFollower.GetSlot().stackSize);
         mouseFollower.selected.ImitateSlot(temp);
         mouseFollower.selected.SetStackSize(tempStack);
-        InventorySystem.Instance.UpdateInventory();
+        InventorySystem.Instance.UpdateInventory(this, mouseFollower.GetSlot());
     }
 }

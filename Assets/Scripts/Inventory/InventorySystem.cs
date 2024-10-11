@@ -1,6 +1,7 @@
 using FMOD;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEditor.SceneManagement;
 using UnityEditorInternal.Profiling.Memory.Experimental;
@@ -157,11 +158,45 @@ public class InventorySystem : MonoBehaviour
         }
     }
 
-    public void UpdateInventory()
+    public void UpdateInventory(InventorySlot placedOn, InventorySlot placedBefore)
     {
         Dictionary<string, InventorySlot> temp = itemDictionary;
         itemDictionary = new Dictionary<string, InventorySlot>();
-        bool placed = false;
-        
+        bool matches = false;
+        for (int i = 0; i < inventory.Count; i++)
+        {
+            if (inventory[i].data != null)
+            {
+                foreach (string key in temp.Keys)
+                {
+                    if (inventory[i].data.id.Equals(key))
+                    {
+                        itemDictionary.Add(inventory[i].data.id, inventory[i]);
+                        matches = true;
+                    }
+                }
+                if (!matches)
+                {
+                    inventory.RemoveAt(i);
+                    i--;
+                }
+                else
+                    matches = false;
+            }
+            else
+            {
+                inventory.RemoveAt(i);
+                i--;
+            }
+        }
+
+        inventory.Add(placedOn);
+        itemDictionary.Add(placedOn.data.id, placedOn);
+        try
+        {
+            itemDictionary.Add(placedBefore.data.id, placedBefore);
+            inventory.Add(placedBefore);
+        }
+        catch { }
     }
 }
