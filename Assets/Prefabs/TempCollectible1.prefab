@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4442243221218029435}
   - component: {fileID: 7972744099824592704}
   m_Layer: 0
-  m_Name: TempCollectible
+  m_Name: TempCollectible1
   m_TagString: Collectible
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
