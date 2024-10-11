@@ -33,23 +33,28 @@ public class InventorySystem : MonoBehaviour
 
     // Create a private Dictionary to store ItemData with InventoryItem(s)
     private Dictionary<string, InventorySlot> itemDictionary;
+    private Dictionary<string, AmmoSlot> ammoDictionary;
     public List<InventorySlot> inventory { get; private set; }
-
+    public List<AmmoSlot> ammos { get; private set; }
     public static InventorySystem Instance { get; private set; }
 
     // Access the UI for slots
     [SerializeField] private GameObject slotsHolder;
+    [SerializeField] private GameObject ammoSlotHolder;
     private GameObject[] slots;
+    private GameObject[] ammoSlots;
 
     private void Awake()
     {
         UnityEngine.Debug.Log("Inventory Awake");
         inventory = new List<InventorySlot> ();
+        ammos = new List<AmmoSlot>();
         // Set the Dictionary here
         itemDictionary = new Dictionary<string, InventorySlot> ();
+        ammoDictionary = new Dictionary<string, AmmoSlot>();
 
         // Set the Singleton
-        if(Instance != null && Instance != this)
+        if (Instance != null && Instance != this)
         {
             Destroy(this);
         }
@@ -60,6 +65,11 @@ public class InventorySystem : MonoBehaviour
         for (int i = 0; i < slotsHolder.transform.childCount; i++)
         {
             slots[i] = slotsHolder.transform.GetChild(i).gameObject;
+        }
+        ammoSlots = new GameObject[ammoSlotHolder.transform.childCount];
+        for (int i = 0; i < ammoSlotHolder.transform.childCount; i++)
+        {
+            ammoSlots[i] = ammoSlotHolder.transform.GetChild(i).gameObject;
         }
     }
 
@@ -77,6 +87,14 @@ public class InventorySystem : MonoBehaviour
             value.AddToStack(amount);
             UnityEngine.Debug.Log("item added = " + itemData.displayName);
             UnityEngine.Debug.Log("Stack = " + value.stackSize);
+        }
+        else if (ammoDictionary.TryGetValue(itemData.id, out AmmoSlot avalue)) //Dictionary.TryGetValue(ItemData, out InventorySlot value
+        {
+            int amount = itemData.value;
+            // Add to stack
+            avalue.AddToStack(amount);
+            UnityEngine.Debug.Log("item added = " + itemData.displayName);
+            UnityEngine.Debug.Log("Stack = " + avalue.stackSize);
         }
         // Create new InventoryItem instance if item doesn't exist
         else
@@ -100,6 +118,25 @@ public class InventorySystem : MonoBehaviour
                             break;
                         }
                     }
+                    break;
+                case CollectibleType.Ammo:
+                    for (int i = 0; i < ammoSlots.Length; i++)
+                    {
+                        AmmoSlot component = ammoSlots[i].GetComponent<AmmoSlot>();
+                        UnityEngine.Debug.Log(component.data);
+                        if (component.data == null)
+                        {
+                            component.SetAmmoSlot(itemData);
+                            // Add item to inventory
+                            ammos.Add(component);
+                            // Add Item with ItemData to dictionary
+                            ammoDictionary.Add(itemData.id, component);
+                            UnityEngine.Debug.Log("New ammo detected = " + itemData.displayName);
+                            UnityEngine.Debug.Log("Stack = " + component.stackSize);
+                            break;
+                        }
+                    }
+                    break;
             }
         }
     }
@@ -129,6 +166,24 @@ public class InventorySystem : MonoBehaviour
                 value.ResetSlot();
             }
         }
+        else if (ammoDictionary.TryGetValue(itemData.id, out AmmoSlot avalue)) //Dictionary.TryGetValue(ItemData, out InventorySlot value
+        {
+            int amount = itemData.value;
+            // Remove from stack
+            avalue.RemoveFromStack(amount);
+            UnityEngine.Debug.Log("item removed = " + itemData.displayName);
+            UnityEngine.Debug.Log("Stack = " + value.stackSize);
+
+            //If stack == 0, remove item instance
+            if (avalue.stackSize <= 0) // value stack == 0
+            {
+                // Remove value from inventory
+                ammos.Remove(avalue);
+                // Remove Item with ItemData from dictionary
+                ammoDictionary.Remove(itemData.id);
+                avalue.ResetSlot();
+            }
+        }
     }
 
     /// <summary>
@@ -140,7 +195,7 @@ public class InventorySystem : MonoBehaviour
     {
         if (itemDictionary.TryGetValue(itemData.id, out InventorySlot value))
             return value;
-        else 
+        else
             return null;
     }
 
