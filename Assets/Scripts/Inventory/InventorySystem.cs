@@ -201,7 +201,7 @@ public class InventorySystem : MonoBehaviour
 
     public bool CheckForAmmo()
     {
-        if(ammoDictionary.Count <= 0) return false;
+        if(ammos.Count <= 0) return false;
         else return true;
     }
 
