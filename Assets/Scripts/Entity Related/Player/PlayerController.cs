@@ -7,7 +7,7 @@ using System;
  * Author:
  * Ian Fletcher
  * 
- * Modified By: William Peng
+ * Modified By: William Peng, Jacob Kaufman-Warner
  * 
  */// --------------------------------------------------------
 
@@ -31,6 +31,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform _projectileSpawnPoint;
     [SerializeField] private Animator moveController;
     [SerializeField] private SpriteRenderer playerRenderer;
+
+    [Header("Projectile ItemData")]
+    [SerializeField] private ItemData fireAmmo;
+    [SerializeField] private ItemData waterAmmo;
+    [SerializeField] private ItemData sparksAmmo;
+
+
     private GameObject _projectilePrefab;
     private int magicChange = 0;
     
@@ -94,11 +101,36 @@ public class PlayerController : MonoBehaviour
 		RaycastHit hit;
 		if(Physics.Raycast(ray, out hit, 100f))
 		{
-            
-			// Spawn projectile prefab and set its target to the raycast hit location
-			GameObject projectile = Instantiate(_projectilePrefab);
-			projectile.transform.position = _projectileSpawnPoint.position;
-			projectile.GetComponent<Projectile>().target = hit.point;
+            if(InventorySystem.Instance.CheckForAmmo()){
+                switch(InventorySystem.Instance.GetSelectedAmmo()){
+                    case AmmoType.Fire:
+                        Debug.Log("Fire ammo");
+                        _projectilePrefab = _projectileFirePrefab;
+                        InventorySystem.Instance.Remove(fireAmmo);
+                        break;
+                    case AmmoType.Water:
+                    Debug.Log("Water ammo");
+                        _projectilePrefab = _projectileWaterPrefab;
+                        InventorySystem.Instance.Remove(waterAmmo);
+                        break;
+                    case AmmoType.Sparks:
+                        Debug.Log("Sparks ammo");
+                        _projectilePrefab = _projectileSparksPrefab;
+                        InventorySystem.Instance.Remove(sparksAmmo);
+                        break;
+                    default:
+                        Debug.Log("Error with ammo");
+                        break;
+                }
+                
+            }else{
+                Debug.Log("Neutral ammo");
+                _projectilePrefab = _projectileNeutralPrefab;
+            }
+            // Spawn projectile prefab and set its target to the raycast hit location
+            GameObject projectile = Instantiate(_projectilePrefab);
+            projectile.transform.position = _projectileSpawnPoint.position;
+            projectile.GetComponent<Projectile>().target = hit.point;
 		}
 	}
 
