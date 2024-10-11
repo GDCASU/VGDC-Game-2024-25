@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MagnetAttraction : MonoBehaviour
 //Summary: Attracts objects that has the tag collectible to collect them (applies to all collectable objects/enemy drops)
-//UPDATE: Fixed error where it tries to collect items previously collected
+//UPDATE: Fixed error where it tries to collect items previously collected 
 //Made by Eliza Chook
 {
     public float attractionSpeed = 1f;  // Speed at which objects are pulled towards the player
