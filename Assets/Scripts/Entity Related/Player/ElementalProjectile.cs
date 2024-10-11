@@ -22,7 +22,6 @@ using UnityEngine;
 
 public class ElementalProjectile : MonoBehaviour
 {
-    public Elements application = Elements.neutral;
+    public Elements type = Elements.neutral;
     public float damage = 1f;
-
 }
