@@ -21,6 +21,13 @@ using UnityEngine;
 /// 
 /// </summary>
 
+public enum AmmoType
+{
+    Fire,
+    Water,
+    Sparks,
+    None
+}
 public enum CollectibleType
 {
     InventoryItem,
@@ -39,4 +46,5 @@ public class ItemData : GGScriptableObject
     [SerializeField] public int value;
     [SerializeField] public GameObject prefab;
     [SerializeField] public CollectibleType itemType;
+    [SerializeField] public AmmoType element;
 }

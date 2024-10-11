@@ -205,6 +205,12 @@ public class InventorySystem : MonoBehaviour
         else return true;
     }
 
+    public AmmoType GetSelectedAmmo()
+    {
+        ItemData selectedAmmo = ammoSlots.GetChild(0).transform.GetComponent<AmmoSlot>().data;
+        return selectedAmmo.element;
+    }
+
     /// <summary>
     /// Can be used if there are any errors; Removes all items from the Inventory
     /// </summary>
