@@ -81,21 +81,25 @@ public class InventorySystem : MonoBehaviour
         // Create new InventoryItem instance if item doesn't exist
         else
         {
-            for (int i = 0; i < slots.Length; i++)
+            switch (itemData.itemType)
             {
-                InventorySlot component = slots[i].GetComponent<InventorySlot>();
-                UnityEngine.Debug.Log(component.data);
-                if (component.data == null)
-                {
-                    component.SetInventorySlot(itemData);
-                    // Add item to inventory
-                    inventory.Add(component);
-                    // Add Item with ItemData to dictionary
-                    itemDictionary.Add(itemData.id, component);
-                    UnityEngine.Debug.Log("New object detected = " + itemData.displayName);
-                    UnityEngine.Debug.Log("Stack = " + component.stackSize);
-                    break;
-                }
+                case CollectibleType.InventoryItem :
+                    for (int i = 0; i < slots.Length; i++)
+                    {
+                        InventorySlot component = slots[i].GetComponent<InventorySlot>();
+                        UnityEngine.Debug.Log(component.data);
+                        if (component.data == null)
+                        {
+                            component.SetInventorySlot(itemData);
+                            // Add item to inventory
+                            inventory.Add(component);
+                            // Add Item with ItemData to dictionary
+                            itemDictionary.Add(itemData.id, component);
+                            UnityEngine.Debug.Log("New object detected = " + itemData.displayName);
+                            UnityEngine.Debug.Log("Stack = " + component.stackSize);
+                            break;
+                        }
+                    }
             }
         }
     }
