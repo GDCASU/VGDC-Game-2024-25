@@ -40,6 +40,7 @@ public class AmmoSlot : MonoBehaviour
     {
         // Set ItemData instance
         data = itemData;
+        AddToStack(itemData.value);
         data.displayName = data.id;
         RefreshUI();
     }
