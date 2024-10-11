@@ -794,7 +794,7 @@ GameObject:
   - component: {fileID: 343388846}
   - component: {fileID: 343388847}
   m_Layer: 0
-  m_Name: AmmoSlot
+  m_Name: MainAmmoSlot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3393,7 +3393,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a24076301780ce4aa2cb8422f90c750, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 2daff21d0a38be24aae8f1b2d79ce4c8, type: 2}
+  data: {fileID: 11400000, guid: 144d8f074ecc9c841a22198d64501834, type: 2}
 --- !u!114 &1557541111
 MonoBehaviour:
   m_ObjectHideFlags: 0
