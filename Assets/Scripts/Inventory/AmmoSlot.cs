@@ -81,13 +81,25 @@ public class AmmoSlot : MonoBehaviour
     {
         try
         {
-            UISlot.GetChild(0).GetComponent<Image>().enabled = true;
-            UISlot.GetChild(0).GetComponent<Image>().sprite = data.image;
+            UISlot.GetComponent<SpriteRenderer>().enabled = true;
+            UISlot.GetComponent<SpriteRenderer>().sprite = data.image;
+            switch (stackSize)
+            {
+                case 1: 
+                    UISlot.localScale = new Vector3(0.01f, 0.01f, 1f);
+                    break;
+                case 2:
+                    UISlot.localScale = new Vector3(0.015f, 0.015f, 1f);
+                    break;
+                case 3:
+                    UISlot.localScale = new Vector3(0.02f, 0.02f, 1f);
+                    break;
+            }
         }
         catch
         {
-            UISlot.GetChild(0).GetComponent<Image>().sprite = null;
-            UISlot.GetChild(0).GetComponent<Image>().enabled = false;
+            UISlot.GetComponent<SpriteRenderer>().sprite = null;
+            UISlot.GetComponent<SpriteRenderer>().enabled = false;
         }
     }
 
