@@ -885,6 +885,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   doDebugLog: 0
   UISlot: {fileID: 0}
+  ammoSlotNumber: 1
 --- !u!224 &259295969 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2902841075823086434, guid: 72f5bcdf46d49b743892e5ada2289e57,
@@ -1197,6 +1198,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   doDebugLog: 0
   UISlot: {fileID: 0}
+  ammoSlotNumber: 4
 --- !u!1001 &454974986
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2137,6 +2139,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   doDebugLog: 0
   UISlot: {fileID: 0}
+  ammoSlotNumber: 3
 --- !u!1 &650731822
 GameObject:
   m_ObjectHideFlags: 0
@@ -4753,6 +4756,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   doDebugLog: 0
   UISlot: {fileID: 0}
+  ammoSlotNumber: 2
 --- !u!224 &1670533254 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2902841075823086434, guid: 72f5bcdf46d49b743892e5ada2289e57,

@@ -27,13 +27,52 @@ public class AmmoSlot : MonoBehaviour
     [Header("Debugging")]
     [SerializeField] private bool doDebugLog;
     public ItemData data { get; set; }
+    private float speed = 100f;
+    private Vector3 vel = Vector3.zero;
     public int stackSize { get; private set; }
     public Transform UISlot;
+    [SerializeField] private int ammoSlotNumber;
+    private Vector3 ammoSlotPos1, ammoSlotPos2, ammoSlotPos3, ammoSlotPos4;
+    public static bool isScrolling;
 
     public void Awake()
     {
         UISlot = this.transform;
         RefreshUI();
+        if (ammoSlotNumber <= 0 || ammoSlotNumber > 4)
+        {
+            Debug.LogError("An ammo slot is not a assigned a number from 1 - 4, please check for the AmmoSlot script on the ammo slots in gameObject \"Player\" and assign a number (order should be counter-clockwise)");
+        }
+        else
+        {
+            switch (ammoSlotNumber)
+            {
+                case 1:
+                    ammoSlotPos1 = transform.position;
+                    break;
+                case 2: 
+                    ammoSlotPos2 = transform.position;
+                    break;
+                case 3:
+                    ammoSlotPos3 = transform.position;
+                    break;
+                case 4:
+                    ammoSlotPos4 = transform.position;
+                    break;
+            }
+        }
+    }
+
+    public void Update()
+    {
+        if (Input.GetAxisRaw("Mouse ScrollWheel") > 0 || isScrolling)
+        {
+            ScrollUpThroughAmmo();
+        }
+        else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0)
+        {
+            Debug.Log("Scrolling down");
+        }
     }
 
     public void SetAmmoSlot(ItemData itemData)
@@ -99,8 +138,33 @@ public class AmmoSlot : MonoBehaviour
         catch
         {
             UISlot.GetComponent<SpriteRenderer>().sprite = null;
-            UISlot.GetComponent<SpriteRenderer>().enabled = false;
+            UISlot.GetComponent<SpriteRenderer>().enabled = true;
         }
     }
 
+    public void ScrollUpThroughAmmo()
+    {
+        isScrolling = true;
+        switch (ammoSlotNumber)
+        {
+            case 1:
+                transform.position = Vector3.SmoothDamp(transform.position, ammoSlotPos2, ref vel, speed * Time.deltaTime);
+                if(transform.position == ammoSlotPos2)
+                {
+                    isScrolling = false;
+                    Debug.Log("Done");
+                }
+                break;
+            case 2:
+                
+                break;
+            case 3:
+                
+                break;
+            case 4:
+                transform.position = Vector3.SmoothDamp(transform.position, ammoSlotPos1, ref vel, speed * Time.deltaTime);
+                
+                break;
+        }
+    }
 }
