@@ -41,7 +41,8 @@ public class InventorySystem : MonoBehaviour
     // Access the UI for slots
     [SerializeField] private GameObject slotsHolder;
     [SerializeField] private GameObject ammoSlotHolder;
-    [SerializeField] private Transform MainAmmoSlot;
+    [SerializeField] private ItemData neutralAmmo;
+    [SerializeField] public Transform MainAmmoSlot;
     private GameObject[] slots;
     private GameObject[] ammoSlots;
 
@@ -72,6 +73,7 @@ public class InventorySystem : MonoBehaviour
         {
             ammoSlots[i] = ammoSlotHolder.transform.GetChild(i).gameObject;
         }
+        Add(neutralAmmo);
     }
 
     /// <summary>

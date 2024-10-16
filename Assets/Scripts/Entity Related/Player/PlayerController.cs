@@ -118,6 +118,9 @@ public class PlayerController : MonoBehaviour
                         _projectilePrefab = _projectileSparksPrefab;
                         InventorySystem.Instance.Remove(sparksAmmo);
                         break;
+                    case AmmoType.None:
+                        _projectilePrefab = _projectileNeutralPrefab;
+                        break;
                     default:
                         Debug.Log("Error with ammo");
                         break;
