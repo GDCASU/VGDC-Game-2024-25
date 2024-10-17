@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d48866b9ae97fed4a81c992f413c2d28, type: 3}
-  m_Name: SoarksAmmo
+  m_Name: SparksAmmo
   m_EditorClassIdentifier: 
   verboseLogs: 1
   doDebugLog: 0
@@ -19,5 +19,5 @@ MonoBehaviour:
   image: {fileID: 21300000, guid: 7f3d1b8552d698f4faa1636a233d3683, type: 3}
   value: 1
   prefab: {fileID: 0}
-  itemType: 0
-  element: 0
+  itemType: 1
+  element: 2

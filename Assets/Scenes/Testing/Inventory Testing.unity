@@ -886,8 +886,6 @@ MonoBehaviour:
   doDebugLog: 0
   UISlot: {fileID: 0}
   ammoSlotNumber: 1
-  isScrolling: 0
-  isScrollingDown: 0
 --- !u!224 &259295969 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2902841075823086434, guid: 72f5bcdf46d49b743892e5ada2289e57,
@@ -1201,8 +1199,6 @@ MonoBehaviour:
   doDebugLog: 0
   UISlot: {fileID: 0}
   ammoSlotNumber: 4
-  isScrolling: 0
-  isScrollingDown: 0
 --- !u!1001 &454974986
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2144,8 +2140,6 @@ MonoBehaviour:
   doDebugLog: 0
   UISlot: {fileID: 0}
   ammoSlotNumber: 3
-  isScrolling: 0
-  isScrollingDown: 0
 --- !u!1 &650731822
 GameObject:
   m_ObjectHideFlags: 0
@@ -4898,8 +4892,6 @@ MonoBehaviour:
   doDebugLog: 0
   UISlot: {fileID: 0}
   ammoSlotNumber: 2
-  isScrolling: 0
-  isScrollingDown: 0
 --- !u!224 &1670533254 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2902841075823086434, guid: 72f5bcdf46d49b743892e5ada2289e57,
@@ -5257,7 +5249,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a24076301780ce4aa2cb8422f90c750, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: a9bde288ce3fbe7409af964dd9fe80a9, type: 2}
+  data: {fileID: 11400000, guid: 003ce687ed006014aa9a70d952587f64, type: 2}
 --- !u!114 &1767591776
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6439,6 +6431,12 @@ PrefabInstance:
       propertyPath: waterAmmo
       value: 
       objectReference: {fileID: 11400000, guid: a9bde288ce3fbe7409af964dd9fe80a9,
+        type: 2}
+    - target: {fileID: 6697751668706597001, guid: 3929c72507c5b98469226ce0caeccc72,
+        type: 3}
+      propertyPath: sparksAmmo
+      value: 
+      objectReference: {fileID: 11400000, guid: 003ce687ed006014aa9a70d952587f64,
         type: 2}
     - target: {fileID: 6697751668706597001, guid: 3929c72507c5b98469226ce0caeccc72,
         type: 3}

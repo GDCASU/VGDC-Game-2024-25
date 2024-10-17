@@ -32,7 +32,7 @@ public class AmmoSlot : MonoBehaviour
     public int stackSize { get; private set; }
     public Transform UISlot;
     [SerializeField] public int ammoSlotNumber;
-    public bool isScrolling, isScrollingDown;
+    private bool isScrolling, isScrollingDown;
     private float angle;
     private bool checkFor3rdSlot, scrollAnyways, scrollUpAnyways;
 
