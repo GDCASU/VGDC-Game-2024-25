@@ -158,24 +158,30 @@ public class InventorySystem : MonoBehaviour
         {
             int amount = itemData.value;
             // Remove from stack
+            if (value.stackSize - amount <= 0) // value stack == 0
+            {
+                // Remove value from inventory
+                inventory.Remove(value);
+            }
             value.RemoveFromStack(amount);
+            if (value.stackSize <= 0) // value stack == 0
+            {
+                itemDictionary.Remove(itemData.id);
+                value.ResetSlot();
+            }
             UnityEngine.Debug.Log("item removed = " + itemData.displayName);
             UnityEngine.Debug.Log("Stack = " + value.stackSize);
 
             //If stack == 0, remove item instance
-            if (value.stackSize <= 0) // value stack == 0
-            {
-                // Remove value from inventory
-                inventory.Remove(value);
-                // Remove Item with ItemData from dictionary
-                itemDictionary.Remove(itemData.id);
-                value.ResetSlot();
-            }
         }
         else if (ammoDictionary.TryGetValue(itemData.id, out AmmoSlot avalue)) //Dictionary.TryGetValue(ItemData, out InventorySlot value
         {
             int amount = itemData.value;
             // Remove from stack
+            if (avalue.stackSize - amount <= 0) // value stack == 0
+            {
+                ammos.Remove(avalue);
+            }
             avalue.RemoveFromStack(amount);
             UnityEngine.Debug.Log("item removed = " + itemData.displayName);
             UnityEngine.Debug.Log("Stack = " + avalue.stackSize);
@@ -213,8 +219,11 @@ public class InventorySystem : MonoBehaviour
 
     public AmmoType GetSelectedAmmo()
     {
-        ItemData selectedAmmo = MainAmmoSlot.GetComponent<AmmoSlot>().data;
-        return selectedAmmo.element;
+        try
+        {
+            ItemData selectedAmmo = MainAmmoSlot.GetComponent<AmmoSlot>().data;
+            return selectedAmmo.element;
+        } catch { return AmmoType.None; }
     }
 
     /// <summary>

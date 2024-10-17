@@ -32,10 +32,9 @@ public class AmmoSlot : MonoBehaviour
     public int stackSize { get; private set; }
     public Transform UISlot;
     [SerializeField] public int ammoSlotNumber;
-    public static bool isScrolling, isScrollingDown; 
-    private static float rotatedCounterClockAngle = 360f-65f;
-    private static float rotatedClockAngle = 25f;
-    private bool checkFor3rdSlot, scrollAnyways;
+    public bool isScrolling, isScrollingDown;
+    private float angle;
+    private bool checkFor3rdSlot, scrollAnyways, scrollUpAnyways;
 
     public void Awake()
     {
@@ -44,6 +43,21 @@ public class AmmoSlot : MonoBehaviour
         if (ammoSlotNumber <= 0 || ammoSlotNumber > 4)
         {
             Debug.LogError("An ammo slot is not a assigned a number from 1 - 4, please check for the AmmoSlot script on the ammo slots in gameObject \"Player\" and assign a number (order should be counter-clockwise)");
+        }
+        switch(ammoSlotNumber)
+        {
+            case 1:
+                angle = 25f;
+                break;
+            case 2:
+                angle = 115f;
+                break;
+            case 3:
+                angle = 205f;
+                break;
+            case 4:
+                angle = 295f;
+                break;
         }
     }
 
@@ -63,8 +77,17 @@ public class AmmoSlot : MonoBehaviour
                     break;
             }
         }
-        if(scrollAnyways) { ScrollUpThroughAmmo(); }
-        if (Input.GetAxisRaw("Mouse ScrollWheel") > 0 || isScrolling && InventorySystem.Instance.ammos.Count > 1)
+        if (scrollAnyways) { ScrollUpThroughAmmo(); }
+        if ( ammoSlotNumber == 1 && stackSize <= 0)
+        {
+            for (int i = 0; i < transform.parent.childCount; i++)
+            {
+                transform.parent.GetChild(i).GetComponent<AmmoSlot>().scrollUpAnyways = true;
+                transform.parent.GetChild(i).GetComponent<AmmoSlot>().isScrolling = false;
+                transform.parent.GetChild(i).GetComponent<AmmoSlot>().isScrollingDown = false;
+            }
+        }
+        if ((Input.GetAxisRaw("Mouse ScrollWheel") > 0 && !isScrollingDown && InventorySystem.Instance.ammos.Count > 1) || isScrolling && InventorySystem.Instance.ammos.Count > 1 || scrollUpAnyways)
         {
             if (!isScrolling && InventorySystem.Instance.ammos.Count > 1)
             {
@@ -72,8 +95,7 @@ public class AmmoSlot : MonoBehaviour
                 {
                     if (transform.parent.GetChild(i).GetComponent<AmmoSlot>().ammoSlotNumber == 4)
                     {
-                        rotatedCounterClockAngle -= transform.parent.GetChild(i).GetComponent<AmmoSlot>().IsSlotEmpty();
-                        if (transform.parent.GetChild(i).GetComponent<AmmoSlot>().IsSlotEmpty() == 90f)
+                        if (transform.parent.GetChild(i).GetComponent<AmmoSlot>().IsSlotEmpty())
                         {
                             checkFor3rdSlot = true;
                             if (checkFor3rdSlot)
@@ -82,8 +104,7 @@ public class AmmoSlot : MonoBehaviour
                                 {
                                     if (transform.parent.GetChild(k).GetComponent<AmmoSlot>().ammoSlotNumber == 3)
                                     {
-                                        rotatedCounterClockAngle -= transform.parent.GetChild(k).GetComponent<AmmoSlot>().IsSlotEmpty();
-                                        if (transform.parent.GetChild(k).GetComponent<AmmoSlot>().IsSlotEmpty() == 90f)
+                                        if (transform.parent.GetChild(k).GetComponent<AmmoSlot>().IsSlotEmpty())
                                         {
                                             for (int l = 0; l < transform.parent.childCount; l++)
                                             {
@@ -101,10 +122,15 @@ public class AmmoSlot : MonoBehaviour
                         }
                     }
                 }
+                for (int i = 0; i < transform.parent.childCount; i++)
+                {
+                    transform.parent.GetChild(i).GetComponent<AmmoSlot>().SwitchAmmoSlots();
+                    transform.parent.GetChild(i).GetComponent<AmmoSlot>().isScrolling = true;
+                }
             }
             ScrollUpThroughAmmo();
         }
-        else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0 || isScrollingDown && InventorySystem.Instance.ammos.Count > 1)
+        else if ((Input.GetAxisRaw("Mouse ScrollWheel") < 0 && InventorySystem.Instance.ammos.Count > 1 && !isScrolling) || isScrollingDown && InventorySystem.Instance.ammos.Count > 1)
         {
             if (!isScrollingDown && InventorySystem.Instance.ammos.Count > 1)
             {
@@ -112,8 +138,7 @@ public class AmmoSlot : MonoBehaviour
                 {
                     if (transform.parent.GetChild(i).GetComponent<AmmoSlot>().ammoSlotNumber == 2)
                     {
-                        rotatedClockAngle += transform.parent.GetChild(i).GetComponent<AmmoSlot>().IsSlotEmpty();
-                        if (transform.parent.GetChild(i).GetComponent<AmmoSlot>().IsSlotEmpty() == 90f)
+                        if (transform.parent.GetChild(i).GetComponent<AmmoSlot>().IsSlotEmpty())
                         {
                             checkFor3rdSlot = true;
                             if (checkFor3rdSlot)
@@ -122,8 +147,7 @@ public class AmmoSlot : MonoBehaviour
                                 {
                                     if (transform.parent.GetChild(k).GetComponent<AmmoSlot>().ammoSlotNumber == 3)
                                     {
-                                        rotatedClockAngle += transform.parent.GetChild(k).GetComponent<AmmoSlot>().IsSlotEmpty();
-                                        if (transform.parent.GetChild(k).GetComponent<AmmoSlot>().IsSlotEmpty() == 90f)
+                                        if (transform.parent.GetChild(k).GetComponent<AmmoSlot>().IsSlotEmpty())
                                         {
                                             for (int l = 0; l < transform.parent.childCount; l++)
                                             {
@@ -141,11 +165,20 @@ public class AmmoSlot : MonoBehaviour
                         }
                     }
                 }
+                for (int i = 0; i < transform.parent.childCount; i++)
+                {
+                    transform.parent.GetChild(i).GetComponent<AmmoSlot>().SwitchAmmoSlotsDown();
+                    transform.parent.GetChild(i).GetComponent<AmmoSlot>().isScrollingDown = true;
+                }
             }
             ScrollDownThroughAmmo();
         }
     }
 
+    /// <summary>
+    /// Sets the AmmoSlot's data
+    /// </summary>
+    /// <param name="itemData"></param>
     public void SetAmmoSlot(ItemData itemData)
     {
         // Set ItemData instance
@@ -166,7 +199,7 @@ public class AmmoSlot : MonoBehaviour
     }
 
     /// <summary>
-    /// Removes a certain amount from the stack
+    /// Removes a certain amount from the stack and auto rotates to the next ammo (Counter-Clockwise)
     /// </summary>
     /// <param name="amount"></param>
     public void RemoveFromStack(int amount)
@@ -175,15 +208,43 @@ public class AmmoSlot : MonoBehaviour
         RefreshUI();
         if (stackSize <= 0)
         {
-            scrollAnyways = true;
+            if (InventorySystem.Instance.ammos.Count <= 1)
+            {
+                for (int j = 0; j < transform.parent.childCount; j++)
+                {
+                    transform.parent.GetChild(j).GetComponent<AmmoSlot>().ammoSlotNumber = j + 1;
+                    if (transform.parent.GetChild(j).GetComponent<AmmoSlot>().ammoSlotNumber == 1)
+                        InventorySystem.Instance.MainAmmoSlot = transform.parent.GetChild(j);
+                }
+                for (int i = 0; i < transform.parent.childCount; i++)
+                {
+                    transform.parent.GetChild(i).GetComponent<AmmoSlot>().isScrolling = false;
+                    transform.parent.GetChild(i).GetComponent<AmmoSlot>().isScrollingDown = false;
+                    transform.parent.GetChild(i).GetComponent<AmmoSlot>().scrollAnyways = true;
+                }
+            }
+            else
+            {
+                for (int i = 0; i < transform.parent.childCount; i++)
+                {
+                    transform.parent.GetChild(i).GetComponent<AmmoSlot>().scrollUpAnyways = true;
+                }
+            }
         }
     }
 
+    /// <summary>
+    /// Gets the StackSize of the AmmoSlot
+    /// </summary>
+    /// <returns></returns>
     public int GetStackSize()
     {
         return stackSize;
     }
 
+    /// <summary>
+    /// Resets AmmoSlot
+    /// </summary>
     public void ResetSlot()
     {
         data = null;
@@ -191,6 +252,9 @@ public class AmmoSlot : MonoBehaviour
         RefreshUI();
     }
 
+    /// <summary>
+    /// Refreshes the AmmoSlot UI
+    /// </summary>
     public void RefreshUI()
     {
         try
@@ -223,32 +287,32 @@ public class AmmoSlot : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Used to rotate the UI Counter-Clockwise to the new MainAmmoSlot Location
+    /// </summary>
     public void ScrollUpThroughAmmo()
     {
         
-        if (InventorySystem.Instance.ammos.Count > 1 || scrollAnyways)
+        if (InventorySystem.Instance.ammos.Count > 1 || scrollAnyways && !isScrollingDown)
         {
             isScrolling = true;
-            Quaternion rotated = Quaternion.Euler(0, rotatedCounterClockAngle, 0);
             switch (ammoSlotNumber)
             {
                 case 1:
+                    Quaternion rotated = Quaternion.Euler(0, angle, 0);
                     transform.parent.rotation = Quaternion.Slerp(transform.parent.rotation, rotated, speed);
                     float y1 = Mathf.Round(Mathf.Abs(transform.parent.rotation.y) * 10000) / 10000;
                     float y2 = Mathf.Round(Mathf.Abs(rotated.y) * 10000) / 10000;
-                    if (Mathf.Approximately(y1, y2))
+                    if (Mathf.Approximately(y1, y2) && isScrolling)
                     {
-                        Debug.Log("Done");
-                        isScrolling = false;
-                        scrollAnyways = false;
-                        rotatedCounterClockAngle -= 90f;
-                        if(rotatedCounterClockAngle <= 0f)
+                        for (int i = 0; i < transform.parent.childCount; i++)
                         {
-                            rotatedCounterClockAngle = 360f-65f;
+                            transform.parent.GetChild(i).GetComponent<AmmoSlot>().isScrolling = false;
+                            transform.parent.GetChild(i).GetComponent<AmmoSlot>().scrollUpAnyways = false;
                         }
                         for (int i = 0; i < transform.parent.childCount; i++)
                         {
-                            transform.parent.GetChild(i).GetComponent<AmmoSlot>().SwitchAmmoSlots();
+                            transform.parent.GetChild(i).GetComponent<AmmoSlot>().scrollAnyways = false;
                         }
                     }
                     break;
@@ -256,31 +320,27 @@ public class AmmoSlot : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Used to rotate the UI Clockwise to the new MainAmmoSlot Location
+    /// </summary>
     public void ScrollDownThroughAmmo()
     {
 
-        if (InventorySystem.Instance.ammos.Count > 1)
+        if (InventorySystem.Instance.ammos.Count > 1 && !isScrolling)
         {
             isScrollingDown = true;
-            Quaternion rotated = Quaternion.Euler(0, rotatedClockAngle, 0);
             switch (ammoSlotNumber)
             {
                 case 1:
+                    Quaternion rotated = Quaternion.Euler(0, angle, 0);
                     transform.parent.rotation = Quaternion.Slerp(transform.parent.rotation, rotated, speed);
                     float y1 = Mathf.Round(Mathf.Abs(transform.parent.rotation.y) * 10000) / 10000;
                     float y2 = Mathf.Round(Mathf.Abs(rotated.y) * 10000) / 10000;
-                    if (Mathf.Approximately(y1, y2))
+                    if (Mathf.Approximately(y1, y2) && isScrollingDown)
                     {
-                        Debug.Log("Done");
-                        isScrollingDown = false;
-                        rotatedClockAngle += 90f;
-                        if (rotatedClockAngle >= 360f)
-                        {
-                            rotatedClockAngle = 25f;
-                        }
                         for (int i = 0; i < transform.parent.childCount; i++)
                         {
-                            transform.parent.GetChild(i).GetComponent<AmmoSlot>().SwitchAmmoSlotsDown();
+                            transform.parent.GetChild(i).GetComponent<AmmoSlot>().isScrollingDown = false;
                         }
                     }
                     break;
@@ -288,6 +348,9 @@ public class AmmoSlot : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Switches AmmoSlots Upwars/Counter-Clockwise
+    /// </summary>
     public void SwitchAmmoSlots()
     {
         switch (ammoSlotNumber)
@@ -308,6 +371,9 @@ public class AmmoSlot : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Switches AmmoSlots Downwards/Clockwise
+    /// </summary>
     public void SwitchAmmoSlotsDown()
     {
         switch (ammoSlotNumber)
@@ -328,11 +394,15 @@ public class AmmoSlot : MonoBehaviour
         }
     }
 
-    public float IsSlotEmpty()
+    /// <summary>
+    /// Checks if the AmmoSlot isn't assigned a data/ is empty
+    /// </summary>
+    /// <returns></returns>
+    public bool IsSlotEmpty()
     {
         if (data == null)
-            return 90;
+            return true;
         else
-            return 0;
+            return false;
     }
 }
