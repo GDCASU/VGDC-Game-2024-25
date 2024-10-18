@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.XInput;
 using UnityEngine.UI;
 
 /* -----------------------------------------------------------
@@ -9,6 +11,7 @@ using UnityEngine.UI;
  * Ian Fletcher
  * 
  * Modified By:
+ * Cami Lee
  * 
  */// --------------------------------------------------------
 
@@ -44,6 +47,9 @@ public class InputManager : MonoBehaviour
     public static event System.Action OnMove;
     public static event System.Action OnAttack;
 
+    /// <summary> Player's UI Event </summary>
+    public static event System.Action OnInteract;
+
     /// <summary>
     /// Binds all of the Players' controls to their respective events.
     /// </summary>
@@ -65,6 +71,7 @@ public class InputManager : MonoBehaviour
     private void BindUIEvents()
     {
         // Subscribe to input events
+        _playerControls.UI.Interaction.performed += i => HandleInteractionInput(i);
     }
 
     #endregion
@@ -102,8 +109,7 @@ public class InputManager : MonoBehaviour
 
     #region Input Map Change
 
-    // TBD
-
+    /// <summary> TBD </summary>
     #endregion
 
     #region Event Handlers
@@ -122,6 +128,12 @@ public class InputManager : MonoBehaviour
     {
         if (_doDebugLog) Debug.Log("Attacked");
         OnAttack?.Invoke();
+    }
+
+    private void HandleInteractionInput(InputAction.CallbackContext context)
+    {
+        if (_doDebugLog) Debug.Log("Interacted");
+        OnInteract?.Invoke();
     }
 
     #endregion
