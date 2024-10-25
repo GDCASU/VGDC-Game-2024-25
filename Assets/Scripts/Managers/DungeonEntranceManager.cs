@@ -23,17 +23,33 @@ public class DungeonEntranceManager : MonoBehaviour
     [SerializeField] public Vector3 targetPosition;
     [SerializeField] public bool isOpen = true;
     [SerializeField] public float lerpAmount;
-    [SerializeField] SpriteRenderer openSprite, closedSprite, toolTipSprite;
+    [SerializeField] SpriteRenderer openSprite, closedSprite;
 
     //private values to keep track of this dungeon entrance's state
     private bool playerInProximity =false;
     private Scene_Transition_Script sceneManager;
-    
+
+    [SerializeField] Interactions interactions;
+
+
 
     private void Awake()
     {
         sceneManager = GameObject.Find("Scene_Transition_Manager").GetComponent<Scene_Transition_Script>();
         open();
+    }
+    void Enter() { 
+        //loads target scene only when the key E is pressed, the player is in proximity, and the door is open
+        sceneManager.LoadSceneByName(targetSceneName, targetPosition);
+        
+        
+    }
+
+    void Closed()
+    {
+        
+
+
     }
 
     //Detects when the player is close to the entrance
@@ -48,6 +64,7 @@ public class DungeonEntranceManager : MonoBehaviour
 
     //handles visual update of the dungeon entrance
     public void close() {
+        interactions.ChangeInteraction(Closed);
         isOpen = false;
         closedSprite.enabled = true;
         openSprite.enabled = false;
@@ -55,6 +72,7 @@ public class DungeonEntranceManager : MonoBehaviour
 
     //handles visual update of the dungeon entrance
     public void open() {
+        interactions.ChangeInteraction(Enter);
         isOpen = true;
         closedSprite.enabled = false;
         openSprite.enabled = true;
@@ -66,17 +84,6 @@ public class DungeonEntranceManager : MonoBehaviour
         if (isOpen) { open(); }
         else { close(); }
 
-
-
-        //basic animation popup for the input tooltip, just lerps between the target scale and current scale
-        toolTipSprite.transform.localScale = new Vector3(Mathf.Lerp(toolTipSprite.transform.localScale.x, Convert.ToInt32(playerInProximity)*2, lerpAmount), 2, 2);
-
-        //loads target scene only when the key E is pressed, the player is in proximity, and the door is open
-        if (Input.GetKeyDown(KeyCode.E) && playerInProximity && isOpen)
-        {
-            sceneManager.LoadSceneByName(targetSceneName, targetPosition);
-        }
     }
-
 
 }

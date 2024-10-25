@@ -34,11 +34,13 @@ public class InteractionManager : MonoBehaviour
     private GameObject highlightedObject;
 
     [Header("Player")]
-    [SerializeField] GameObject player;
+    GameObject player;
     Interactions interactions;
 
     private void Update()
     {
+
+        player = GameObject.Find("Player");
         Detect();
     }
     
