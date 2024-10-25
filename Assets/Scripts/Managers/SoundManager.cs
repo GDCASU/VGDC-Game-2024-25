@@ -1,3 +1,5 @@
+using FMOD.Studio;
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
@@ -9,7 +11,7 @@ using UnityEngine.Rendering;
  * Ian Fletcher
  * 
  * Modified By:
- * 
+ * Sameer Reza
  */// --------------------------------------------------------
 
 /* -----------------------------------------------------------
@@ -105,6 +107,19 @@ public class SoundManager : MonoBehaviour
     private float _previousMusicVolume;
     private float _previousSFXVolume;
 
+    #region FMOD Event Instances
+
+    private List<EventInstance> eventInstances;
+    private List<StudioEventEmitter> eventEmitters;
+
+    private EventInstance ambienceEventInstance;
+    private EventInstance musicEventInstance;
+
+    private EventReference ambienceEventReference;
+    private EventReference musicEventReference;
+
+    #endregion
+
     private void Awake()
     {
         // Handle Singleton
@@ -126,6 +141,7 @@ public class SoundManager : MonoBehaviour
         _previousMasterVolume = masterVolumeVal;
         _previousMusicVolume = musicVolumeVal;
         _previousSFXVolume = sfxVolumeVal;
+
     }
 
     /// <summary>

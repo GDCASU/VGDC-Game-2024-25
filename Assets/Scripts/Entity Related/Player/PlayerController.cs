@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using FMOD.Studio;
 
 /* -----------------------------------------------------------
  * Author:
  * Ian Fletcher
  * 
- * Modified By: William Peng
+ * Modified By: William Peng, Sameer Reza (Audio)
  * 
  */// --------------------------------------------------------
 
@@ -37,9 +38,14 @@ public class PlayerController : MonoBehaviour
     // this, so script the movement system ourselves later for more granular control
     [SerializeField] private CharacterController _characterController;
 
+    #region Audio
+    private EventInstance _playerFootstepSFX;
+    #endregion
+
 	private void Start()
 	{
 		InputManager.OnAttack += AttackAction;
+        _playerFootstepSFX = AudioManager.Instance.CreateEventInstance(FMODEvents.instance.playerFootstepSFX);
 	}
 
 	// Update is called once per frame
@@ -69,6 +75,26 @@ public class PlayerController : MonoBehaviour
         } else if (input.x > 0)
         {
             playerRenderer.flipX = false;
+        }
+
+        UpdateSound();
+    }
+
+    private void UpdateSound()
+    {
+        //if moving, play the footstep sound
+        if (Mathf.Abs(InputManager.Instance.movementInput.x) > 0)
+        {
+            PLAYBACK_STATE playbackState;
+            _playerFootstepSFX.getPlaybackState(out playbackState);
+            if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) //dont restart if already playing
+            {
+                _playerFootstepSFX.start();
+            }
+        }
+        else
+        {
+            _playerFootstepSFX.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         }
     }
 
