@@ -866,6 +866,74 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7a27a01553aa4f34e848cabda38d6d75, type: 3}
+--- !u!1001 &5569520709832046217
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 112531971933403581, guid: 63efab5bef2b9524eab9bf79f18429d1,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 21.11
+      objectReference: {fileID: 0}
+    - target: {fileID: 112531971933403581, guid: 63efab5bef2b9524eab9bf79f18429d1,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.31
+      objectReference: {fileID: 0}
+    - target: {fileID: 112531971933403581, guid: 63efab5bef2b9524eab9bf79f18429d1,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 4.22
+      objectReference: {fileID: 0}
+    - target: {fileID: 112531971933403581, guid: 63efab5bef2b9524eab9bf79f18429d1,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.5195712
+      objectReference: {fileID: 0}
+    - target: {fileID: 112531971933403581, guid: 63efab5bef2b9524eab9bf79f18429d1,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.5562717
+      objectReference: {fileID: 0}
+    - target: {fileID: 112531971933403581, guid: 63efab5bef2b9524eab9bf79f18429d1,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.4494998
+      objectReference: {fileID: 0}
+    - target: {fileID: 112531971933403581, guid: 63efab5bef2b9524eab9bf79f18429d1,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.46750158
+      objectReference: {fileID: 0}
+    - target: {fileID: 112531971933403581, guid: 63efab5bef2b9524eab9bf79f18429d1,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 86.688
+      objectReference: {fileID: 0}
+    - target: {fileID: 112531971933403581, guid: 63efab5bef2b9524eab9bf79f18429d1,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -113.429
+      objectReference: {fileID: 0}
+    - target: {fileID: 112531971933403581, guid: 63efab5bef2b9524eab9bf79f18429d1,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -194.315
+      objectReference: {fileID: 0}
+    - target: {fileID: 4817063602568806315, guid: 63efab5bef2b9524eab9bf79f18429d1,
+        type: 3}
+      propertyPath: m_Name
+      value: Rat Enemy
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 63efab5bef2b9524eab9bf79f18429d1, type: 3}
 --- !u!1001 &5690622273550298659
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1019,3 +1087,4 @@ SceneRoots:
   - {fileID: 664663055}
   - {fileID: 1991421163}
   - {fileID: 204853783}
+  - {fileID: 5569520709832046217}
