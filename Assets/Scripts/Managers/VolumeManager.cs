@@ -1,10 +1,7 @@
 using FMOD.Studio;
 using FMODUnity;
-using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 /* -----------------------------------------------------------
  * Author:
@@ -24,7 +21,8 @@ public enum SoundControllers
 {
     Master,
     Music,
-    SFX
+    SFX,
+    Ambience
 }
 
 /// <summary>
@@ -35,16 +33,17 @@ public enum SoundGroups
     Master,
     Music,
     SFX,
+    Ambience,
     Combat
 }
 
 /// <summary>
 /// Manages the sound of the game
 /// </summary>
-public class SoundManager : MonoBehaviour
+public class VolumeManager : MonoBehaviour
 {
     // Singleton
-    public static SoundManager Instance;
+    public static VolumeManager Instance;
 
     #region VCA
 
@@ -55,12 +54,12 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private string _masterVCAString;
     [SerializeField] private string _musicVCAString;
     [SerializeField] private string _sfxVCAString;
-
+    [SerializeField] private string _ambienceVCAString;
     // FMOD VCAs
     private FMOD.Studio.VCA _masterVCA;
     private FMOD.Studio.VCA _musicVCA;
     private FMOD.Studio.VCA _sfxVCA;
-
+    private FMOD.Studio.VCA _ambienceVCA;
     // VCA Dictionary
     private Dictionary<SoundControllers, FMOD.Studio.VCA> _VCADictionary = new();
 
@@ -72,6 +71,7 @@ public class SoundManager : MonoBehaviour
     [Header("Group Bus Paths")]
     [SerializeField] private string _sfxGroupPath;
     [SerializeField] private string _musicGroupPath;
+    [SerializeField] private string _ambienceGroupPath;
     [SerializeField] private string _combatGroupPath;
 
     // Group variables
@@ -79,7 +79,7 @@ public class SoundManager : MonoBehaviour
     private FMOD.Studio.Bus _musicGroup;
     private FMOD.Studio.Bus _masterGroup;
     private FMOD.Studio.Bus _combatGroup;
-
+    private FMOD.Studio.Bus _ambienceGroup;
     // Group Dictionary
     private Dictionary<SoundGroups, FMOD.Studio.Bus> _soundGroupDictionary = new();
 
@@ -89,6 +89,7 @@ public class SoundManager : MonoBehaviour
     [Header("Volume Sliders")]
     [Range(0f, 1f)][SerializeField] private float _masterSlider;
     [Range(0f, 1f)][SerializeField] private float _musicSlider;
+    [Range(0f, 1f)][SerializeField] private float _ambienceSlider;
     [Range(0f, 1f)][SerializeField] private float _sfxSlider;
 
     // Settings
@@ -103,22 +104,11 @@ public class SoundManager : MonoBehaviour
     private float _currentMasterVolumeVal;
     private float _currentSFXVolumeValue;
     private float _currentMusicVolumeValue;
+    private float _currentAmbienceVolumeValue;
     private float _previousMasterVolume;
     private float _previousMusicVolume;
     private float _previousSFXVolume;
-
-    #region FMOD Event Instances
-
-    private List<EventInstance> eventInstances;
-    private List<StudioEventEmitter> eventEmitters;
-
-    private EventInstance ambienceEventInstance;
-    private EventInstance musicEventInstance;
-
-    private EventReference ambienceEventReference;
-    private EventReference musicEventReference;
-
-    #endregion
+    private float _previousAmbienceVolume;
 
     private void Awake()
     {
@@ -138,9 +128,11 @@ public class SoundManager : MonoBehaviour
         _masterVCA.getVolume(out float masterVolumeVal);
         _musicVCA.getVolume(out float musicVolumeVal);
         _sfxVCA.getVolume(out float sfxVolumeVal);
+        _ambienceVCA.getVolume(out float ambienceVolumeVal);
         _previousMasterVolume = masterVolumeVal;
         _previousMusicVolume = musicVolumeVal;
         _previousSFXVolume = sfxVolumeVal;
+        _previousAmbienceVolume = ambienceVolumeVal;
 
     }
 
@@ -153,11 +145,12 @@ public class SoundManager : MonoBehaviour
         _masterVCA = FMODUnity.RuntimeManager.GetVCA("vca:/" + _masterVCAString);
         _musicVCA = FMODUnity.RuntimeManager.GetVCA("vca:/" + _musicVCAString);
         _sfxVCA = FMODUnity.RuntimeManager.GetVCA("vca:/" + _sfxVCAString);
-
+        _ambienceVCA = FMODUnity.RuntimeManager.GetVCA("vca:/" + _ambienceVCAString);
         // Populate VCA Dictionary
         _VCADictionary.Add(SoundControllers.Master, _masterVCA);
         _VCADictionary.Add(SoundControllers.Music, _musicVCA);
         _VCADictionary.Add(SoundControllers.SFX, _sfxVCA);
+        _VCADictionary.Add(SoundControllers.Ambience, _ambienceVCA);
     }
 
     /// <summary>
@@ -170,12 +163,13 @@ public class SoundManager : MonoBehaviour
         _musicGroup = FMODUnity.RuntimeManager.GetBus("bus:/" + _musicGroupPath);
         _masterGroup = FMODUnity.RuntimeManager.GetBus("bus:/");
         _combatGroup = FMODUnity.RuntimeManager.GetBus("bus:/" + _combatGroupPath);
-
+        _ambienceGroup = FMODUnity.RuntimeManager.GetBus("bus:/" + _ambienceGroupPath);
         // Populate Group Dictionary
         _soundGroupDictionary.Add(SoundGroups.SFX, _sfxGroup);
         _soundGroupDictionary.Add(SoundGroups.Music, _musicGroup);
         _soundGroupDictionary.Add(SoundGroups.Master, _masterGroup);
         _soundGroupDictionary.Add(SoundGroups.Combat, _combatGroup);
+        _soundGroupDictionary.Add(SoundGroups.Ambience, _ambienceGroup);
     }
 
     // Debugging
@@ -191,16 +185,18 @@ public class SoundManager : MonoBehaviour
         _masterVCA.getVolume(out float currMasterVolume);
         _musicVCA.getVolume(out float currMusicVolume);
         _sfxVCA.getVolume(out float currSFXVolume);
-
+        _ambienceVCA.getVolume(out float currAmbienceVolume);
         // if disabled, lock the values of the sliders and update them
         if (_disableSliders)
         {
             _masterSlider = currMasterVolume;
             _musicSlider = currMusicVolume;
             _sfxSlider = currSFXVolume;
+            _ambienceSlider = currAmbienceVolume;
             _previousMasterVolume = currMasterVolume;
             _previousMusicVolume = currMusicVolume;
             _previousSFXVolume = currSFXVolume;
+            _previousAmbienceVolume = currAmbienceVolume;
             return;
         }
 
@@ -220,6 +216,10 @@ public class SoundManager : MonoBehaviour
         {
             _sfxSlider = currSFXVolume;
         }
+        if (_previousAmbienceVolume != currAmbienceVolume)
+        {
+            _ambienceSlider = currAmbienceVolume;
+        }
 
         // Check if the volume sliders in this script have been changed in the inspector
         // If so, update the values of the volumes
@@ -235,11 +235,16 @@ public class SoundManager : MonoBehaviour
         {
             SetVolume(SoundControllers.SFX, _sfxSlider, 1);
         }
+        if (_ambienceSlider != currAmbienceVolume)
+        {
+            SetVolume(SoundControllers.Ambience, _ambienceSlider, 1);
+        }
 
         // Set the previous values to the current ones
         _previousMasterVolume = currMasterVolume;
         _previousMusicVolume = currMusicVolume;
         _previousSFXVolume = currSFXVolume;
+        _previousAmbienceVolume = currAmbienceVolume;
     }
 
     #region Audio Management Functions
@@ -286,6 +291,9 @@ public class SoundManager : MonoBehaviour
                 break;
             case SoundControllers.Master:
                 _currentMasterVolumeVal = volume;
+                break;
+            case SoundControllers.Ambience:
+                _currentAmbienceVolumeValue = volume;
                 break;
         }
 

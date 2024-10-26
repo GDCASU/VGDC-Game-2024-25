@@ -38,14 +38,16 @@ public class PlayerController : MonoBehaviour
     // this, so script the movement system ourselves later for more granular control
     [SerializeField] private CharacterController _characterController;
 
-    #region Audio
+    #region Audio References
     private EventInstance _playerFootstepSFX;
+    private EventInstance _playerAttackSFX;
     #endregion
 
 	private void Start()
 	{
 		InputManager.OnAttack += AttackAction;
         _playerFootstepSFX = AudioManager.Instance.CreateEventInstance(FMODEvents.instance.playerFootstepSFX);
+        _playerAttackSFX = AudioManager.Instance.CreateEventInstance(FMODEvents.instance.playerAttackSFX);
 	}
 
 	// Update is called once per frame
@@ -117,6 +119,14 @@ public class PlayerController : MonoBehaviour
 			projectile.transform.position = _projectileSpawnPoint.position;
 			projectile.GetComponent<Projectile>().target = hit.point;
 		}
+
+        //trigger attack sound if not already playing - feel free to convert to one shot once a cooldown is implemented between attacks
+        PLAYBACK_STATE playbackState;
+        _playerAttackSFX.getPlaybackState(out playbackState);
+        if (playbackState.Equals(PLAYBACK_STATE.STOPPED))
+        {
+            _playerAttackSFX.start();
+        }
 	}
 
 }
