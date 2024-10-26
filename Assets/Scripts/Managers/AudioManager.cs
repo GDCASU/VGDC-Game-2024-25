@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using FMODUnity;
@@ -123,6 +122,24 @@ public class AudioManager : MonoBehaviour
         return eventInstance;
     }
 
+    // Play an event instance if it's not already playing
+    public void PlayEventNoDuplicate(EventInstance eventInstance)
+    {
+        if (eventInstance.isValid())
+        {
+            PLAYBACK_STATE playbackState;
+            eventInstance.getPlaybackState(out playbackState);
+            if (playbackState == PLAYBACK_STATE.STOPPED)
+            {
+                eventInstance.start();
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Attempted to play an invalid event instance: " + eventInstance.getDescription(out EventDescription description));
+        }
+    }
+
     // Create an event emitter, used for spatial audio
     public StudioEventEmitter CreateEventEmitter(EventReference sound, GameObject emitterObject)
     {
@@ -149,4 +166,5 @@ public class AudioManager : MonoBehaviour
     {
         cleanUp();
     }
+
 }

@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System;
 using FMOD.Studio;
 
 /* -----------------------------------------------------------
@@ -87,16 +84,11 @@ public class PlayerController : MonoBehaviour
         //if moving, play the footstep sound
         if (Mathf.Abs(InputManager.Instance.movementInput.x) > 0)
         {
-            PLAYBACK_STATE playbackState;
-            _playerFootstepSFX.getPlaybackState(out playbackState);
-            if (playbackState.Equals(PLAYBACK_STATE.STOPPED)) //dont restart if already playing
-            {
-                _playerFootstepSFX.start();
-            }
+            AudioManager.Instance.PlayEventNoDuplicate(_playerFootstepSFX);
         }
         else
         {
-            _playerFootstepSFX.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            _playerFootstepSFX.stop(STOP_MODE.ALLOWFADEOUT);
         }
     }
 
@@ -118,15 +110,8 @@ public class PlayerController : MonoBehaviour
 			GameObject projectile = Instantiate(_projectilePrefab);
 			projectile.transform.position = _projectileSpawnPoint.position;
 			projectile.GetComponent<Projectile>().target = hit.point;
-		}
-
-        //trigger attack sound if not already playing - feel free to convert to one shot once a cooldown is implemented between attacks
-        PLAYBACK_STATE playbackState;
-        _playerAttackSFX.getPlaybackState(out playbackState);
-        if (playbackState.Equals(PLAYBACK_STATE.STOPPED))
-        {
-            _playerAttackSFX.start();
-        }
+            AudioManager.Instance.PlayEventNoDuplicate(_playerAttackSFX);
+		} 
 	}
 
 }
