@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MagnetAttraction : MonoBehaviour
 //Summary: Attracts objects that has the tag collectible to collect them (applies to all collectable objects/enemy drops)
+//Make sure attraction speed = 1, collectionthreshold(area whcih collects the objects) = 0.4, and capsule collider radius = 0.69
 //UPDATE: Fixed error where it tries to collect items previously collected 
 //Made by Eliza Chook
 {
