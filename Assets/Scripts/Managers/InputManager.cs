@@ -60,7 +60,6 @@ public class InputManager : MonoBehaviour
         _playerControls.PlayerActions.Attack.performed += i => HandleAttackInput(i);
        
     }
-
     #endregion
 
     #region UI Events
