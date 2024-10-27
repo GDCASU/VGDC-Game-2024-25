@@ -33,6 +33,8 @@ public class LevelManager : MonoBehaviour
 
     public Vector3 tempStart;
 
+    [SerializeField] private GameObject _playerPrefab;
+
     private void Start()
     {
         unlockedLevels = new bool[UnityEngine.SceneManagement.SceneManager.sceneCountInBuildSettings]; // number of scenes in build
@@ -100,10 +102,13 @@ public class LevelManager : MonoBehaviour
             yield return null;
         }
 
-        CharacterController cController = GameObject.Find("Player").GetComponent<CharacterController>();
-        cController.enabled = false;
-        GameObject.Find("Player").GetComponent<Transform>().position = target + new Vector3(0, 0, -0.5f);
-        cController.enabled = true;
+        // Create new player
+        GameObject oldPlayer = GameObject.Find("Player");
+        GameObject newPlayer = Instantiate(_playerPrefab);
+        newPlayer.transform.position = target + new Vector3(0, 0, -0.5f);
+
+        // Old player is not referenced anymore, so now it can be destroyed
+        Destroy(oldPlayer);
 
 
         colorDip.SetTrigger("Start");
