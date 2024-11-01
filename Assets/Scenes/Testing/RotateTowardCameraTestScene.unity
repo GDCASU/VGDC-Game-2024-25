@@ -377,12 +377,6 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 1
---- !u!20 &468077041 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 5212956489691751527, guid: 7a27a01553aa4f34e848cabda38d6d75,
-    type: 3}
-  m_PrefabInstance: {fileID: 531891225330658190}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &664663053
 GameObject:
   m_ObjectHideFlags: 0
@@ -633,7 +627,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 258d40ec8a954a544befee734ed5cd9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainCamera: {fileID: 468077041}
   spriteRenderer: {fileID: 1460178253}
   lockX: 0
   lockY: 0
@@ -681,7 +674,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: f694a4c5a8ef67f49a99cca6cb5d6507, type: 3}
   m_Color: {r: 1, g: 0, b: 0, a: 1}
-  m_FlipX: 1
+  m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 11.13, y: 11.71}
@@ -741,7 +734,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 258d40ec8a954a544befee734ed5cd9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainCamera: {fileID: 468077041}
   spriteRenderer: {fileID: 1482029566}
   lockX: 0
   lockY: 0
@@ -789,7 +781,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: f694a4c5a8ef67f49a99cca6cb5d6507, type: 3}
   m_Color: {r: 1, g: 0, b: 0, a: 1}
-  m_FlipX: 1
+  m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 11.13, y: 11.71}
@@ -841,11 +833,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 258d40ec8a954a544befee734ed5cd9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainCamera: {fileID: 468077041}
   spriteRenderer: {fileID: 186470843}
-  lockX: 1
-  lockY: 1
-  lockZ: 1
+  lockX: 0
+  lockY: 0
+  lockZ: 0
 --- !u!1 &1991421161
 GameObject:
   m_ObjectHideFlags: 0
@@ -1024,10 +1015,25 @@ PrefabInstance:
       propertyPath: near clip plane
       value: 0.3
       objectReference: {fileID: 0}
+    - target: {fileID: 5433807480454429859, guid: 7a27a01553aa4f34e848cabda38d6d75,
+        type: 3}
+      propertyPath: m_TagString
+      value: MainCamera
+      objectReference: {fileID: 0}
     - target: {fileID: 5690112963195220921, guid: 7a27a01553aa4f34e848cabda38d6d75,
         type: 3}
       propertyPath: m_Name
       value: Camera Prefab
+      objectReference: {fileID: 0}
+    - target: {fileID: 5690112963195220921, guid: 7a27a01553aa4f34e848cabda38d6d75,
+        type: 3}
+      propertyPath: m_TagString
+      value: MainCamera
+      objectReference: {fileID: 0}
+    - target: {fileID: 8668894718486243354, guid: 7a27a01553aa4f34e848cabda38d6d75,
+        type: 3}
+      propertyPath: m_TagString
+      value: MainCamera
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

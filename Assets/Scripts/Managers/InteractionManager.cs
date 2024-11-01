@@ -4,7 +4,6 @@ using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 /* -----------------------------------------------------------
@@ -35,15 +34,14 @@ public class InteractionManager : MonoBehaviour
     private GameObject highlightedObject;
 
     [Header("Player")]
-    GameObject player;
+    [SerializeField] GameObject player;
     Interactions interactions;
 
     private void Update()
-    { 
-        player = GameObject.Find("Player");
+    {
         Detect();
     }
-
+    
     /// <summary> Determines if player is close enough to a detectable object </summary>
     private void Detect()
     {
@@ -68,7 +66,7 @@ public class InteractionManager : MonoBehaviour
                 DisableHighlight(highlightedObject);
             }
 
-            // Set New Highlight if exists
+            // Set New Highlight
             highlightedObject = tempObject;
             interactions = null;
 
@@ -81,7 +79,6 @@ public class InteractionManager : MonoBehaviour
             }
         }
     }
-    
     /// <summary> Highlights closest object </summary>
     private void ToggleHighlight(GameObject newObject)
     {
