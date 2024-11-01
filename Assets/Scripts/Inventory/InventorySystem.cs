@@ -7,6 +7,7 @@ using UnityEditor.SceneManagement;
 using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 using UnityEngine.UI;
+using Debug = UnityEngine.Debug;
 
 /* -----------------------------------------------------------
  * Author: TJ (Yousuf)
@@ -39,6 +40,7 @@ public class InventorySystem : MonoBehaviour
     public static InventorySystem Instance { get; private set; }
 
     // Access the UI for slots
+    [Header("UI SLOTS")]
     [SerializeField] private GameObject slotsHolder;
     [SerializeField] private GameObject ammoSlotHolder;
     [SerializeField] private ItemData neutralAmmo;
@@ -59,9 +61,17 @@ public class InventorySystem : MonoBehaviour
         if (Instance != null && Instance != this)
         {
             Destroy(this);
+            return;
         }
-        else { Instance = this; }
-
+        Instance = this;
+    
+        // Check if the fields have been set
+        if (slotsHolder == null || ammoSlots == null || MainAmmoSlot == null || neutralAmmo == null)
+        {
+            Debug.Log("AT LEAST ONE OF THE GAME OBJECTS FOR THE SLOTS HASNT BEEN SET!");
+            return;
+        }
+        
         // Sets UI slots
         slots = new GameObject[slotsHolder.transform.childCount];
         for (int i = 0; i < slotsHolder.transform.childCount; i++)

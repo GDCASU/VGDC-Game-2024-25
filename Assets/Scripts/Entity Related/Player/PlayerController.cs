@@ -52,7 +52,7 @@ public class PlayerController : MonoBehaviour
 	private void Start()
 	{
 		InputManager.OnAttack += AttackAction;
-        InputManager.ChangeElement += ChangeElementAction;
+        //InputManager.ChangeElement += ChangeElementAction;
         _projectilePrefab = _projectileNeutralPrefab;
 	}
 
@@ -90,7 +90,7 @@ public class PlayerController : MonoBehaviour
     {
         // Un-subscribe from events
         InputManager.OnAttack -= AttackAction;
-        InputManager.ChangeElement -= ChangeElementAction;
+        //InputManager.ChangeElement -= ChangeElementAction;
     }
 
     private void AttackAction()
