@@ -5,6 +5,7 @@ using UnityEngine.Events;
 using UnityEngine.InputSystem.XInput;
 using UnityEngine.InputSystem;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 /* -----------------------------------------------------------
  * Author:
@@ -31,10 +32,16 @@ public class Interactions : MonoBehaviour
     System.Action currentEvent; // current function
     bool canInteract; // whether the player is near the interactable
 
+    private void OnDestroy()
+    {
+        // Clean up listeners when not needed anymore
+        EndInteraction();
+    }
+
     /// <summary> Initializes action sequence </summary>
     public void StartInteraction()
     {
-        if (currentEvent == null) { Debug.LogError("No function assigned to currentEvent. Use ChangeInteraction() to assign a new interaction event."); }
+        if (currentEvent == null) { Debug.LogError("No function assigned to currentEvent. Use ChangeInteraction([function_name]) to assign a new function to the interaction key."); }
 
         typeName = currentEvent.Method.Name;
         this.GetComponentInChildren<TMP_Text>().text = $"<b>{name}</b> \n {typeName}";

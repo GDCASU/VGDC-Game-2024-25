@@ -104,11 +104,6 @@ fmod_editor.log
 # Built Visual Studio Code Extensions
 *.vsix
 
-
-# Jetbrain Rider Ignores
-.idea/
-Assets/Plugins/Editor/JetBrains*
-
 # CLUB IGNORE LIST
 
 # Ignore the save file location on the assets folder
