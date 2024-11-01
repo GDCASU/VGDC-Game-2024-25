@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 /* -----------------------------------------------------------
@@ -24,6 +25,8 @@ public class Projectile : MonoBehaviour
     // Use this bool to gate all your Debug.Log Statements please
     [Header("Debugging")]
     [SerializeField] private bool doDebugLog;
+    //Damage type name, hopefully we won't forget that it is a string
+    [SerializeField] public string damageId;
 
 	// The target position for the projectile, set by PlayerController when this projectile is instantiated
 	[HideInInspector] public Vector3 target;
@@ -39,6 +42,7 @@ public class Projectile : MonoBehaviour
 	private void Start()
 	{
 		// Calculate movement vector
+        target.y = transform.position.y; //projectiles will now move in a 2d plane
 		moveDir = Vector3.Normalize(target - transform.position);
 	}
 
