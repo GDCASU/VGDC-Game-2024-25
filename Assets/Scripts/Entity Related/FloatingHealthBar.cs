@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,15 +24,22 @@ public class FloatingHealthBar : MonoBehaviour
     [SerializeField] private Camera camera;
     [SerializeField] private Transform target;
     [SerializeField] private Vector3 offset;
+    CanvasGroup canvasGroup;
 
     public void UpdateHealthBar(float currentValue, float maxValue)
     {
         slider.value = currentValue / maxValue;
     }
 
-    // Update is called once per frame
+    private void Start()
+    {
+        canvasGroup = GetComponent<CanvasGroup>();
+    }
+
     void Update()
     {
+        if (slider.value <= 0 || slider.value == slider.maxValue) { canvasGroup.alpha = 0; }
+        else { canvasGroup.alpha = 1; }
         transform.rotation = camera.transform.rotation;
         transform.position = target.position + offset;
     }
