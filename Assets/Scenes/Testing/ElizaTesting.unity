@@ -717,7 +717,7 @@ MonoBehaviour:
       Data2: 1338804226
       Data3: -1115957113
       Data4: 1615727284
-    Path: event:/Music/Levels/TEMP Forest BG Music
+    Path: event:/Music/TESTING/TEMP Forest BG Music
   Event: 
   PlayEvent: 1
   StopEvent: 2
@@ -1072,6 +1072,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attractionSpeed: 1
+  attractionDelay: 0.2
   collectionThreshold: 0.4
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{14dcfd1d-0bbd-4c5d-b367-019eac783553}">
+		<property name="assetPath">
+			<value>SFX/TESTING - PLACEHOLDERS/shot.ogg</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>3.430748299319728</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{2a5ae5cf-2b6d-4577-9a20-e16a8c31aaf1}</destination>
+		</relationship>
+	</object>
+</objects>
