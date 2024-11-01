@@ -8,6 +8,9 @@ using UnityEngine.SocialPlatforms;
 /* -----------------------------------------------------------
  * Author:
  * Matthew Glos
+ * 
+ * Modified By:
+ * Cami Lee
  */// --------------------------------------------------------
 
 /* -----------------------------------------------------------
@@ -26,11 +29,9 @@ public class DungeonEntranceManager : MonoBehaviour
     [SerializeField] SpriteRenderer openSprite, closedSprite;
 
     //private values to keep track of this dungeon entrance's state
-    private bool playerInProximity =false;
     private Scene_Transition_Script sceneManager;
 
     [SerializeField] Interactions interactions;
-
 
 
     private void Awake()
@@ -38,28 +39,15 @@ public class DungeonEntranceManager : MonoBehaviour
         sceneManager = GameObject.Find("Scene_Transition_Manager").GetComponent<Scene_Transition_Script>();
         open();
     }
+
     void Enter() { 
         //loads target scene only when the key E is pressed, the player is in proximity, and the door is open
         sceneManager.LoadSceneByName(targetSceneName, targetPosition);
-        
-        
     }
 
     void Closed()
     {
-        
-
-
-    }
-
-    //Detects when the player is close to the entrance
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject == player && isOpen) { playerInProximity = true; } 
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject == player && isOpen) { playerInProximity = false; }
+        Debug.Log("The door is locked");
     }
 
     //handles visual update of the dungeon entrance
@@ -83,7 +71,5 @@ public class DungeonEntranceManager : MonoBehaviour
         //actively checks and updates if the publicly accessible bool isOpen changes
         if (isOpen) { open(); }
         else { close(); }
-
     }
-
 }
