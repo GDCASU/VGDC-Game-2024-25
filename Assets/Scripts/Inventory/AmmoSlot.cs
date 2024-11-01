@@ -33,7 +33,7 @@ public class AmmoSlot : MonoBehaviour
     public Transform UISlot;
     [SerializeField] public int ammoSlotNumber;
     private bool isScrolling, isScrollingDown;
-    private float angle;
+    public float angle;
     private bool checkFor3rdSlot, scrollAnyways, scrollUpAnyways;
 
     public void Awake()
@@ -63,115 +63,9 @@ public class AmmoSlot : MonoBehaviour
 
     public void Update()
     {
-        if (data != null)
+        if (ammoSlotNumber == 1)
         {
-            switch (data.itemType)
-            {
-                case CollectibleType.Ammo:
-                    switch (data.element)
-                    {
-                        case AmmoType.None:
-                            stackSize = 99;
-                            break;
-                    }
-                    break;
-            }
-        }
-        if (scrollAnyways) { ScrollUpThroughAmmo(); }
-        if ( ammoSlotNumber == 1 && stackSize <= 0)
-        {
-            for (int i = 0; i < transform.parent.childCount; i++)
-            {
-                transform.parent.GetChild(i).GetComponent<AmmoSlot>().scrollUpAnyways = true;
-                transform.parent.GetChild(i).GetComponent<AmmoSlot>().isScrolling = false;
-                transform.parent.GetChild(i).GetComponent<AmmoSlot>().isScrollingDown = false;
-            }
-        }
-        if ((Input.GetAxisRaw("Mouse ScrollWheel") > 0 && !isScrollingDown && InventorySystem.Instance.ammos.Count > 1) || isScrolling && InventorySystem.Instance.ammos.Count > 1 || scrollUpAnyways)
-        {
-            if (!isScrolling && InventorySystem.Instance.ammos.Count > 1)
-            {
-                for (int i = 0; i < transform.parent.childCount; i++)
-                {
-                    if (transform.parent.GetChild(i).GetComponent<AmmoSlot>().ammoSlotNumber == 4)
-                    {
-                        if (transform.parent.GetChild(i).GetComponent<AmmoSlot>().IsSlotEmpty())
-                        {
-                            checkFor3rdSlot = true;
-                            if (checkFor3rdSlot)
-                            {
-                                for (int k = 0; k < transform.parent.childCount; k++)
-                                {
-                                    if (transform.parent.GetChild(k).GetComponent<AmmoSlot>().ammoSlotNumber == 3)
-                                    {
-                                        if (transform.parent.GetChild(k).GetComponent<AmmoSlot>().IsSlotEmpty())
-                                        {
-                                            for (int l = 0; l < transform.parent.childCount; l++)
-                                            {
-                                                transform.parent.GetChild(l).GetComponent<AmmoSlot>().SwitchAmmoSlots();
-                                            }
-                                        }
-                                    }
-                                    checkFor3rdSlot = false;
-                                }
-                            }
-                            for (int j = 0; j < transform.parent.childCount; j++)
-                            {
-                                transform.parent.GetChild(j).GetComponent<AmmoSlot>().SwitchAmmoSlots();
-                            }
-                        }
-                    }
-                }
-                for (int i = 0; i < transform.parent.childCount; i++)
-                {
-                    transform.parent.GetChild(i).GetComponent<AmmoSlot>().SwitchAmmoSlots();
-                    transform.parent.GetChild(i).GetComponent<AmmoSlot>().isScrolling = true;
-                }
-            }
-            ScrollUpThroughAmmo();
-        }
-        else if ((Input.GetAxisRaw("Mouse ScrollWheel") < 0 && InventorySystem.Instance.ammos.Count > 1 && !isScrolling) || isScrollingDown && InventorySystem.Instance.ammos.Count > 1)
-        {
-            if (!isScrollingDown && InventorySystem.Instance.ammos.Count > 1)
-            {
-                for (int i = 0; i < transform.parent.childCount; i++)
-                {
-                    if (transform.parent.GetChild(i).GetComponent<AmmoSlot>().ammoSlotNumber == 2)
-                    {
-                        if (transform.parent.GetChild(i).GetComponent<AmmoSlot>().IsSlotEmpty())
-                        {
-                            checkFor3rdSlot = true;
-                            if (checkFor3rdSlot)
-                            {
-                                for (int k = 0; k < transform.parent.childCount; k++)
-                                {
-                                    if (transform.parent.GetChild(k).GetComponent<AmmoSlot>().ammoSlotNumber == 3)
-                                    {
-                                        if (transform.parent.GetChild(k).GetComponent<AmmoSlot>().IsSlotEmpty())
-                                        {
-                                            for (int l = 0; l < transform.parent.childCount; l++)
-                                            {
-                                                transform.parent.GetChild(l).GetComponent<AmmoSlot>().SwitchAmmoSlotsDown();
-                                            }
-                                        }
-                                    }
-                                    checkFor3rdSlot = false;
-                                }
-                            }
-                            for (int j = 0; j < transform.parent.childCount; j++)
-                            {
-                                transform.parent.GetChild(j).GetComponent<AmmoSlot>().SwitchAmmoSlotsDown();
-                            }
-                        }
-                    }
-                }
-                for (int i = 0; i < transform.parent.childCount; i++)
-                {
-                    transform.parent.GetChild(i).GetComponent<AmmoSlot>().SwitchAmmoSlotsDown();
-                    transform.parent.GetChild(i).GetComponent<AmmoSlot>().isScrollingDown = true;
-                }
-            }
-            ScrollDownThroughAmmo();
+            stackSize = 99;
         }
     }
 
@@ -208,28 +102,7 @@ public class AmmoSlot : MonoBehaviour
         RefreshUI();
         if (stackSize <= 0)
         {
-            if (InventorySystem.Instance.ammos.Count <= 1)
-            {
-                for (int j = 0; j < transform.parent.childCount; j++)
-                {
-                    transform.parent.GetChild(j).GetComponent<AmmoSlot>().ammoSlotNumber = j + 1;
-                    if (transform.parent.GetChild(j).GetComponent<AmmoSlot>().ammoSlotNumber == 1)
-                        InventorySystem.Instance.MainAmmoSlot = transform.parent.GetChild(j);
-                }
-                for (int i = 0; i < transform.parent.childCount; i++)
-                {
-                    transform.parent.GetChild(i).GetComponent<AmmoSlot>().isScrolling = false;
-                    transform.parent.GetChild(i).GetComponent<AmmoSlot>().isScrollingDown = false;
-                    transform.parent.GetChild(i).GetComponent<AmmoSlot>().scrollAnyways = true;
-                }
-            }
-            else
-            {
-                for (int i = 0; i < transform.parent.childCount; i++)
-                {
-                    transform.parent.GetChild(i).GetComponent<AmmoSlot>().scrollUpAnyways = true;
-                }
-            }
+            AmmoSlotsManager.Instance.AmmoFinished();
         }
     }
 
@@ -287,122 +160,4 @@ public class AmmoSlot : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Used to rotate the UI Counter-Clockwise to the new MainAmmoSlot Location
-    /// </summary>
-    public void ScrollUpThroughAmmo()
-    {
-        
-        if (InventorySystem.Instance.ammos.Count > 1 || scrollAnyways && !isScrollingDown)
-        {
-            isScrolling = true;
-            switch (ammoSlotNumber)
-            {
-                case 1:
-                    Quaternion rotated = Quaternion.Euler(0, angle, 0);
-                    transform.parent.rotation = Quaternion.Slerp(transform.parent.rotation, rotated, speed);
-                    float y1 = Mathf.Round(Mathf.Abs(transform.parent.rotation.y) * 10000) / 10000;
-                    float y2 = Mathf.Round(Mathf.Abs(rotated.y) * 10000) / 10000;
-                    if (Mathf.Approximately(y1, y2) && isScrolling)
-                    {
-                        for (int i = 0; i < transform.parent.childCount; i++)
-                        {
-                            transform.parent.GetChild(i).GetComponent<AmmoSlot>().isScrolling = false;
-                            transform.parent.GetChild(i).GetComponent<AmmoSlot>().scrollUpAnyways = false;
-                        }
-                        for (int i = 0; i < transform.parent.childCount; i++)
-                        {
-                            transform.parent.GetChild(i).GetComponent<AmmoSlot>().scrollAnyways = false;
-                        }
-                    }
-                    break;
-            }
-        }
-    }
-
-    /// <summary>
-    /// Used to rotate the UI Clockwise to the new MainAmmoSlot Location
-    /// </summary>
-    public void ScrollDownThroughAmmo()
-    {
-
-        if (InventorySystem.Instance.ammos.Count > 1 && !isScrolling)
-        {
-            isScrollingDown = true;
-            switch (ammoSlotNumber)
-            {
-                case 1:
-                    Quaternion rotated = Quaternion.Euler(0, angle, 0);
-                    transform.parent.rotation = Quaternion.Slerp(transform.parent.rotation, rotated, speed);
-                    float y1 = Mathf.Round(Mathf.Abs(transform.parent.rotation.y) * 10000) / 10000;
-                    float y2 = Mathf.Round(Mathf.Abs(rotated.y) * 10000) / 10000;
-                    if (Mathf.Approximately(y1, y2) && isScrollingDown)
-                    {
-                        for (int i = 0; i < transform.parent.childCount; i++)
-                        {
-                            transform.parent.GetChild(i).GetComponent<AmmoSlot>().isScrollingDown = false;
-                        }
-                    }
-                    break;
-            }
-        }
-    }
-
-    /// <summary>
-    /// Switches AmmoSlots Upwars/Counter-Clockwise
-    /// </summary>
-    public void SwitchAmmoSlots()
-    {
-        switch (ammoSlotNumber)
-        {
-            case 1:
-                ammoSlotNumber = 2;
-                break;
-            case 2:
-                ammoSlotNumber = 3;
-                break;
-            case 3:
-                ammoSlotNumber = 4;
-                break;
-            case 4:
-                ammoSlotNumber = 1;
-                InventorySystem.Instance.MainAmmoSlot = this.transform;
-                break;
-        }
-    }
-
-    /// <summary>
-    /// Switches AmmoSlots Downwards/Clockwise
-    /// </summary>
-    public void SwitchAmmoSlotsDown()
-    {
-        switch (ammoSlotNumber)
-        {
-            case 1:
-                ammoSlotNumber = 4;
-                break;
-            case 2:
-                ammoSlotNumber = 1;
-                InventorySystem.Instance.MainAmmoSlot = this.transform;
-                break;
-            case 3:
-                ammoSlotNumber = 2;
-                break;
-            case 4:
-                ammoSlotNumber = 3;
-                break;
-        }
-    }
-
-    /// <summary>
-    /// Checks if the AmmoSlot isn't assigned a data/ is empty
-    /// </summary>
-    /// <returns></returns>
-    public bool IsSlotEmpty()
-    {
-        if (data == null)
-            return true;
-        else
-            return false;
-    }
 }

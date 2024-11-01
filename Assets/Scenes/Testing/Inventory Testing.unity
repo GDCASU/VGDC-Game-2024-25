@@ -886,6 +886,7 @@ MonoBehaviour:
   doDebugLog: 0
   UISlot: {fileID: 0}
   ammoSlotNumber: 1
+  angle: 0
 --- !u!224 &259295969 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2902841075823086434, guid: 72f5bcdf46d49b743892e5ada2289e57,
@@ -1199,6 +1200,7 @@ MonoBehaviour:
   doDebugLog: 0
   UISlot: {fileID: 0}
   ammoSlotNumber: 4
+  angle: 0
 --- !u!1001 &454974986
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2140,6 +2142,7 @@ MonoBehaviour:
   doDebugLog: 0
   UISlot: {fileID: 0}
   ammoSlotNumber: 3
+  angle: 0
 --- !u!1 &650731822
 GameObject:
   m_ObjectHideFlags: 0
@@ -3877,6 +3880,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1475914108}
+  - component: {fileID: 1475914109}
   m_Layer: 0
   m_Name: AmmoSlots
   m_TagString: Untagged
@@ -3903,6 +3907,19 @@ Transform:
   - {fileID: 425229275}
   m_Father: {fileID: 1695980438}
   m_LocalEulerAnglesHint: {x: 0, y: 8.223, z: 0}
+--- !u!114 &1475914109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1475914107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25c3759040022ea449db23f20da71127, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  doDebugLog: 0
 --- !u!1 &1557541108
 GameObject:
   m_ObjectHideFlags: 0
@@ -4892,6 +4909,7 @@ MonoBehaviour:
   doDebugLog: 0
   UISlot: {fileID: 0}
   ammoSlotNumber: 2
+  angle: 0
 --- !u!224 &1670533254 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2902841075823086434, guid: 72f5bcdf46d49b743892e5ada2289e57,
