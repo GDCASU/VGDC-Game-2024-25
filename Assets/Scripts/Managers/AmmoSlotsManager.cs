@@ -42,13 +42,13 @@ public class AmmoSlotsManager : MonoBehaviour
     void Update()
     {
         if ((isScrolling || InventorySystem.Instance.ammos.Count < 2) && !scrollAnyways) { }
-        else if(Input.GetAxisRaw("Mouse ScrollWheel") > 0 || scrollAnyways)
+        else if(Input.GetAxisRaw("Mouse ScrollWheel") > 0 || Input.GetKeyDown(KeyCode.E) || scrollAnyways)
         {
             isScrolling = true;
             scrollAnyways = false;
             StartCoroutine(ScrollUpThroughAmmo());
         }
-        else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0)
+        else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0 || Input.GetKeyDown(KeyCode.Q))
         {
             isScrolling = true;
             StartCoroutine(ScrollDownThroughAmmo());
