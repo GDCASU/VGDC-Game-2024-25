@@ -107,6 +107,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Change Element"",
+                    ""type"": ""Button"",
+                    ""id"": ""e9b1d7c4-c384-432a-944a-169f986521e6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -118,6 +127,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""70321dde-4c5a-4b2b-bce2-ac270dfdac4b"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Change Element"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -160,6 +180,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         // PlayerActions
         m_PlayerActions = asset.FindActionMap("PlayerActions", throwIfNotFound: true);
         m_PlayerActions_Attack = m_PlayerActions.FindAction("Attack", throwIfNotFound: true);
+        m_PlayerActions_ChangeElement = m_PlayerActions.FindAction("Change Element", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Interaction = m_UI.FindAction("Interaction", throwIfNotFound: true);
@@ -271,11 +292,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_PlayerActions;
     private List<IPlayerActionsActions> m_PlayerActionsActionsCallbackInterfaces = new List<IPlayerActionsActions>();
     private readonly InputAction m_PlayerActions_Attack;
+    private readonly InputAction m_PlayerActions_ChangeElement;
     public struct PlayerActionsActions
     {
         private @PlayerControls m_Wrapper;
         public PlayerActionsActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Attack => m_Wrapper.m_PlayerActions_Attack;
+        public InputAction @ChangeElement => m_Wrapper.m_PlayerActions_ChangeElement;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -288,6 +311,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Attack.started += instance.OnAttack;
             @Attack.performed += instance.OnAttack;
             @Attack.canceled += instance.OnAttack;
+            @ChangeElement.started += instance.OnChangeElement;
+            @ChangeElement.performed += instance.OnChangeElement;
+            @ChangeElement.canceled += instance.OnChangeElement;
         }
 
         private void UnregisterCallbacks(IPlayerActionsActions instance)
@@ -295,6 +321,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Attack.started -= instance.OnAttack;
             @Attack.performed -= instance.OnAttack;
             @Attack.canceled -= instance.OnAttack;
+            @ChangeElement.started -= instance.OnChangeElement;
+            @ChangeElement.performed -= instance.OnChangeElement;
+            @ChangeElement.canceled -= instance.OnChangeElement;
         }
 
         public void RemoveCallbacks(IPlayerActionsActions instance)
@@ -365,6 +394,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     public interface IPlayerActionsActions
     {
         void OnAttack(InputAction.CallbackContext context);
+        void OnChangeElement(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
