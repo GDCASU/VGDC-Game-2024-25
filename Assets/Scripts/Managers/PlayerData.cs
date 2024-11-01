@@ -19,7 +19,8 @@ public class PlayerData : Singleton<PlayerData>
         get { return player; } 
         set 
         {
-            OnPlayerConnectToPlayerData.Invoke();
+            // TODO: fix or remove this, since it causes a NullReferenceException when the PlayerSetReference script triggers this setter
+            // OnPlayerConnectToPlayerData.Invoke();
             player = value; 
         } }
 

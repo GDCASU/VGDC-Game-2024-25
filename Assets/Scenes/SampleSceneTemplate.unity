@@ -183,31 +183,6 @@ Transform:
   - {fileID: 1695980438}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &306507619 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6276298767917627750, guid: 2ea8d9a76f52ca04a840bfe9eee5dd3e,
-    type: 3}
-  m_PrefabInstance: {fileID: 5690622273550298659}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &306507621
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 306507619}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 97a7abaa84a63a34f8bbc7cb16c2590e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _persistent: 1
-  health: 0
-  mana: 0
-  experience: 0
-  OnPlayerConnectToPlayerData:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &378237835
 GameObject:
   m_ObjectHideFlags: 0
@@ -733,6 +708,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 418254115473192536, guid: 7a27a01553aa4f34e848cabda38d6d75,
+        type: 3}
+      propertyPath: m_Follow
+      value: 
+      objectReference: {fileID: 1701816374}
+    - target: {fileID: 418254115473192536, guid: 7a27a01553aa4f34e848cabda38d6d75,
+        type: 3}
+      propertyPath: m_LookAt
+      value: 
+      objectReference: {fileID: 1701816374}
+    - target: {fileID: 3537906395151739932, guid: 7a27a01553aa4f34e848cabda38d6d75,
         type: 3}
       propertyPath: m_Follow
       value: 
