@@ -28,6 +28,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject _projectileFirePrefab;
     [SerializeField] private GameObject _projectileWaterPrefab;
     [SerializeField] private GameObject _projectileSparksPrefab;
+    [SerializeField] private GameObject _projectileSporePrefab;
     [SerializeField] private Transform _projectileSpawnPoint;
     [SerializeField] private Animator moveController;
     [SerializeField] private SpriteRenderer playerRenderer;
@@ -36,6 +37,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private ItemData fireAmmo;
     [SerializeField] private ItemData waterAmmo;
     [SerializeField] private ItemData sparksAmmo;
+    [SerializeField] private ItemData sporeAmmo;
 
 
     private GameObject _projectilePrefab;
@@ -117,6 +119,11 @@ public class PlayerController : MonoBehaviour
                         Debug.Log("Sparks ammo");
                         _projectilePrefab = _projectileSparksPrefab;
                         InventorySystem.Instance.Remove(sparksAmmo);
+                        break;
+                    case AmmoType.Spore:
+                        Debug.Log("Spore ammo");
+                        _projectilePrefab = _projectileSporePrefab;
+                        InventorySystem.Instance.Remove(sporeAmmo);
                         break;
                     case AmmoType.None:
                         _projectilePrefab = _projectileNeutralPrefab;
