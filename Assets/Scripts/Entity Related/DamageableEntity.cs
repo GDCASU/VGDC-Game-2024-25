@@ -44,7 +44,7 @@ public class DamageableEntity : MonoBehaviour
 	/// <param name="damage">The base damage of the projectile</param>
 	/// <param name="multiplier">The damage multiplier this entity has for the element type</param>
 	/// <param name="element">The type of element of the projectile</param>
-    public delegate void DamageEvent(float damage, float multiplier, Elements element);
+    public delegate void DamageEvent(float damage, float multiplier, Elements element, EnemyStatusEffect app);
 
 	private void Start()
 	{
@@ -53,7 +53,7 @@ public class DamageableEntity : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-		ElementalProjectile elementalProjectile = other.GetComponent<ElementalProjectile>();
+		ElementalProjectileFriendly elementalProjectile = other.GetComponent<ElementalProjectileFriendly>();
 		if(elementalProjectile)
         {
             if(doDebugLog)
@@ -62,7 +62,7 @@ public class DamageableEntity : MonoBehaviour
             }
             if(OnDamaged != null)
             {
-                OnDamaged.Invoke(elementalProjectile.damage, _damageMultiplierDict[elementalProjectile.type], elementalProjectile.type);
+                OnDamaged.Invoke(elementalProjectile.damage, _damageMultiplierDict[elementalProjectile.type], elementalProjectile.type, elementalProjectile.app);
             }
         }
 	}

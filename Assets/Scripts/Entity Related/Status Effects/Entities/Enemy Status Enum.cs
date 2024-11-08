@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 /* -----------------------------------------------------------
  * Author:
  * Davyd Yehudin
@@ -12,16 +13,16 @@ using UnityEngine;
 
 /* -----------------------------------------------------------
  * Purpose:
- * 
+ * enumerator for statuses
  */// --------------------------------------------------------
 
 
 /// <summary>
 /// 
 /// </summary>
-
-public class ElementalProjectile : MonoBehaviour
+public enum EnemyStatusEffect
 {
-    public Elements type = Elements.neutral;
-    public float damage = 1f;
+    normal = 1,
+    burning = 2,
+    spored = 3
 }

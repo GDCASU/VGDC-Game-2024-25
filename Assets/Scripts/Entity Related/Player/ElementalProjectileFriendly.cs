@@ -14,14 +14,15 @@ using UnityEngine;
  * Purpose:
  * 
  */// --------------------------------------------------------
-public enum Elements{
-    neutral = 1,
-    fire = 2,
-    water = 3,
-    sparks = 5
-}
 
 
 /// <summary>
 /// 
 /// </summary>
+
+public class ElementalProjectileFriendly : MonoBehaviour
+{
+    public EnemyStatusEffect app = EnemyStatusEffect.normal;
+    public Elements type = Elements.neutral;
+    public float damage = 1f;
+}
