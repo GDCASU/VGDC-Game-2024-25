@@ -27,11 +27,11 @@ public class MagnetAttraction : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Collectible"))
-        {
+        {   
             collectiblesInRange.Remove(other.transform);
         }
     }
-
+    
     private void Update()
     {
 
@@ -78,8 +78,37 @@ public class MagnetAttraction : MonoBehaviour
         // Destroy the item and remove it from the list of items in attraction field
         if (collectible != null)
         {
-            Destroy(collectible.gameObject);
-            collectiblesInRange.Remove(collectible);
+            //add item to inventory
+            ItemData data = collectible.GetComponent<ItemPickups>().itemData;
+            
+            //check if can collect
+            bool ammoNotFull = InventorySystem.Instance.CheckIfAmmoNotFull(data);
+            //Debug.Log("Ammo is not full: " + ammoNotFull);
+
+            if (ammoNotFull)
+            {
+                //collect and remove object
+                InventorySystem.Instance.Add(data);
+                Destroy(collectible.gameObject);
+                collectiblesInRange.Remove(collectible);
+            }
         }
     }
 }
+/*TRYING TO COLLECT ITEM
+ *if (other.CompareTag("Collectible"))
+    {
+        ItemData data = other.GetComponent<ItemPickups>().itemData;
+        bool ammoNotFull = InventorySystem.Instance.CheckIfAmmoNotFull(data);
+
+        Debug.Log("Ammo is not full: " + ammoNotFull);
+        //check player is not at full capacity for the item type
+        if (ammoNotFull)
+        {
+            InventorySystem.Instance.Add(data);
+            collectiblesInRange.Remove(other.transform);
+            Destroy(other.gameObject);
+        }
+    }
+ *
+ */
