@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
+using static UnityEditor.PlayerSettings;
+using UnityEngine.UIElements;
 
 /* -----------------------------------------------------------
  * Author:
@@ -98,10 +99,11 @@ public class PlayerController : MonoBehaviour
     private void AttackAction()
 	{
         if (Camera.main == null) Debug.Log("CAMERA WAS NULL!");
-        
+
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 		RaycastHit hit;
-		if(Physics.Raycast(ray, out hit, 100f))
+        // Every scene must have a ground object to raycast onto
+        if(Physics.Raycast(ray, out hit, 100f, LayerMask.GetMask(new string[] { "Ground" })))
 		{
             if(InventorySystem.Instance.CheckForAmmo()){
                 switch(InventorySystem.Instance.GetSelectedAmmo()){
@@ -137,10 +139,21 @@ public class PlayerController : MonoBehaviour
                 Debug.Log("Neutral ammo");
                 _projectilePrefab = _projectileNeutralPrefab;
             }
-            // Spawn projectile prefab and set its target to the raycast hit location
+            // Spawn projectile prefab
             GameObject projectile = Instantiate(_projectilePrefab);
-            projectile.transform.position = _projectileSpawnPoint.position;
-            projectile.GetComponent<Projectile>().target = hit.point;
+            projectile.SetActive(false);
+			projectile.transform.position = _projectileSpawnPoint.position;
+			
+            // Set target to the point on the ray that matches the y position of the spawn point
+			float hitY = hit.point.y;
+			float targetY = _projectileSpawnPoint.position.y;
+            Vector3 rayVector = ray.direction.normalized;
+			Vector3 target = hit.point + rayVector / rayVector.y * Mathf.Abs(targetY - hitY);
+
+            //Debug.DrawRay(ray.origin, 1000f * ray.direction, Color.red, 2.5f);
+            //Debug.DrawRay(hit.point, rayVector / rayVector.y * Mathf.Abs(targetY - hitY), Color.green, 5f);
+            projectile.GetComponent<Projectile>().target = target;
+			projectile.SetActive(true);
 		}
 	}
 

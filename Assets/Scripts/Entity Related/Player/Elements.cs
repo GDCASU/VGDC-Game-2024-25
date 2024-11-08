@@ -14,7 +14,8 @@ using UnityEngine;
  * Purpose:
  * 
  */// --------------------------------------------------------
-public enum Elements{
+public enum Elements
+{
     neutral = 1,
     fire = 2,
     water = 3,

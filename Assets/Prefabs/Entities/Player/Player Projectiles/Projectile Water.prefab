@@ -12,8 +12,7 @@ GameObject:
   - component: {fileID: 1897828480295620299}
   - component: {fileID: 4680368142316700901}
   - component: {fileID: 6863210492710567649}
-  - component: {fileID: -8290770571168163268}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Projectile Water
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -100,10 +99,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   doDebugLog: 0
-  damageId: 
   target: {x: 0, y: 0, z: 0}
   speed: 10
-  lifetime: 5
+  lifetime: 10
+  element: 3
+  status: 1
+  damage: 1
 --- !u!136 &6863210492710567649
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -127,17 +128,3 @@ CapsuleCollider:
   m_Height: 0.1
   m_Direction: 1
   m_Center: {x: 0.11, y: 0.01, z: 0}
---- !u!114 &-8290770571168163268
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3053767172377724150}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6110f28c0b5a310419883469e331481b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 3
-  damage: 1

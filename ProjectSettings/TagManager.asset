@@ -6,17 +6,18 @@ TagManager:
   tags:
   - Collectible
   - Interactable
+  - Enemy
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
+  - Enemies
+  - Ground
+  - Projectiles
+  - Terrain
   - 
   - 
   - 

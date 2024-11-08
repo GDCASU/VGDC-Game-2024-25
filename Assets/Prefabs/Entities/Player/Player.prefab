@@ -836,7 +836,8 @@ GameObject:
   - component: {fileID: 3504954473736029066}
   - component: {fileID: -7416005117584024738}
   - component: {fileID: 5072699675534324342}
-  m_Layer: 0
+  - component: {fileID: 5679724712893444236}
+  m_Layer: 3
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1435,6 +1436,9 @@ MonoBehaviour:
   UISlot: {fileID: 0}
   ammoSlotNumber: 3
   angle: 0
+  attractionSpeed: 1
+  attractionDelay: 0.2
+  collectionThreshold: 0.4
 --- !u!1 &8270913110982333668
 GameObject:
   m_ObjectHideFlags: 0
