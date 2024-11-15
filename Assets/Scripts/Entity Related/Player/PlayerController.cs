@@ -5,7 +5,7 @@ using FMOD.Studio;
  * Author:
  * Ian Fletcher
  * 
- * Modified By: William Peng, Sameer Reza (Audio)
+ * Modified By: William Peng, Jacob Kaufman-Warner, Sameer Reza (Audio)
  * 
  */// --------------------------------------------------------
 
@@ -30,10 +30,22 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _speedAfterAcceleration;
     [SerializeField] private float _delayBeforeAcceleration;
     [SerializeField] private float _durationOfAcceleration;
-    [SerializeField] private GameObject _projectilePrefab;
+    [SerializeField] private GameObject _projectileNeutralPrefab;
+    [SerializeField] private GameObject _projectileFirePrefab;
+    [SerializeField] private GameObject _projectileWaterPrefab;
+    [SerializeField] private GameObject _projectileSparksPrefab;
     [SerializeField] private Transform _projectileSpawnPoint;
     [SerializeField] private Animator moveController;
     [SerializeField] private SpriteRenderer playerRenderer;
+
+    [Header("Projectile ItemData")]
+    [SerializeField] private ItemData fireAmmo;
+    [SerializeField] private ItemData waterAmmo;
+    [SerializeField] private ItemData sparksAmmo;
+
+
+    private GameObject _projectilePrefab;
+    private int magicChange = 0;
     
     // Use this bool to gate all your Debug.Log Statements please
     [Header("Debugging")]
@@ -51,6 +63,8 @@ public class PlayerController : MonoBehaviour
 	private void Start()
 	{
 		InputManager.OnAttack += AttackAction;
+        InputManager.ChangeElement += ChangeElementAction;
+        _projectilePrefab = _projectileNeutralPrefab;
         _playerFootstepSFX = AudioManager.Instance.CreateEventInstance(FMODEvents.instance.playerFootstepSFX);
         _playerAttackSFX = AudioManager.Instance.CreateEventInstance(FMODEvents.instance.playerAttackSFX);
 	}
@@ -115,6 +129,7 @@ public class PlayerController : MonoBehaviour
     {
         // Un-subscribe from events
         InputManager.OnAttack -= AttackAction;
+        InputManager.ChangeElement -= ChangeElementAction;
     }
 
     private void AttackAction()
@@ -125,12 +140,64 @@ public class PlayerController : MonoBehaviour
 		RaycastHit hit;
 		if(Physics.Raycast(ray, out hit, 100f))
 		{
-			// Spawn projectile prefab and set its target to the raycast hit location
-			GameObject projectile = Instantiate(_projectilePrefab);
-			projectile.transform.position = _projectileSpawnPoint.position;
-			projectile.GetComponent<Projectile>().target = hit.point;
+            if(InventorySystem.Instance.CheckForAmmo()){
+                switch(InventorySystem.Instance.GetSelectedAmmo()){
+                    case AmmoType.Fire:
+                        Debug.Log("Fire ammo");
+                        _projectilePrefab = _projectileFirePrefab;
+                        InventorySystem.Instance.Remove(fireAmmo);
+                        break;
+                    case AmmoType.Water:
+                    Debug.Log("Water ammo");
+                        _projectilePrefab = _projectileWaterPrefab;
+                        InventorySystem.Instance.Remove(waterAmmo);
+                        break;
+                    case AmmoType.Sparks:
+                        Debug.Log("Sparks ammo");
+                        _projectilePrefab = _projectileSparksPrefab;
+                        InventorySystem.Instance.Remove(sparksAmmo);
+                        break;
+                    case AmmoType.None:
+                        _projectilePrefab = _projectileNeutralPrefab;
+                        break;
+                    default:
+                        Debug.Log("Error with ammo");
+                        break;
+                }
+                
+            }else{
+                Debug.Log("Neutral ammo");
+                _projectilePrefab = _projectileNeutralPrefab;
+            }
+            // Spawn projectile prefab and set its target to the raycast hit location
+            GameObject projectile = Instantiate(_projectilePrefab);
+            projectile.transform.position = _projectileSpawnPoint.position;
+            projectile.GetComponent<Projectile>().target = hit.point;
             AudioManager.Instance.PlayEventNoDuplicate(_playerAttackSFX);
-		} 
+		}
 	}
+
+    private void ChangeElementAction(){
+        //change between 4 elements of nothing(aka physical prolly), fire, water, sparks. More of a test feature as the game seems to not include switching. Prolly
+        magicChange++;
+        magicChange%=4;
+        switch(magicChange){
+            case 0: 
+                _projectilePrefab = _projectileNeutralPrefab;
+                break;
+            case 1:
+                _projectilePrefab = _projectileFirePrefab;
+                break;
+            case 2:
+                _projectilePrefab = _projectileWaterPrefab;
+                break;
+            case 3:
+                _projectilePrefab = _projectileSparksPrefab;
+                break;
+            default:
+                Debug.Log("Something broke, it is over. This is the issue ---> " + magicChange);
+                break;
+        }
+    }
 
 }
