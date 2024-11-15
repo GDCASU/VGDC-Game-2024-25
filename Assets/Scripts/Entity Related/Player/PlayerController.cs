@@ -20,8 +20,16 @@ using FMOD.Studio;
 /// </summary>
 public class PlayerController : MonoBehaviour
 {
+    // Time since movement in the current direction started
+    private float _elapsedMovementTime = 0;
+
+    private Vector3 _previousInputVector = Vector3.zero;
+
     [Header("Values")]
-    [SerializeField] private float _speed;
+    [SerializeField] private float _speedBeforeAcceleration;
+    [SerializeField] private float _speedAfterAcceleration;
+    [SerializeField] private float _delayBeforeAcceleration;
+    [SerializeField] private float _durationOfAcceleration;
     [SerializeField] private GameObject _projectilePrefab;
     [SerializeField] private Transform _projectileSpawnPoint;
     [SerializeField] private Animator moveController;
@@ -61,8 +69,19 @@ public class PlayerController : MonoBehaviour
         // Compute the actual world space direction of movement for the player
         Vector3 moveDirWorldSpace = (forward * input.y + right * input.x).normalized;
 
+        // Set movement duration
+        if (input == _previousInputVector) {
+            _elapsedMovementTime += Time.deltaTime;
+        } else {
+            _elapsedMovementTime = 0;
+            _previousInputVector = input;
+        }
+
         // Move Player
-        _characterController.Move(Time.deltaTime * _speed * moveDirWorldSpace);
+        float finalRelativeSpeedIncrease = (_speedAfterAcceleration / _speedBeforeAcceleration) - 1;
+        float relativeSpeedIncrease = finalRelativeSpeedIncrease * Mathf.Clamp01((_elapsedMovementTime - _delayBeforeAcceleration) / _durationOfAcceleration);
+        float speedMultiplier = 1 + relativeSpeedIncrease;
+        _characterController.Move(Time.deltaTime * _speedBeforeAcceleration * speedMultiplier * moveDirWorldSpace);
 
         // Play walking animation if moving
         moveController.SetBool("IsMoving", Mathf.Abs(input.x) > 0 || Mathf.Abs(input.y) > 0);

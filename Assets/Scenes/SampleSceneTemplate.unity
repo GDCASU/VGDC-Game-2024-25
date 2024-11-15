@@ -628,8 +628,8 @@ MonoBehaviour:
       Data4: 1615727284
     Path: event:/Music/Levels/TEMP Forest BG Music
   Event: 
-  PlayEvent: 1
-  StopEvent: 2
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0

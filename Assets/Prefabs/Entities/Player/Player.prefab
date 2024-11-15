@@ -387,7 +387,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf718814f69a9454a839a1f433656361, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 1.5
+  _speedBeforeAcceleration: 1.5
+  _speedAfterAcceleration: 2.25
+  _delayBeforeAcceleration: 2
+  _durationOfAcceleration: 0.2
   _projectilePrefab: {fileID: 3053767172377724150, guid: 0aeb2228e055e364dad5a90567bf3cfd,
     type: 3}
   _projectileSpawnPoint: {fileID: 7007761719522431672}
