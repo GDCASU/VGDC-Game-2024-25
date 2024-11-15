@@ -44,26 +44,17 @@ public class DamageableEntity : MonoBehaviour
 	/// <param name="damage">The base damage of the projectile</param>
 	/// <param name="multiplier">The damage multiplier this entity has for the element type</param>
 	/// <param name="element">The type of element of the projectile</param>
-    public delegate void DamageEvent(float damage, float multiplier, Elements element);
+    public delegate void DamageEvent(float damage, float multiplier, Elements element, EnemyStatusEffect status);
 
 	private void Start()
 	{
 		_damageMultiplierDict = Utils.GetDamageMultipliers(_damageMultipliers);
 	}
 
-	private void OnTriggerEnter(Collider other)
+	public void TakeDamage(float damage, Elements element, EnemyStatusEffect status)
 	{
-		ElementalProjectile elementalProjectile = other.GetComponent<ElementalProjectile>();
-		if(elementalProjectile)
-        {
-            if(doDebugLog)
-            {
-                Debug.Log("Entity " + gameObject.name + " hit by " + other.gameObject.name);
-            }
-            if(OnDamaged != null)
-            {
-                OnDamaged.Invoke(elementalProjectile.damage, _damageMultiplierDict[elementalProjectile.type], elementalProjectile.type);
-            }
-        }
+		if(doDebugLog) Debug.Log(gameObject.name + " took damage");
+
+		OnDamaged?.Invoke(damage, _damageMultiplierDict[element], element, status);
 	}
 }

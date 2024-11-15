@@ -51,7 +51,7 @@ public class PlayerData : Singleton<PlayerData>
 	}
 
     // Handles damage taken
-	private void OnDamaged(float damage, float multiplier, Elements element)
+	private void OnDamaged(float damage, float multiplier, Elements element, EnemyStatusEffect app)
 	{
         // Subtract health
         health -= damage * multiplier;

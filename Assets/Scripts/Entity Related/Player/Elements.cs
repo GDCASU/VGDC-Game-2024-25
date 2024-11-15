@@ -14,12 +14,15 @@ using UnityEngine;
  * Purpose:
  * 
  */// --------------------------------------------------------
-public enum Elements{
+public enum Elements
+{
     neutral = 1,
     fire = 2,
     water = 3,
+    spore = 4,
     sparks = 5
 }
+
 
 /// <summary>
 /// 

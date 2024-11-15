@@ -26,6 +26,7 @@ public enum AmmoType
     Fire,
     Water,
     Sparks,
+    Spore,
     None
 }
 public enum CollectibleType
