@@ -44,20 +44,13 @@ public class AmmoSlot : MonoBehaviour
         {
             Debug.LogError("An ammo slot is not a assigned a number from 1 - 4, please check for the AmmoSlot script on the ammo slots in gameObject \"Player\" and assign a number (order should be counter-clockwise)");
         }
-        switch(ammoSlotNumber)
+        if(ammoSlotNumber <= 0)
         {
-            case 1:
-                angle = 25f;
-                break;
-            case 2:
-                angle = 115f;
-                break;
-            case 3:
-                angle = 205f;
-                break;
-            case 4:
-                angle = 295f;
-                break;
+            Debug.LogError("An ammo slot isn't assigned a number");
+        }
+        else
+        {
+            angle = (360f / (transform.parent.childCount)) * (ammoSlotNumber - 1) + 25f;
         }
     }
 
