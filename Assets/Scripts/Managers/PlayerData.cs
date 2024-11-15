@@ -12,16 +12,20 @@ using UnityEngine.Events;
 public class PlayerData : Singleton<PlayerData>
 {
     private PlayerObject player;
-    public int health;
+    public float health;
     public int mana;
     public int experience;
+
+	private DamageableEntity _damageableEntity;
+
     public PlayerObject Player { 
         get { return player; } 
         set 
         {
             OnPlayerConnectToPlayerData.Invoke();
             player = value; 
-        } }
+        }
+    }
 
 
     private PlayerController playerController;
@@ -40,10 +44,26 @@ public class PlayerData : Singleton<PlayerData>
     void Start()
     {
         OnPlayerConnectToPlayerData.AddListener(CheckMultiPlayerCase);
-    }
 
-    // Update is called once per frame
-    void Update()
+		_damageableEntity = GetComponent<DamageableEntity>();
+
+		_damageableEntity.OnDamaged += OnDamaged;
+	}
+
+    // Handles damage taken
+	private void OnDamaged(float damage, float multiplier, Elements element, EnemyStatusEffect app)
+	{
+        // Subtract health
+        health -= damage * multiplier;
+		if(health < 0)
+        {
+            // Death event
+            health = 0;
+        }
+	}
+
+	// Update is called once per frame
+	void Update()
     {
 
     }
