@@ -11,47 +11,29 @@ using UnityEngine.Events;
 
 public class PlayerData : Singleton<PlayerData>
 {
-    private PlayerObject player;
-    public float health;
-    public int mana;
-    public int experience;
+    public float health { get; private set; }
+    public int mana { get; private set; }
+    public int experience { get; private set; }
 
-	private DamageableEntity _damageableEntity;
+    // Reference to the current player controller, set in PlayerController.Start
+    private PlayerController _playerController;
 
-    public PlayerObject Player { 
-        get { return player; } 
-        set 
+    public PlayerController PlayerController
+    {
+        get
         {
-            // TODO: fix or remove this, since it causes a NullReferenceException when the PlayerSetReference script triggers this setter
-            // OnPlayerConnectToPlayerData.Invoke();
-            player = value; 
+            return _playerController;
         }
+        set
+        {
+            _playerController = value;
+			_playerController.GetComponent<DamageableEntity>().OnDamaged += OnDamaged;
+		}
     }
 
-
-    private PlayerController playerController;
-
-    public PlayerController PlayerController { get { return playerController; } set { playerController = value; } }
-
-
-    public UnityEvent OnPlayerConnectToPlayerData;
-
-
-    //public InventorySystem inventory{get; set;}
-
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        OnPlayerConnectToPlayerData.AddListener(CheckMultiPlayerCase);
-
-		_damageableEntity = GetComponent<DamageableEntity>();
-
-		_damageableEntity.OnDamaged += OnDamaged;
-	}
-
-    // Handles damage taken
+	/// <summary>
+	/// Handles damage taken
+	/// </summary>
 	private void OnDamaged(float damage, float multiplier, Elements element)
 	{
         // Subtract health
@@ -62,16 +44,4 @@ public class PlayerData : Singleton<PlayerData>
             health = 0;
         }
 	}
-
-	// Update is called once per frame
-	void Update()
-    {
-
-    }
-
-
-    void CheckMultiPlayerCase() {
-        if (player != null)
-            Debug.LogWarning("It seems there is two player on the scene.");
-    }
 }

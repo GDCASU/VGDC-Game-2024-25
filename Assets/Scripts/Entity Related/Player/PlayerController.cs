@@ -51,6 +51,8 @@ public class PlayerController : MonoBehaviour
 
 	private void Start()
 	{
+        PlayerData.Instance.PlayerController = this;
+
 		InputManager.OnAttack += AttackAction;
         InputManager.ChangeElement += ChangeElementAction;
         _projectilePrefab = _projectileNeutralPrefab;
@@ -91,7 +93,9 @@ public class PlayerController : MonoBehaviour
         // Un-subscribe from events
         InputManager.OnAttack -= AttackAction;
         InputManager.ChangeElement -= ChangeElementAction;
-    }
+
+		PlayerData.Instance.PlayerController = null;
+	}
 
     private void AttackAction()
 	{
