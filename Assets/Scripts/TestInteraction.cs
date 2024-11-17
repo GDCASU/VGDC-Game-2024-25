@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 /* -----------------------------------------------------------
  * Author:
  * Cami Lee
  * 
- * Modified By:
+ * Modified By: Eliza Chook
  * 
  */// --------------------------------------------------------
 
@@ -21,26 +22,30 @@ using UnityEngine;
 public class TestInteraction : MonoBehaviour
 {
     [SerializeField] Interactions interactions;
-    [SerializeField] bool isWalking; // placeholder bool to change functions
+    [SerializeField] bool rangeOfObj; // placeholder bool to change functions
 
     // Start is called before the first frame update
     void Start()
     {
-        if (isWalking)
+        if (rangeOfObj)
         {
-            interactions.ChangeInteraction(Run); // Makes it so the function Run will be called with the interaction key
+            interactions.ChangeInteraction(OutOfRange); // Makes it so the function OutOfRange will be called with the interaction key
         }
-        else { interactions.ChangeInteraction(Walk); }
+        else { interactions.ChangeInteraction(InRange); }
     }
 
     /// <summary> Sample Functions </summary>
-    public void Run()
+    public void OutOfRange()
     {
-        Debug.Log("is running");
+        Debug.Log("is out of range");
     }
 
-    public void Walk()
+    public void InRange()
     {
-        Debug.Log("is walking");
+        Debug.Log("is in range");
+        Destroy(gameObject);//destroy object (move to inventory) when player uses repective inputKey ('E' for keyboard, 'A' for console)
+
+        //insert move to inventory here
     }
+
 }
