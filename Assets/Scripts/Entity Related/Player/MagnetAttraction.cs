@@ -5,9 +5,11 @@ using UnityEngine;
 public class MagnetAttraction : MonoBehaviour
 //Summary: Attracts objects that has the tag collectible to collect them (applies to all collectable objects/enemy drops)
 //Make sure attraction speed = 1, collectionthreshold(area whcih collects the objects) = 0.4, and capsule collider radius = 0.69
+//UPDATE: Fixed error where it tries to collect items previously collected 
 //Made by Eliza Chook
 {
     public float attractionSpeed = 1f;  // Speed at which objects are pulled towards the player
+     public float attractionDelay = 0.2f; // Delay before starting the attraction
     public float collectionThreshold = 0.4f; // Distance threshold for collecting the object
 
     private List<Transform> collectiblesInRange = new List<Transform>();
@@ -17,7 +19,7 @@ public class MagnetAttraction : MonoBehaviour
     {
         if (other.CompareTag("Collectible"))
         {
-            collectiblesInRange.Add(other.transform); 
+            collectiblesInRange.Add(other.transform);
         }
     }
 
@@ -25,14 +27,14 @@ public class MagnetAttraction : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Collectible"))
-        {
-            collectiblesInRange.Remove(other.transform); 
+        {   
+            collectiblesInRange.Remove(other.transform);
         }
     }
-
+    
     private void Update()
     {
-        
+
         // Loop through collectibles within the attraction range
         for (int i = collectiblesInRange.Count - 1; i >= 0; i--)
         {
@@ -53,23 +55,60 @@ public class MagnetAttraction : MonoBehaviour
     // Coroutine to gradually pull the object towards the player
     private IEnumerator AttractCollectible(Transform collectible)
     {
+        // Delay the attraction process
+        yield return new WaitForSeconds(attractionDelay);
 
         // Move the collectible towards the player
-        while (Vector3.Distance(collectible.position, transform.position) > collectionThreshold)
+        while (collectible != null && Vector3.Distance(collectible.position, transform.position) > collectionThreshold)
         {
             collectible.position = Vector3.MoveTowards(collectible.position, transform.position, attractionSpeed * Time.deltaTime);
             yield return null; // Wait for the next frame to continue moving
         }
 
-        //Destroy/collect the item
-        CollectItem(collectible);
+        // Check if collectible is still valid before collecting
+        if (collectible != null)
+        {
+            CollectItem(collectible);
+        }
     }
 
     // Collect/destroy the item
     private void CollectItem(Transform collectible)
     {
         // Destroy the item and remove it from the list of items in attraction field
-        Destroy(collectible.gameObject);
-        collectiblesInRange.Remove(collectible);
+        if (collectible != null)
+        {
+            //add item to inventory
+            ItemData data = collectible.GetComponent<ItemPickups>().itemData;
+            
+            //check if can collect
+            bool ammoNotFull = InventorySystem.Instance.CheckIfAmmoNotFull(data);
+            //Debug.Log("Ammo is not full: " + ammoNotFull);
+
+            if (ammoNotFull)
+            {
+                //collect and remove object
+                InventorySystem.Instance.Add(data);
+                Destroy(collectible.gameObject);
+                collectiblesInRange.Remove(collectible);
+            }
+        }
     }
 }
+/*TRYING TO COLLECT ITEM
+ *if (other.CompareTag("Collectible"))
+    {
+        ItemData data = other.GetComponent<ItemPickups>().itemData;
+        bool ammoNotFull = InventorySystem.Instance.CheckIfAmmoNotFull(data);
+
+        Debug.Log("Ammo is not full: " + ammoNotFull);
+        //check player is not at full capacity for the item type
+        if (ammoNotFull)
+        {
+            InventorySystem.Instance.Add(data);
+            collectiblesInRange.Remove(other.transform);
+            Destroy(other.gameObject);
+        }
+    }
+ *
+ */
