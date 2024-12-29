@@ -1,14 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using static UnityEditor.PlayerSettings;
 using UnityEngine.UIElements;
+using FMOD.Studio;
+
 
 /* -----------------------------------------------------------
  * Author:
  * Ian Fletcher
  * 
- * Modified By: William Peng, Jacob Kaufman-Warner
+ * Modified By: William Peng, Jacob Kaufman-Warner, Sameer Reza (Audio)
  * 
  */// --------------------------------------------------------
 
@@ -23,8 +23,16 @@ using UnityEngine.UIElements;
 /// </summary>
 public class PlayerController : MonoBehaviour
 {
+    // Time since movement in the current direction started
+    private float _elapsedMovementTime = 0;
+
+    private Vector3 _previousInputVector = Vector3.zero;
+
     [Header("Values")]
-    [SerializeField] private float _speed;
+    [SerializeField] private float _speedBeforeAcceleration;
+    [SerializeField] private float _speedAfterAcceleration;
+    [SerializeField] private float _delayBeforeAcceleration;
+    [SerializeField] private float _durationOfAcceleration;
     [SerializeField] private GameObject _projectileNeutralPrefab;
     [SerializeField] private GameObject _projectileFirePrefab;
     [SerializeField] private GameObject _projectileWaterPrefab;
@@ -52,6 +60,11 @@ public class PlayerController : MonoBehaviour
     // this, so script the movement system ourselves later for more granular control
     [SerializeField] private CharacterController _characterController;
 
+    #region Audio References
+    private EventInstance _playerFootstepSFX;
+    private EventInstance _playerAttackSFX;
+    #endregion
+
 	private void Start()
 	{
         PlayerData.Instance.PlayerController = this;
@@ -59,6 +72,8 @@ public class PlayerController : MonoBehaviour
 		InputManager.OnAttack += AttackAction;
         InputManager.ChangeElement += ChangeElementAction;
         _projectilePrefab = _projectileNeutralPrefab;
+        _playerFootstepSFX = AudioManager.Instance.CreateEventInstance(FMODEvents.instance.playerFootstepSFX);
+        _playerAttackSFX = AudioManager.Instance.CreateEventInstance(FMODEvents.instance.playerAttackSFX);
 	}
 
 	// Update is called once per frame
@@ -75,8 +90,19 @@ public class PlayerController : MonoBehaviour
         // Compute the actual world space direction of movement for the player
         Vector3 moveDirWorldSpace = (forward * input.y + right * input.x).normalized;
 
+        // Set movement duration
+        if (input == _previousInputVector) {
+            _elapsedMovementTime += Time.deltaTime;
+        } else {
+            _elapsedMovementTime = 0;
+            _previousInputVector = input;
+        }
+
         // Move Player
-        _characterController.Move(Time.deltaTime * _speed * moveDirWorldSpace);
+        float finalRelativeSpeedIncrease = (_speedAfterAcceleration / _speedBeforeAcceleration) - 1;
+        float relativeSpeedIncrease = finalRelativeSpeedIncrease * Mathf.Clamp01((_elapsedMovementTime - _delayBeforeAcceleration) / _durationOfAcceleration);
+        float speedMultiplier = 1 + relativeSpeedIncrease;
+        _characterController.Move(Time.deltaTime * _speedBeforeAcceleration * speedMultiplier * moveDirWorldSpace);
 
         // Play walking animation if moving
         moveController.SetBool("IsMoving", Mathf.Abs(input.x) > 0 || Mathf.Abs(input.y) > 0);
@@ -88,6 +114,21 @@ public class PlayerController : MonoBehaviour
         } else if (input.x > 0)
         {
             playerRenderer.flipX = false;
+        }
+
+        UpdateSound();
+    }
+
+    private void UpdateSound()
+    {
+        //if moving, play the footstep sound
+        if (Mathf.Abs(InputManager.Instance.movementInput.x) > 0)
+        {
+            AudioManager.Instance.PlayEventNoDuplicate(_playerFootstepSFX);
+        }
+        else
+        {
+            _playerFootstepSFX.stop(STOP_MODE.ALLOWFADEOUT);
         }
     }
 
@@ -158,6 +199,8 @@ public class PlayerController : MonoBehaviour
             //Debug.DrawRay(hit.point, rayVector / rayVector.y * Mathf.Abs(targetY - hitY), Color.green, 5f);
             projectile.GetComponent<Projectile>().target = target;
 			projectile.SetActive(true);
+            AudioManager.Instance.PlayEventNoDuplicate(_playerAttackSFX);
+
 		}
 	}
 

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{786a79e9-b84c-4a1f-8320-005543c20e54}">
+		<property name="name">
+			<value>music_track</value>
+		</property>
+		<relationship name="folder">
+			<destination>{ad181f96-4042-49dc-b057-4b83f003818f}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{542999ff-99dd-4fb7-9a53-e09c4ed2f668}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{542999ff-99dd-4fb7-9a53-e09c4ed2f668}">
+		<property name="parameterType">
+			<value>2</value>
+		</property>
+		<property name="maximum">
+			<value>2</value>
+		</property>
+		<property name="enumerationLabels">
+			<value>LessWindyZone</value>
+			<value>WindyZone</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>
