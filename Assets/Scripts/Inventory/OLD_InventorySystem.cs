@@ -1,19 +1,12 @@
-using FMOD;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.InteropServices.WindowsRuntime;
-using UnityEditor.SceneManagement;
-using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
-using UnityEngine.UI;
 
 /* -----------------------------------------------------------
  * Author: TJ (Yousuf)
  * 
  * 
  * Modified By:
- * 
+ * Ian Fletcher
  */// --------------------------------------------------------
 
 /* -----------------------------------------------------------
@@ -25,7 +18,7 @@ using UnityEngine.UI;
 /// <summary>
 /// The class that manages the whole inventory system
 /// </summary>
-public class InventorySystem : MonoBehaviour
+public class OLD_InventorySystem : MonoBehaviour
 {
     // Use this bool to gate all your Debug.Log Statements please
     [Header("Debugging")]
@@ -36,7 +29,7 @@ public class InventorySystem : MonoBehaviour
     private Dictionary<string, AmmoSlot> ammoDictionary;
     public List<InventorySlot> inventory { get; private set; }
     public List<AmmoSlot> ammos { get; private set; }
-    public static InventorySystem Instance { get; private set; }
+    public static OLD_InventorySystem Instance { get; private set; }
 
     // Access the UI for slots
     [SerializeField] private GameObject slotsHolder;
@@ -45,6 +38,9 @@ public class InventorySystem : MonoBehaviour
     [SerializeField] public Transform MainAmmoSlot;
     private GameObject[] slots;
     private GameObject[] ammoSlots;
+    
+    // Events
+    public static System.Action OnElementInventoryChanged; // Should be changed on any change done to the inventory
 
     private void Awake()
     {

@@ -1,8 +1,6 @@
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
-using UnityEngine.UIElements;
 using FMOD.Studio;
-
+using UnityEngine.Serialization;
 
 /* -----------------------------------------------------------
  * Author:
@@ -33,11 +31,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _speedAfterAcceleration;
     [SerializeField] private float _delayBeforeAcceleration;
     [SerializeField] private float _durationOfAcceleration;
-    [SerializeField] private GameObject _projectileNeutralPrefab;
-    [SerializeField] private GameObject _projectileFirePrefab;
-    [SerializeField] private GameObject _projectileWaterPrefab;
-    [SerializeField] private GameObject _projectileSparksPrefab;
-    [SerializeField] private GameObject _projectileSporePrefab;
     [SerializeField] private Transform _projectileSpawnPoint;
     [SerializeField] private Animator moveController;
     [SerializeField] private SpriteRenderer playerRenderer;
@@ -47,6 +40,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private ItemData waterAmmo;
     [SerializeField] private ItemData sparksAmmo;
     [SerializeField] private ItemData sporeAmmo;
+    
+    [FormerlySerializedAs("playerHUD")]
+    [Header("Local HUD References")]
+    [SerializeField] private PlayerAmmoManager player;
 
 
     private GameObject _projectilePrefab;
@@ -70,11 +67,12 @@ public class PlayerController : MonoBehaviour
         PlayerData.Instance.PlayerController = this;
 
 		InputManager.OnAttack += AttackAction;
-        InputManager.ChangeElement += ChangeElementAction;
-        _projectilePrefab = _projectileNeutralPrefab;
         _playerFootstepSFX = AudioManager.Instance.CreateEventInstance(FMODEvents.instance.playerFootstepSFX);
         _playerAttackSFX = AudioManager.Instance.CreateEventInstance(FMODEvents.instance.playerAttackSFX);
-	}
+        
+        // Player HUD Binds
+        InputManager.OnChangeElement += SwitchAmmoSlotHUD;
+    }
 
 	// Update is called once per frame
 	void Update()
@@ -111,7 +109,8 @@ public class PlayerController : MonoBehaviour
         if (input.x < 0)
         {
             playerRenderer.flipX = true;
-        } else if (input.x > 0)
+        } 
+        else if (input.x > 0)
         {
             playerRenderer.flipX = false;
         }
@@ -136,10 +135,22 @@ public class PlayerController : MonoBehaviour
     {
         // Un-subscribe from events
         InputManager.OnAttack -= AttackAction;
-        InputManager.ChangeElement -= ChangeElementAction;
+        //InputManager.ChangeElement -= ChangeElementAction;
 
 		PlayerData.Instance.PlayerController = null;
+        
+        // Player HUD De-Binds
+        InputManager.OnChangeElement -= SwitchAmmoSlotHUD;
 	}
+
+    /// <summary>
+    /// Function that switches the HUD Display to the desired ammo slot
+    /// </summary>
+    /// <param name="isNext"></param>
+    private void SwitchAmmoSlotHUD(bool isNext)
+    {
+        player.ChangeElement(isNext);
+    }
 
     private void AttackAction()
 	{
@@ -149,43 +160,11 @@ public class PlayerController : MonoBehaviour
 		RaycastHit hit;
         // Every scene must have a ground object to raycast onto
         if(Physics.Raycast(ray, out hit, 100f, LayerMask.GetMask(new string[] { "Ground" })))
-		{
-            if(InventorySystem.Instance.CheckForAmmo()){
-                switch(InventorySystem.Instance.GetSelectedAmmo()){
-                    case AmmoType.Fire:
-                        Debug.Log("Fire ammo");
-                        _projectilePrefab = _projectileFirePrefab;
-                        InventorySystem.Instance.Remove(fireAmmo);
-                        break;
-                    case AmmoType.Water:
-                    Debug.Log("Water ammo");
-                        _projectilePrefab = _projectileWaterPrefab;
-                        InventorySystem.Instance.Remove(waterAmmo);
-                        break;
-                    case AmmoType.Sparks:
-                        Debug.Log("Sparks ammo");
-                        _projectilePrefab = _projectileSparksPrefab;
-                        InventorySystem.Instance.Remove(sparksAmmo);
-                        break;
-                    case AmmoType.Spore:
-                        Debug.Log("Spore ammo");
-                        _projectilePrefab = _projectileSporePrefab;
-                        InventorySystem.Instance.Remove(sporeAmmo);
-                        break;
-                    case AmmoType.None:
-                        _projectilePrefab = _projectileNeutralPrefab;
-                        break;
-                    default:
-                        Debug.Log("Error with ammo");
-                        break;
-                }
-                
-            }else{
-                Debug.Log("Neutral ammo");
-                _projectilePrefab = _projectileNeutralPrefab;
-            }
+        {
+            /*
+            ElementInvSlot currElem = ElementInventoryManager.Instance.GetCurrentElement();
             // Spawn projectile prefab
-            GameObject projectile = Instantiate(_projectilePrefab);
+            GameObject projectile = Instantiate(currElem.projectilePrefab);
             projectile.SetActive(false);
 			projectile.transform.position = _projectileSpawnPoint.position;
 			
@@ -200,31 +179,8 @@ public class PlayerController : MonoBehaviour
             projectile.GetComponent<Projectile>().target = target;
 			projectile.SetActive(true);
             AudioManager.Instance.PlayEventNoDuplicate(_playerAttackSFX);
-
+            */
 		}
 	}
-
-    private void ChangeElementAction(){
-        //change between 4 elements of nothing(aka physical prolly), fire, water, sparks. More of a test feature as the game seems to not include switching. Prolly
-        magicChange++;
-        magicChange%=4;
-        switch(magicChange){
-            case 0: 
-                _projectilePrefab = _projectileNeutralPrefab;
-                break;
-            case 1:
-                _projectilePrefab = _projectileFirePrefab;
-                break;
-            case 2:
-                _projectilePrefab = _projectileWaterPrefab;
-                break;
-            case 3:
-                _projectilePrefab = _projectileSparksPrefab;
-                break;
-            default:
-                Debug.Log("Something broke, it is over. This is the issue ---> " + magicChange);
-                break;
-        }
-    }
 
 }

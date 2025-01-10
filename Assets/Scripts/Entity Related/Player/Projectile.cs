@@ -35,7 +35,7 @@ public class Projectile : MonoBehaviour
 	// The time in seconds this projectile can last, set to 10s as a hard cap
 	[SerializeField] private float lifetime = 10f;
 	// The element of this projectile
-	[SerializeField] private Elements element = Elements.neutral;
+	[SerializeField] private Elements element = Elements.Neutral;
 	// The status effect this projectile inflicts
 	[SerializeField] private EnemyStatusEffect status = EnemyStatusEffect.normal;
 	// The amount of damage this projectile does

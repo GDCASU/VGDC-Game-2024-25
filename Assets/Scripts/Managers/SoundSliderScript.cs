@@ -45,7 +45,7 @@ public class SoundSliderScript : MonoBehaviour
     // Set to trigger when slider value changes
     public void VolumeChanged() 
     {
-        SoundManager.Instance.SetVolume(sliderSoundGroup, volumeSlider.value, 1);
+        VolumeManager.Instance.SetVolume(sliderSoundGroup, volumeSlider.value, 1);
         Save();
     }
 

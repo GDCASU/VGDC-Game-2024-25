@@ -24,6 +24,6 @@ public class ResetInvButtonScript : MonoBehaviour
 
     public void buttonPressed()
     {
-        InventorySystem.Instance.ResetInventory();
+        OLD_InventorySystem.Instance.ResetInventory();
     }
 }

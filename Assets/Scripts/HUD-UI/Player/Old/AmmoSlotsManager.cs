@@ -41,7 +41,7 @@ public class AmmoSlotsManager : MonoBehaviour
     }
     void Update()
     {
-        if ((isScrolling || InventorySystem.Instance.ammos.Count < 2) && !scrollAnyways) { }
+        if ((isScrolling || OLD_InventorySystem.Instance.ammos.Count < 2) && !scrollAnyways) { }
         else if(Input.GetAxisRaw("Mouse ScrollWheel") > 0 || Input.GetKeyDown(KeyCode.E) || scrollAnyways)
         {
             isScrolling = true;
@@ -66,7 +66,7 @@ public class AmmoSlotsManager : MonoBehaviour
             ammoSlot = transform.GetChild(currentAmmoSlotIndex).GetComponent<AmmoSlot>();
             yield return null;
         } while (ammoSlot.data == null);
-        InventorySystem.Instance.MainAmmoSlot = ammoSlot.transform;
+        OLD_InventorySystem.Instance.MainAmmoSlot = ammoSlot.transform;
         float angle = ammoSlot.angle;
         Quaternion rotated = Quaternion.Euler(0, angle, 0);
         y1 = Mathf.Round(Mathf.Abs(transform.rotation.y) * 10000) / 10000;
@@ -92,7 +92,7 @@ public class AmmoSlotsManager : MonoBehaviour
             Debug.Log("AmmoSlot " + ammoSlot.ammoSlotNumber + " : " + ammoSlot.angle);
             yield return null;
         } while (ammoSlot.data == null);
-        InventorySystem.Instance.MainAmmoSlot = ammoSlot.transform;
+        OLD_InventorySystem.Instance.MainAmmoSlot = ammoSlot.transform;
         float angle = ammoSlot.angle;
         Quaternion rotated = Quaternion.Euler(0, angle, 0);
         y1 = Mathf.Round(Mathf.Abs(transform.rotation.y) * 10000) / 10000;

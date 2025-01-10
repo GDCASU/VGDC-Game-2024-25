@@ -7,7 +7,7 @@ using UnityEngine;
  * Davyd Yehudin
  * 
  * Modified By:
- * 
+ * Ian Fletcher
  */// --------------------------------------------------------
 
 /* -----------------------------------------------------------
@@ -16,14 +16,11 @@ using UnityEngine;
  */// --------------------------------------------------------
 public enum Elements
 {
-    neutral = 1,
-    fire = 2,
-    water = 3,
-    spore = 4,
-    sparks = 5
+    Neutral = 1,
+    Fire = 2,
+    Water = 3,
+    Fungal = 5,
+    Sparks = 7
 }
 
 
-/// <summary>
-/// 
-/// </summary>

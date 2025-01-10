@@ -25,6 +25,6 @@ public class Removebuttonscript : MonoBehaviour
 
     public void buttonPressed()
     {
-        InventorySystem.Instance.Remove(data);
+        OLD_InventorySystem.Instance.Remove(data);
     }
 }

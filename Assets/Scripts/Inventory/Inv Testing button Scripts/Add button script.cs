@@ -25,6 +25,6 @@ public class Addbuttonscript : MonoBehaviour
 
     public void buttonPressed()
     {
-        InventorySystem.Instance.Add(data);
+        OLD_InventorySystem.Instance.Add(data);
     }
 }

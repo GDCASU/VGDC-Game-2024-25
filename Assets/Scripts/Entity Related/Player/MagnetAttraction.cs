@@ -82,13 +82,13 @@ public class MagnetAttraction : MonoBehaviour
             ItemData data = collectible.GetComponent<ItemPickups>().itemData;
             
             //check if can collect
-            bool ammoNotFull = InventorySystem.Instance.CheckIfAmmoNotFull(data);
+            bool ammoNotFull = OLD_InventorySystem.Instance.CheckIfAmmoNotFull(data);
             //Debug.Log("Ammo is not full: " + ammoNotFull);
 
             if (ammoNotFull)
             {
                 //collect and remove object
-                InventorySystem.Instance.Add(data);
+                OLD_InventorySystem.Instance.Add(data);
                 Destroy(collectible.gameObject);
                 collectiblesInRange.Remove(collectible);
             }

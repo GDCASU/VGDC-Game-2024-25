@@ -46,7 +46,8 @@ public class InputManager : MonoBehaviour
     /// <summary> Player's Move Event </summary>
     public static event System.Action OnMove;
     public static event System.Action OnAttack;
-    public static event System.Action ChangeElement;
+
+    public static event System.Action<bool> OnChangeElement;
 
     /// <summary> Player's UI Event </summary>
     public static event System.Action OnInteract;
@@ -59,7 +60,8 @@ public class InputManager : MonoBehaviour
         // Subscribe to input events
         _playerControls.OnFoot.Move.performed += i => HandleMovementInput(i);
         _playerControls.PlayerActions.Attack.performed += i => HandleAttackInput(i);
-        _playerControls.PlayerActions.ChangeElement.performed += i => HandleChangeElementInput(i);
+        _playerControls.PlayerActions.ChangeNextElement.performed += i => HandleChangeElementInput(i, true);
+        _playerControls.PlayerActions.ChangePreviousElement.performed += i => HandleChangeElementInput(i, false);
     }
 
     #endregion
@@ -131,10 +133,21 @@ public class InputManager : MonoBehaviour
         OnAttack?.Invoke();
     }
 
-    private void HandleChangeElementInput(InputAction.CallbackContext context)
+    private void HandleChangeElementInput(InputAction.CallbackContext context, bool doGoRight)
     {
-        if(_doDebugLog) Debug.Log("Change");
-        ChangeElement?.Invoke();
+        // Check if change to next or previous was called
+        if (doGoRight)
+        {
+            // Is change to next element
+            OnChangeElement?.Invoke(true);
+            if(_doDebugLog) Debug.Log("Input: Change to next element");
+        }
+        else
+        {
+            // Is change to previous element
+            OnChangeElement?.Invoke(false);
+            if(_doDebugLog) Debug.Log("Input: Change to previous element");
+        }
     }
 
     private void HandleInteractionInput(InputAction.CallbackContext context)
