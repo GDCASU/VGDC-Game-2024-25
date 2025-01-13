@@ -109,3 +109,9 @@ fmod_editor.log
 # Ignore the save file location on the assets folder
 /[Aa]ssets/VGDC2024-25 SaveData/
 /[Aa]ssets/VGDC2024-25 SaveData.meta
+
+# Rider gitignore list
+
+# Jetbrain Rider Cache
+.idea/
+Assets/Plugins/Editor/JetBrains*
