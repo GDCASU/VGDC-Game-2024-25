@@ -17,19 +17,13 @@ public class LevelManager : MonoBehaviour
 
     /* -----------------------------------------------------------
      * Pupose:
-     * Create a scene manager to manage transitions between scenes
+     * Create a scene manager to manage transitions between scenes -- cannot be a singelton because of stored data
      */// --------------------------------------------------------
 
     bool[] unlockedLevels;
 
     public Animator colorDip;
     public float transitionTime = 0.2f;
-
-    /// <summary> temp variables to act as placeholders for scene testing </summary>
-    public bool loadNextLevel;
-    public bool loadPreviousLevel;
-    public bool reloadLevel;
-    public bool unlockNextLevel;
 
     public Vector3 tempStart;
 
@@ -42,14 +36,6 @@ public class LevelManager : MonoBehaviour
         unlockedLevels[1] = true; // level one
 
         DontDestroyOnLoad(gameObject);
-    }
-
-    private void Update()
-    {
-        if (loadNextLevel) { LoadNextLevel(tempStart); }
-        if (loadPreviousLevel) { LoadPreviousLevel(tempStart); }
-        if (reloadLevel) { ReloadLevel(tempStart); }
-        if (unlockNextLevel) { UnlockNextLevel(); }
     }
 
     /// <summary> Loads next level if unlocked and places the paleyr at startPosition </summary>
@@ -69,7 +55,10 @@ public class LevelManager : MonoBehaviour
     public void LoadSceneByName(string sceneName, Vector3 startPosition)
     {
         Scene loadScene = SceneManager.GetSceneByName(sceneName);
-        if (unlockedLevels[loadScene.buildIndex]) { StartCoroutine(ChangeScene(loadScene.buildIndex, startPosition)); }
+
+        if (loadScene.buildIndex == -1) { Debug.LogWarning("Scene '" + sceneName + "' not found in Build Settings."); }
+        else if (unlockedLevels[loadScene.buildIndex]) { StartCoroutine(ChangeScene(loadScene.buildIndex, startPosition)); }
+        else { Debug.Log("The current level is locked"); }
     }
 
     /// <summary> Loads previous level / menu and places the player at startPosition </summary>

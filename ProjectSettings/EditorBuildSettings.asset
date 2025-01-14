@@ -23,4 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Testing/Spencer testing 2.unity
     guid: 82418641128ae0d42ad3b8e6a00a0e3a
+  - enabled: 1
+    path: Assets/Scenes/Implementation/CamiWinterCombo.unity
+    guid: 4a8cd18d2cdf4434a8ba450ec6558611
   m_configObjects: {}

@@ -8,7 +8,7 @@ using FMOD.Studio;
  * Author:
  * Ian Fletcher
  * 
- * Modified By: William Peng, Jacob Kaufman-Warner, Sameer Reza (Audio)
+ * Modified By: William Peng, Jacob Kaufman-Warner, Sameer Reza (Audio), Cami Lee (temp removal of audio)
  * 
  */// --------------------------------------------------------
 
@@ -72,8 +72,8 @@ public class PlayerController : MonoBehaviour
 		InputManager.OnAttack += AttackAction;
         InputManager.ChangeElement += ChangeElementAction;
         _projectilePrefab = _projectileNeutralPrefab;
-        _playerFootstepSFX = AudioManager.Instance.CreateEventInstance(FMODEvents.instance.playerFootstepSFX);
-        _playerAttackSFX = AudioManager.Instance.CreateEventInstance(FMODEvents.instance.playerAttackSFX);
+        //_playerFootstepSFX = AudioManager.Instance.CreateEventInstance(FMODEvents.instance.playerFootstepSFX);
+        //_playerAttackSFX = AudioManager.Instance.CreateEventInstance(FMODEvents.instance.playerAttackSFX);
 	}
 
 	// Update is called once per frame
@@ -103,6 +103,8 @@ public class PlayerController : MonoBehaviour
         float relativeSpeedIncrease = finalRelativeSpeedIncrease * Mathf.Clamp01((_elapsedMovementTime - _delayBeforeAcceleration) / _durationOfAcceleration);
         float speedMultiplier = 1 + relativeSpeedIncrease;
         _characterController.Move(Time.deltaTime * _speedBeforeAcceleration * speedMultiplier * moveDirWorldSpace);
+        if (_speedBeforeAcceleration == 0) { Debug.Log("Not moving: change _speedBeforeAcceleration to > 0"); }
+        if (_speedAfterAcceleration < _speedBeforeAcceleration) { Debug.Log("Not moving: change _speedAfterAcceleration to >= _speedBeforeAcceleration"); }
 
         // Play walking animation if moving
         moveController.SetBool("IsMoving", Mathf.Abs(input.x) > 0 || Mathf.Abs(input.y) > 0);
@@ -124,11 +126,11 @@ public class PlayerController : MonoBehaviour
         //if moving, play the footstep sound
         if (Mathf.Abs(InputManager.Instance.movementInput.x) > 0)
         {
-            AudioManager.Instance.PlayEventNoDuplicate(_playerFootstepSFX);
+            //AudioManager.Instance.PlayEventNoDuplicate(_playerFootstepSFX);
         }
         else
         {
-            _playerFootstepSFX.stop(STOP_MODE.ALLOWFADEOUT);
+            //_playerFootstepSFX.stop(STOP_MODE.ALLOWFADEOUT);
         }
     }
 
@@ -199,7 +201,7 @@ public class PlayerController : MonoBehaviour
             //Debug.DrawRay(hit.point, rayVector / rayVector.y * Mathf.Abs(targetY - hitY), Color.green, 5f);
             projectile.GetComponent<Projectile>().target = target;
 			projectile.SetActive(true);
-            AudioManager.Instance.PlayEventNoDuplicate(_playerAttackSFX);
+            //AudioManager.Instance.PlayEventNoDuplicate(_playerAttackSFX);
 
 		}
 	}

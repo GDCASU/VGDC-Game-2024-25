@@ -26,7 +26,7 @@ public class SoundSliderScript : MonoBehaviour
     [Header("Debugging")]
     [SerializeField] private bool doDebugLog;
 
-    [SerializeField] Slider volumeSlider;
+    Slider volumeSlider;
     [SerializeField] SoundControllers sliderSoundGroup;
     [SerializeField] string volumePrefKey; // e.x. musicVolume, masterVolume, sfxVolume
     
@@ -35,6 +35,8 @@ public class SoundSliderScript : MonoBehaviour
     // Checks if player has stored volume settings
     void Start()
     {
+        volumeSlider = GetComponent<Slider>();
+        if (volumeSlider == null) { Debug.LogWarning("Put Slider component on " + this.gameObject.name); }
         if (!PlayerPrefs.HasKey(volumePrefKey))
         {
             PlayerPrefs.SetFloat(volumePrefKey, 1);

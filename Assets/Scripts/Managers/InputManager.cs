@@ -50,6 +50,7 @@ public class InputManager : MonoBehaviour
 
     /// <summary> Player's UI Event </summary>
     public static event System.Action OnInteract;
+    public static event System.Action OnPause;
 
     /// <summary>
     /// Binds all of the Players' controls to their respective events.
@@ -73,6 +74,7 @@ public class InputManager : MonoBehaviour
     {
         // Subscribe to input events
         _playerControls.UI.Interaction.performed += i => HandleInteractionInput(i);
+        _playerControls.UI.Pause.performed += i => HandlePauseInput(i);
     }
 
     #endregion
@@ -104,6 +106,7 @@ public class InputManager : MonoBehaviour
     private void OnDestroy()
     {
         StopAllCoroutines();
+        _playerControls.Disable();
     }
 
     #endregion
@@ -141,6 +144,12 @@ public class InputManager : MonoBehaviour
     {
         if (_doDebugLog) Debug.Log("Interacted");
         OnInteract?.Invoke();
+    }
+
+    private void HandlePauseInput(InputAction.CallbackContext context)
+    {
+        if (_doDebugLog) Debug.Log("Paused");
+        OnPause?.Invoke();
     }
 
     #endregion
