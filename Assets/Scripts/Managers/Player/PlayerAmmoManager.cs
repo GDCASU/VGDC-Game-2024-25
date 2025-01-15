@@ -26,14 +26,18 @@ using UnityEngine.Serialization;
 /// </summary>
 public class PlayerAmmoManager : MonoBehaviour
 {
+    
+
     [Header("References")] 
     [SerializeField] private GameObject ammoDisplayParent;
+    [SerializeField] private Material cooldownShaderMat;
 
     [Header("Ammo Slots")]
     // Neutral element must be first in the list
     [SerializeField] private List<ElementHUDPair> ammoSlots; // All slots, All should be disabled on start
 
     [Header("Settings")] 
+    [SerializeField] private float cooldownDuration;
     [SerializeField] private float maxDisplayScale;
     [SerializeField] private float displayRadius;
     [SerializeField] private float rotationDuration; // In Seconds
@@ -46,15 +50,18 @@ public class PlayerAmmoManager : MonoBehaviour
     private List<ElementHUDPair> activeAmmoSlots = new List<ElementHUDPair>();
     private ElementHUDPair currentAmmoSlot;
     private Vector3 defaultAmmoPos;
-    
-    // State Bools
     private Coroutine ammoRotatingRoutine;
+    private Coroutine cooldownRoutine;
+    private int Arc1 = Shader.PropertyToID("_Arc1");
     
     private void Start()
     {
         // Compute the location of the default position of the element display
         Vector3 direction = ammoDisplayParent.transform.forward * -1;
         defaultAmmoPos = direction * displayRadius;
+        
+        // Set the arc point 2 of the material shader to 360 as default (clear)
+        cooldownShaderMat.SetFloat(Arc1, 360f);
 
         // Disable all elements just in case someone forgot to do so in the inspector
         // Also set up references to element storage
@@ -154,10 +161,16 @@ public class PlayerAmmoManager : MonoBehaviour
         // Dont fire if currently on animation
         if (ammoRotatingRoutine != null) return;
         
+        // Dont fire if currently on cooldown
+        if (cooldownRoutine != null) return;
+        
         // Spawn a projectile of the current ammo
         Vector3 offsetCenter = center + direction * projectileSpawnRadius;
         GameObject elementProjectile = Instantiate(currentAmmoSlot.elementInvSlot.projectilePrefab, offsetCenter, Quaternion.identity);
         elementProjectile.GetComponent<Projectile>().moveDir = direction;
+        
+        // Trigger Cooldown
+        cooldownRoutine = StartCoroutine(CooldownRoutine());
         
         // No need to do anything else if the element is infinite
         if (currentAmmoSlot.elementInvSlot.isInfinite) return;
@@ -177,6 +190,29 @@ public class PlayerAmmoManager : MonoBehaviour
             // Adjust element display to account for the recently removed element
             AdjustSlots();
         }
+    }
+    
+    /// <summary>
+    /// Routine that handles the cooldown of element firing
+    /// </summary>
+    private IEnumerator CooldownRoutine()
+    {
+        float elapsedTime = 0f;
+        float angle = 0f;
+        
+        // Set the arc value to 0, then increase to 360 as cooldown progresses
+        cooldownShaderMat.SetFloat(Arc1, 0f);
+        
+        while (elapsedTime < cooldownDuration)
+        {
+            angle = (elapsedTime / cooldownDuration) * 360f;
+            cooldownShaderMat.SetFloat(Arc1, angle);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        // Finished
+        cooldownShaderMat.SetFloat(Arc1, 360f);
+        cooldownRoutine = null;
     }
 
     /// <summary>
