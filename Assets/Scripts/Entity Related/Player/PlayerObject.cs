@@ -33,7 +33,6 @@ public class PlayerObject : MonoBehaviour
             return;
         }
         Instance = this;
-        DontDestroyOnLoad(gameObject);
     }
 
     // Start is called before the first frame update

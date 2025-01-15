@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Properties;
@@ -23,38 +24,30 @@ using UnityEngine;
 /// </summary>
 public class Projectile : MonoBehaviour
 {
-    // Use this bool to gate all your Debug.Log Statements please
+    [Header("Settings")]
+    [SerializeField] private float speed = 10f;
+    [SerializeField] private float lifetime = 10f;
+    [SerializeField] private Elements element;
+    [SerializeField] private float damage = 1f;
+    [SerializeField] private EnemyStatusEffect status; // The status effect this projectile inflicts
+	
+	// Use this bool to gate all your Debug.Log Statements please
     [Header("Debugging")]
     [SerializeField] private bool doDebugLog;
+    
+    // Local variables
+    [HideInInspector] public Vector3 moveDir = Vector3.zero;
 
-	// The target position for the projectile, set by PlayerController when this projectile is instantiated
-	[HideInInspector] public Vector3 target;
-
-	// Inspector modifiable values
-	[SerializeField] private float speed = 10f;
-	// The time in seconds this projectile can last, set to 10s as a hard cap
-	[SerializeField] private float lifetime = 10f;
-	// The element of this projectile
-	[SerializeField] private Elements element = Elements.Neutral;
-	// The status effect this projectile inflicts
-	[SerializeField] private EnemyStatusEffect status = EnemyStatusEffect.normal;
-	// The amount of damage this projectile does
-	[SerializeField] private float damage = 1f;
-
-	// Private variables
-	private Vector3 moveDir;
-
-	private void OnEnable()
-	{
-        // Calculate movement vector
-        moveDir = Vector3.Normalize(target - transform.position);
-		Destroy(gameObject, lifetime);
-	}
-
+    private void Start()
+    {
+	    // Destroy after lifetime passes
+	    Destroy(gameObject, lifetime);
+    }
+    
 	private void Update()
     {
 		// Move
-		transform.Translate(moveDir * speed * Time.deltaTime);
+		transform.Translate(moveDir * (speed * Time.deltaTime));
 	}
 
 	private void OnTriggerEnter(Collider other)

@@ -32,9 +32,13 @@ public class ElementInventoryManager : MonoBehaviour
     [SerializeField] private ElementInvSlot neutralElement;
     [SerializeField] private ElementInvSlot fireElement;
     [SerializeField] private ElementInvSlot fungalElement;
+    [SerializeField] private ElementInvSlot sparkElement;
     
     [Header("Debugging")]
     [SerializeField] private bool doDebugLog;
+    
+    // Event to raise whenever the player gains element ammo
+    public event System.Action<Elements> AmmoGained;
 
     private void Awake()
     {
@@ -48,12 +52,6 @@ public class ElementInventoryManager : MonoBehaviour
         // Not set yet
         Instance = this;
     }
-    
-    void Start()
-    {
-        // Set the current element to neutral
-        
-    }
 
     private void OnDestroy()
     {
@@ -61,19 +59,40 @@ public class ElementInventoryManager : MonoBehaviour
         Instance = null;
     }
 
+    /// <summary>
+    /// Function to add a charge to an element on the inventory
+    /// </summary>
+    /// <param name="targetElement"></param>
+    public void AddAmmoToElement(Elements targetElement, int amount = 1)
+    {
+        ElementInvSlot slot = GetInvSlotFromElement(targetElement);
+        // Dont do anything if null
+        if (slot == null) return;
+        // Check if full
+        if (slot.ammoAmount >= slot.ammoMaxAmount) return;
+        // Else, Add charge and raise event
+        slot.ammoAmount += amount;
+        // Check for overflow
+        if (slot.ammoAmount > slot.ammoMaxAmount) slot.ammoAmount = slot.ammoMaxAmount;
+        // Raise Event
+        AmmoGained?.Invoke(targetElement);
+    }
+
+    /// <summary>
+    /// Helper function. Gets the element inventory slot from this object via a specified enumerator
+    /// </summary>
     public ElementInvSlot GetInvSlotFromElement(Elements targetElement)
     {
         switch (targetElement)
         {
             case Elements.Neutral:
                 return neutralElement;
-                break;
             case Elements.Fire:
                 return fireElement;
-                break;
             case Elements.Fungal:
                 return fungalElement;
-                break;
+            case Elements.Sparks:
+                return sparkElement;
         }
         // Did not find element in inventory
         Debug.LogError("ERROR! DID NOT FIND TARGET ELEMENT CASE ON SWITCH!");

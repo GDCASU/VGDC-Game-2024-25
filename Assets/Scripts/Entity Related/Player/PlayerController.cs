@@ -1,13 +1,16 @@
+using System.Collections;
 using UnityEngine;
 using FMOD.Studio;
+using FMODUnity;
 using UnityEngine.Serialization;
+using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 /* -----------------------------------------------------------
  * Author:
  * Ian Fletcher
  * 
- * Modified By: William Peng, Jacob Kaufman-Warner, Sameer Reza (Audio)
- * 
+ * Modified By: 
+ * William Peng, Jacob Kaufman-Warner, Sameer Reza (Audio)
  */// --------------------------------------------------------
 
 /* -----------------------------------------------------------
@@ -21,57 +24,53 @@ using UnityEngine.Serialization;
 /// </summary>
 public class PlayerController : MonoBehaviour
 {
-    // Time since movement in the current direction started
-    private float _elapsedMovementTime = 0;
-
-    private Vector3 _previousInputVector = Vector3.zero;
-
-    [Header("Values")]
+    [Header("References")]
+    [SerializeField] private Transform _projectileSpawnPoint;
+    [SerializeField] private Animator moveController;
+    [SerializeField] private SpriteRenderer playerRenderer;
+    // Ian HACK: We probably shouldnt use the character controller for
+    // this, so script the movement system ourselves later for more granular control
+    [SerializeField] private CharacterController _characterController;
+    [SerializeField] private GameObject projectileDirArrow;
+    
+    [Header("Movement")]
     [SerializeField] private float _speedBeforeAcceleration;
     [SerializeField] private float _speedAfterAcceleration;
     [SerializeField] private float _delayBeforeAcceleration;
     [SerializeField] private float _durationOfAcceleration;
-    [SerializeField] private Transform _projectileSpawnPoint;
-    [SerializeField] private Animator moveController;
-    [SerializeField] private SpriteRenderer playerRenderer;
-
-    [Header("Projectile ItemData")]
-    [SerializeField] private ItemData fireAmmo;
-    [SerializeField] private ItemData waterAmmo;
-    [SerializeField] private ItemData sparksAmmo;
-    [SerializeField] private ItemData sporeAmmo;
     
-    [FormerlySerializedAs("playerHUD")]
-    [Header("Local HUD References")]
-    [SerializeField] private PlayerAmmoManager player;
-
-
-    private GameObject _projectilePrefab;
-    private int magicChange = 0;
+    [Header("Combat")]
+    [SerializeField] private LayerMask _groundLayers;
+    
+    [Header("Audio")]
+    [SerializeField] private EventReference _playerFootstepSFX;
+    [SerializeField] private EventReference _playerAttackSFX;
     
     // Use this bool to gate all your Debug.Log Statements please
     [Header("Debugging")]
     [SerializeField] private bool _doDebugLog;
-
-    // Ian HACK: We probably shouldnt use the character controller for
-    // this, so script the movement system ourselves later for more granular control
-    [SerializeField] private CharacterController _characterController;
-
-    #region Audio References
-    private EventInstance _playerFootstepSFX;
-    private EventInstance _playerAttackSFX;
-    #endregion
-
+    
+    // Local Variables
+    private PlayerAmmoManager ammoManager;
+    private float _elapsedMovementTime = 0; // Time since movement in the current direction started
+    private Vector3 _previousInputVector = Vector3.zero;
+    
 	private void Start()
 	{
-        PlayerData.Instance.PlayerController = this;
-
-		InputManager.OnAttack += AttackAction;
-        _playerFootstepSFX = AudioManager.Instance.CreateEventInstance(FMODEvents.instance.playerFootstepSFX);
-        _playerAttackSFX = AudioManager.Instance.CreateEventInstance(FMODEvents.instance.playerAttackSFX);
+        // Get Components
+        ammoManager = GetComponent<PlayerAmmoManager>();
+        
+        PlayerDataManager.Instance.playerController = this;
         
         // Player HUD Binds
         InputManager.OnChangeElement += SwitchAmmoSlotHUD;
+
+		InputManager.OnAttack += AttackAction;
+        //_playerFootstepSFX = AudioManager.Instance.CreateEventInstance(FMODEvents.instance.playerFootstepSFX);
+        //_playerAttackSFX = AudioManager.Instance.CreateEventInstance(FMODEvents.instance.playerAttackSFX);
+        
+        // Start the projectile dir orientation routine
+        StartCoroutine(ProjectileDirRoutine());
     }
 
 	// Update is called once per frame
@@ -123,11 +122,11 @@ public class PlayerController : MonoBehaviour
         //if moving, play the footstep sound
         if (Mathf.Abs(InputManager.Instance.movementInput.x) > 0)
         {
-            AudioManager.Instance.PlayEventNoDuplicate(_playerFootstepSFX);
+            //AudioManager.Instance.PlayEventNoDuplicate(_playerFootstepSFX);
         }
         else
         {
-            _playerFootstepSFX.stop(STOP_MODE.ALLOWFADEOUT);
+            //_playerFootstepSFX.stop(STOP_MODE.ALLOWFADEOUT);
         }
     }
 
@@ -137,7 +136,7 @@ public class PlayerController : MonoBehaviour
         InputManager.OnAttack -= AttackAction;
         //InputManager.ChangeElement -= ChangeElementAction;
 
-		PlayerData.Instance.PlayerController = null;
+		//PlayerData.Instance.PlayerController = null;
         
         // Player HUD De-Binds
         InputManager.OnChangeElement -= SwitchAmmoSlotHUD;
@@ -149,38 +148,79 @@ public class PlayerController : MonoBehaviour
     /// <param name="isNext"></param>
     private void SwitchAmmoSlotHUD(bool isNext)
     {
-        player.ChangeElement(isNext);
+        ammoManager.ChangeElement(isNext);
     }
 
     private void AttackAction()
 	{
-        if (Camera.main == null) Debug.Log("CAMERA WAS NULL!");
-
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-		RaycastHit hit;
-        // Every scene must have a ground object to raycast onto
-        if(Physics.Raycast(ray, out hit, 100f, LayerMask.GetMask(new string[] { "Ground" })))
+        // Check that there's a camera tagged with main
+        if (Camera.main == null)
         {
-            /*
-            ElementInvSlot currElem = ElementInventoryManager.Instance.GetCurrentElement();
-            // Spawn projectile prefab
-            GameObject projectile = Instantiate(currElem.projectilePrefab);
-            projectile.SetActive(false);
-			projectile.transform.position = _projectileSpawnPoint.position;
-			
-            // Set target to the point on the ray that matches the y position of the spawn point
-			float hitY = hit.point.y;
-			float targetY = _projectileSpawnPoint.position.y;
-            Vector3 rayVector = ray.direction.normalized;
-			Vector3 target = hit.point + rayVector / rayVector.y * Mathf.Abs(targetY - hitY);
+            // There wasnt
+            Debug.LogError("ERROR! MAIN CAMERA WAS NULL! CANT FIRE PROJECTILES FROM PLAYER");
+            return;
+        }
+        
+        // Every scene must have a ground object to raycast onto
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        bool didHit = Physics.Raycast(ray, out RaycastHit hitInfo, 100f, _groundLayers);
 
-            //Debug.DrawRay(ray.origin, 1000f * ray.direction, Color.red, 2.5f);
-            //Debug.DrawRay(hit.point, rayVector / rayVector.y * Mathf.Abs(targetY - hitY), Color.green, 5f);
-            projectile.GetComponent<Projectile>().target = target;
-			projectile.SetActive(true);
-            AudioManager.Instance.PlayEventNoDuplicate(_playerAttackSFX);
-            */
-		}
-	}
+        if (!didHit) return; // No hit, return early
+        
+        // Compute Direction
+        Vector3 direction = new Vector3(hitInfo.point.x - transform.position.x, 0, hitInfo.point.z - transform.position.z).normalized;
+        
+        // Call the fire function on the ammo manager
+        ammoManager.FireCurrentElement(transform.position, direction);
+    }
+
+    /// <summary>
+    /// Routine that handles the orientation of the firing arrow placed at the player's feet
+    /// </summary>
+    private IEnumerator ProjectileDirRoutine()
+    {
+        // Variables Pre-Declared to optimize memory allocation
+        RaycastHit hitInfo;
+        Ray ray;
+        bool didHit;
+        Vector3 direction = new Vector3();
+        Quaternion lookRotation;
+        
+        // Run while active
+        while (true)
+        {
+            // Dont run this code if there isnt a main camera set up
+            if (!Camera.main)
+            {
+                yield return null;
+                continue;
+            }
+            
+            // TODO: Add a bool gate in case we need to hide hud during an event or something
+            
+            // Get the location of the mouse
+            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            didHit = Physics.Raycast(ray, out hitInfo, 100f, _groundLayers);
+            
+            // No hit, restart loop
+            if (!didHit)
+            {
+                yield return null;
+                continue;
+            }
+        
+            // Compute Direction and Set the firing arrow to the direction
+            direction.x = hitInfo.point.x - transform.position.x;
+            direction.z = hitInfo.point.z - transform.position.z;
+            direction.y = 0;
+            Vector3.Normalize(direction);
+            if (direction != Vector3.zero)
+            {
+                lookRotation = Quaternion.LookRotation(direction, Vector3.up);
+                projectileDirArrow.transform.rotation = Quaternion.Euler(90f, lookRotation.eulerAngles.y - 45f, 0f);
+            }
+            yield return null;
+        }
+    }
 
 }

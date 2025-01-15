@@ -16,6 +16,7 @@ using UnityEngine;
  */// --------------------------------------------------------
 public enum Elements
 {
+    None = 0,
     Neutral = 1,
     Fire = 2,
     Water = 3,

@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d48866b9ae97fed4a81c992f413c2d28, type: 3}
   m_Name: Water Ammo
   m_EditorClassIdentifier: 
-  verboseLogs: 1
   doDebugLog: 0
   id: WaterOrb
   displayName: WaterOrb
@@ -20,4 +19,4 @@ MonoBehaviour:
   value: 1
   prefab: {fileID: 0}
   itemType: 1
-  element: 1
+  element: 3
