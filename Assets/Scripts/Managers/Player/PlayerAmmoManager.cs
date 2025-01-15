@@ -31,6 +31,7 @@ public class PlayerAmmoManager : MonoBehaviour
     [Header("References")] 
     [SerializeField] private GameObject ammoDisplayParent;
     [SerializeField] private Material cooldownShaderMat;
+    [SerializeField] private SimpleAudioEmitter projectileSoundEmitter;
 
     [Header("Ammo Slots")]
     // Neutral element must be first in the list
@@ -111,16 +112,13 @@ public class PlayerAmmoManager : MonoBehaviour
         if (doDebugLog) PrintActiveSlotsList();
         
         // Subscribe to events
-        ElementInventoryManager.Instance.AmmoGained += AmmoGainAdjust;
+        ElementInventoryManager.AmmoGained += AmmoGainAdjust;
     }
 
     private void OnDestroy()
     {
         // Unsubscribe to events
-        if (ElementInventoryManager.Instance != null)
-        {
-            ElementInventoryManager.Instance.AmmoGained -= AmmoGainAdjust;
-        }
+        ElementInventoryManager.AmmoGained -= AmmoGainAdjust;
     }
 
     /// <summary>
@@ -156,8 +154,6 @@ public class PlayerAmmoManager : MonoBehaviour
     /// </summary>
     public void FireCurrentElement(Vector3 center, Vector3 direction)
     {
-        // TODO: AUDIO PLAYBACK
-        
         // Dont fire if currently on animation
         if (ammoRotatingRoutine != null) return;
         
@@ -168,6 +164,9 @@ public class PlayerAmmoManager : MonoBehaviour
         Vector3 offsetCenter = center + direction * projectileSpawnRadius;
         GameObject elementProjectile = Instantiate(currentAmmoSlot.elementInvSlot.projectilePrefab, offsetCenter, Quaternion.identity);
         elementProjectile.GetComponent<Projectile>().moveDir = direction;
+        
+        // Play projectile fire sound
+        projectileSoundEmitter.PlaySound();
         
         // Trigger Cooldown
         cooldownRoutine = StartCoroutine(CooldownRoutine());

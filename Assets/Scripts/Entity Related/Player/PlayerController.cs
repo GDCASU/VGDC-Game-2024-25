@@ -43,17 +43,18 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask _groundLayers;
     
     [Header("Audio")]
-    [SerializeField] private EventReference _playerFootstepSFX;
-    [SerializeField] private EventReference _playerAttackSFX;
+    [SerializeField] private SimpleAudioEmitter _footstepsEmitter;
     
     // Use this bool to gate all your Debug.Log Statements please
-    [Header("Debugging")]
+    [Header("Debugging")] 
+    [SerializeField] private float cameraRotateSpeed;
     [SerializeField] private bool _doDebugLog;
     
     // Local Variables
     private PlayerAmmoManager ammoManager;
     private float _elapsedMovementTime = 0; // Time since movement in the current direction started
     private Vector3 _previousInputVector = Vector3.zero;
+    private readonly int IsMoving = Animator.StringToHash("IsMoving");
     
 	private void Start()
 	{
@@ -76,8 +77,23 @@ public class PlayerController : MonoBehaviour
 	// Update is called once per frame
 	void Update()
     {
+        // DEBUGGING: Dont thing we will keep the camera movable
+        if(Input.GetKey(KeyCode.E))
+        {
+            transform.Rotate(0, cameraRotateSpeed * Time.deltaTime, 0);
+        } 
+        else if(Input.GetKey(KeyCode.Q))
+        {
+            transform.Rotate(0, -cameraRotateSpeed * Time.deltaTime, 0);
+        }
+        
         // Get Vector2 Input from Input Manager
         Vector3 input = InputManager.Instance.movementInput;
+        // Play sound if there was movement input
+        if (input != Vector3.zero)
+        {
+            _footstepsEmitter.PlaySound();
+        }
 
         // Since the player could be slightly rotated from the
         // world axis, we compute the rotation
@@ -88,9 +104,12 @@ public class PlayerController : MonoBehaviour
         Vector3 moveDirWorldSpace = (forward * input.y + right * input.x).normalized;
 
         // Set movement duration
-        if (input == _previousInputVector) {
+        if (input == _previousInputVector) 
+        {
             _elapsedMovementTime += Time.deltaTime;
-        } else {
+        } 
+        else 
+        {
             _elapsedMovementTime = 0;
             _previousInputVector = input;
         }
@@ -102,7 +121,7 @@ public class PlayerController : MonoBehaviour
         _characterController.Move(Time.deltaTime * _speedBeforeAcceleration * speedMultiplier * moveDirWorldSpace);
 
         // Play walking animation if moving
-        moveController.SetBool("IsMoving", Mathf.Abs(input.x) > 0 || Mathf.Abs(input.y) > 0);
+        moveController.SetBool(IsMoving, Mathf.Abs(input.x) > 0 || Mathf.Abs(input.y) > 0);
 
         //Set sprite direction
         if (input.x < 0)

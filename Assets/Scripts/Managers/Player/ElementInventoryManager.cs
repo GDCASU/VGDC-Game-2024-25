@@ -38,7 +38,7 @@ public class ElementInventoryManager : MonoBehaviour
     [SerializeField] private bool doDebugLog;
     
     // Event to raise whenever the player gains element ammo
-    public event System.Action<Elements> AmmoGained;
+    public static event System.Action<Elements> AmmoGained;
 
     private void Awake()
     {
