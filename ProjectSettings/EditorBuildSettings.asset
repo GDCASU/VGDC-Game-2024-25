@@ -17,4 +17,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Testing/Matthew Dungeon Testing Scene.unity
     guid: a90db92c861f9f74d8b230092bec8de3
+  - enabled: 1
+    path: Assets/Scenes/Testing/Spencer testing.unity
+    guid: a6f71a59912076647a7a9a9ed5e38090
+  - enabled: 1
+    path: Assets/Scenes/Testing/Spencer testing 2.unity
+    guid: 82418641128ae0d42ad3b8e6a00a0e3a
   m_configObjects: {}
