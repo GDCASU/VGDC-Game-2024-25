@@ -6904,6 +6904,11 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 317657670}
+    - target: {fileID: 8926678641173633585, guid: 2cd6866d5e233a54e8f72ef92c5c7cd7,
+        type: 3}
+      propertyPath: targetSceneName
+      value: CamiWinterCombo
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

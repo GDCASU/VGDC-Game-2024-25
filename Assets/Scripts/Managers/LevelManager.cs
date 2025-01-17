@@ -54,10 +54,11 @@ public class LevelManager : MonoBehaviour
     /// <param name="target"></param>
     public void LoadSceneByName(string sceneName, Vector3 startPosition)
     {
-        Scene loadScene = SceneManager.GetSceneByName(sceneName);
+        int buildIndex = SceneUtility.GetBuildIndexByScenePath(sceneName);
+        //Scene loadScene = SceneManager.GetSceneByName(sceneName);
 
-        if (loadScene.buildIndex == -1) { Debug.LogWarning("Scene '" + sceneName + "' not found in Build Settings."); }
-        else if (unlockedLevels[loadScene.buildIndex]) { StartCoroutine(ChangeScene(loadScene.buildIndex, startPosition)); }
+        if (buildIndex == -1) { Debug.LogWarning("Scene '" + sceneName + "' not found in Build Settings."); }
+        else if (unlockedLevels[buildIndex]) { StartCoroutine(ChangeScene(buildIndex, startPosition)); }
         else { Debug.Log("The current level is locked"); }
     }
 
