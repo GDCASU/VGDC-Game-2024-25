@@ -67,6 +67,9 @@ public class EntityScript : MonoBehaviour, IDamageable
             // FIXME:
             return ReactionType.Undefined;
         }
+        
+        // DELETE THIS:
+        return ReactionType.Undefined;
     }
 
     /// <summary>

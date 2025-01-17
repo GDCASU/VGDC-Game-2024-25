@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEditor.Rendering;
 using UnityEngine;
 using DG.Tweening;
-using Unity.VisualScripting;
 using UnityEngine.Serialization;
 
 /* -----------------------------------------------------------

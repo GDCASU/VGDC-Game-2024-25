@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -53,11 +52,12 @@ public class EnemyStatusHandler : MonoBehaviour
     [SerializeField] private float burnTickRate = 0.4f;
     [SerializeField] private float fireworkDmg = 50f;
     [SerializeField] private GameObject firework;
-    private DamageableEntity something;
+    //private DamageableEntity something;
 
 
     void Awake()
     {
+        /*
         something = this.GetComponent<DamageableEntity>(); //this will be used to deal damage, rename it if you need it
 
         if(something == null){
@@ -71,6 +71,7 @@ public class EnemyStatusHandler : MonoBehaviour
         onCorrectReaction.AddListener(TestFunc);
         something = GetComponent<DamageableEntity>();
         something.OnDamaged += Handler;
+        */
     }
 
     //this is for testing please don't uncomment unless needed thx)
