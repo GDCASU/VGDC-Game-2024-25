@@ -23,12 +23,13 @@ using UnityEngine.Events;
 /// <summary>
 /// 
 /// </summary>
-/// 
-public enum ItemReactBehaviour{
+public enum ItemReactBehaviour
+{
     objectUnreactiveAfter = 0,
     canReactAgain = 1
 }
-public enum EntityType{
+public enum EntityType
+{
     Enemy = 0,
     Object = 1
 }
@@ -81,7 +82,7 @@ public class EnemyStatusHandler : MonoBehaviour
         }
     }*/
 
-    private void Handler(float damage, float multiplier, Elements element, EnemyStatusEffect app){
+    private void Handler(float damage, float multiplier, Elements element, StatusEffect app){
         //this line makes sure that we only apply new status effects, all status effects are prime numbers, so remember to not only add them to the enum, but also make sure they have the correct number
         bool newStatus = (currentStatus % (int)app != 0);
         if(newStatus) currentStatus = currentStatus * (int)app; 

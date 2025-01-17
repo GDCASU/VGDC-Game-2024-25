@@ -22,15 +22,14 @@ using UnityEngine;
 /// <summary>
 /// Projectile that is fired at wherever the player clicks on the screen. Contains element type and damage
 /// </summary>
-public class Projectile : MonoBehaviour
+public class ElementProjectile : MonoBehaviour
 {
     [Header("Settings")]
     [SerializeField] private float speed = 10f;
     [SerializeField] private float lifetime = 10f;
+    [SerializeField] private int damage = 1;
     [SerializeField] private Elements element;
-    [SerializeField] private float damage = 1f;
-    [SerializeField] private EnemyStatusEffect status; // The status effect this projectile inflicts
-	
+    
 	// Use this bool to gate all your Debug.Log Statements please
     [Header("Debugging")]
     [SerializeField] private bool doDebugLog;
@@ -53,14 +52,34 @@ public class Projectile : MonoBehaviour
 	private void OnTriggerEnter(Collider other)
 	{
 		if(doDebugLog) Debug.Log(gameObject.name + " hit " + other.gameObject.name);
-
-		other.GetComponent<DamageableEntity>()?.TakeDamage(damage, element, status);
-
-		// Destroy upon collision with terrain
-		if(other.gameObject.layer == LayerMask.NameToLayer("Terrain"))
-		{
-			if(doDebugLog) Debug.Log(gameObject.name + " hit terrain, destroying self");
-			Destroy(gameObject);
-		}
+        
+        // Try to damage the other object
+        IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
+        if (damageable == null)
+        {
+            // Didnt contain the interface
+            Destroy(gameObject);
+            return;
+        }
+        // Otherwise it did, deal damage and see if we need to generate a reaction
+        ReactionType reaction = damageable.TakeDamage(damage,element);
+        if (reaction == ReactionType.Undefined)
+        {
+            // No reaction to process
+            Destroy(gameObject);
+            return;
+        }
+        
+        // There is a reaction do perform
+        // TODO: GENERATE REACTION IN THE WORLD
+        switch (reaction)
+        {
+            case ReactionType.Fireworks:
+                //
+                break;
+        }
+        
+        // Destroy projectile
+        Destroy(gameObject);
 	}
 }

@@ -39,7 +39,7 @@ public class PlayerDataManager : MonoBehaviour
 	/// <summary>
 	/// Handles damage taken
 	/// </summary>
-	private void OnDamaged(float damage, float multiplier, Elements element, EnemyStatusEffect statusEffect)
+	private void OnDamaged(float damage, float multiplier, Elements element, StatusEffect statusEffect)
 	{
         // Subtract health
         health -= damage * multiplier;

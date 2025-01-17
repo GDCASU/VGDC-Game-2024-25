@@ -116,10 +116,18 @@ public class SimpleAudioEmitter : MonoBehaviour
 
     /// <summary>
     /// <para> Helper function that allows the playback of sounds as oneshots </para>
-    /// NOTE: OneShot Audios when stopeed cant be resumed
+    /// NOTE: OneShot Audios when stopped cant be resumed
     /// </summary>
     private void PlayAsOneShot()
     {
+        // Try to see if the emitter is free
+        if (!emitter.IsPlaying())
+        {
+            // Emitter was free, play here
+            emitter.Play();
+            return;
+        }
+        // Else create an event instance and play it as a oneshot
         EventInstance instance = RuntimeManager.CreateInstance(eventReference);
         instance.set3DAttributes(RuntimeUtils.To3DAttributes(transform.position));
         instance.start();

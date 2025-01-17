@@ -5,9 +5,9 @@ using UnityEngine;
 /* -----------------------------------------------------------
  * Author:
  * Ian Fletcher
- * 
- * Using Merged work from
- * Davyd Yehudin, 
+ *
+ * Merging work from:
+ * Davyd Yehudin
  * 
  * Modified By:
  * 
@@ -15,15 +15,25 @@ using UnityEngine;
 
 /* -----------------------------------------------------------
  * Purpose:
- * 
+ * Handle the status effects on the entity, since status effects can be applied to anything, not just enemies
  */// --------------------------------------------------------
 
 
 /// <summary>
-/// 
+/// Handles the status effects on the entity
 /// </summary>
-public class EnemyState : MonoBehaviour
+public class ElementStatusHandler : MonoBehaviour
 {
+    
+    
+    //[Header("Current")]
+    public StatusEffect currentStatusEffect;
+    public Coroutine statusEffectCo;
+    
+    // Interface must be set by the entity script 
+    // so status effects can deal damage over time
+    public IDamageable damageable; 
+    
     // Use this bool to gate all your Debug.Log Statements please
     [Header("Debugging")]
     [SerializeField] private bool doDebugLog;

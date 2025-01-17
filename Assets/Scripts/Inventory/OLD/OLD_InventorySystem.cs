@@ -221,7 +221,7 @@ public class OLD_InventorySystem : MonoBehaviour
         {
             ItemData selectedAmmo = MainAmmoSlot.GetComponent<OLD_AmmoSlot>().data;
             return selectedAmmo.element;
-        } catch { return Elements.None; }
+        } catch { return Elements.Undefined; }
     }
 
     /// <summary>
