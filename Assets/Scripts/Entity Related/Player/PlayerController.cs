@@ -67,7 +67,7 @@ public class PlayerController : MonoBehaviour
         InputManager.OnChangeElement += SwitchAmmoSlotHUD;
 
 		InputManager.OnAttack += AttackAction;
-        //_playerFootstepSFX = AudioManager.Instance.CreateEventInstance(FMODEvents.instance.playerFootstepSFX);
+        //_footstepsEmitter = AudioManager.Instance.CreateEventInstance(FMODEvents.instance.playerFootstepSFX);
         //_playerAttackSFX = AudioManager.Instance.CreateEventInstance(FMODEvents.instance.playerAttackSFX);
         
         // Start the projectile dir orientation routine

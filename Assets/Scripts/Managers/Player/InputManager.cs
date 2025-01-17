@@ -107,8 +107,8 @@ public class InputManager : MonoBehaviour
 
     private void OnDestroy()
     {
+        if (_playerControls != null) { _playerControls.Disable(); }
         StopAllCoroutines();
-        _playerControls.Disable();
     }
 
     #endregion

@@ -82,7 +82,7 @@ public class Interactions : MonoBehaviour
         else if (keyboard != null)
         {
             // Player is using a keyboard
-            input = "E";
+            input = "T";
         }
         return input;
     }

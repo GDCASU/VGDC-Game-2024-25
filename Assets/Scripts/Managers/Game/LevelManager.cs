@@ -32,10 +32,10 @@ public class LevelManager : MonoBehaviour
     private void Start()
     {
         unlockedLevels = new bool[UnityEngine.SceneManagement.SceneManager.sceneCountInBuildSettings]; // number of scenes in build
-        unlockedLevels[0] = true; // menu
-        unlockedLevels[1] = true; // level one
-
-        DontDestroyOnLoad(gameObject);
+        for (int i =0; i < unlockedLevels.Length; i++) // remove if unlocking mechanism exists
+        {
+            unlockedLevels[i] = true;
+        }
     }
 
     /// <summary> Loads next level if unlocked and places the paleyr at startPosition </summary>
