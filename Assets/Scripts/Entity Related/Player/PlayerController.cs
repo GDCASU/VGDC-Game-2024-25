@@ -1,15 +1,16 @@
+using System.Collections;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
-using UnityEngine.UIElements;
 using FMOD.Studio;
-
+using FMODUnity;
+using UnityEngine.Serialization;
+using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 /* -----------------------------------------------------------
  * Author:
  * Ian Fletcher
  * 
- * Modified By: William Peng, Jacob Kaufman-Warner, Sameer Reza (Audio), Cami Lee (temp removal of audio)
- * 
+ * Modified By: 
+ * William Peng, Jacob Kaufman-Warner, Sameer Reza (Audio)
  */// --------------------------------------------------------
 
 /* -----------------------------------------------------------
@@ -23,64 +24,76 @@ using FMOD.Studio;
 /// </summary>
 public class PlayerController : MonoBehaviour
 {
-    // Time since movement in the current direction started
-    private float _elapsedMovementTime = 0;
-
-    private Vector3 _previousInputVector = Vector3.zero;
-
-    [Header("Values")]
+    [Header("References")]
+    [SerializeField] private Transform _projectileSpawnPoint;
+    [SerializeField] private Animator moveController;
+    [SerializeField] private SpriteRenderer playerRenderer;
+    // Ian HACK: We probably shouldnt use the character controller for
+    // this, so script the movement system ourselves later for more granular control
+    [SerializeField] private CharacterController _characterController;
+    [SerializeField] private GameObject projectileDirArrow;
+    
+    [Header("Movement")]
     [SerializeField] private float _speedBeforeAcceleration;
     [SerializeField] private float _speedAfterAcceleration;
     [SerializeField] private float _delayBeforeAcceleration;
     [SerializeField] private float _durationOfAcceleration;
-    [SerializeField] private GameObject _projectileNeutralPrefab;
-    [SerializeField] private GameObject _projectileFirePrefab;
-    [SerializeField] private GameObject _projectileWaterPrefab;
-    [SerializeField] private GameObject _projectileSparksPrefab;
-    [SerializeField] private GameObject _projectileSporePrefab;
-    [SerializeField] private Transform _projectileSpawnPoint;
-    [SerializeField] private Animator moveController;
-    [SerializeField] private SpriteRenderer playerRenderer;
-
-    [Header("Projectile ItemData")]
-    [SerializeField] private ItemData fireAmmo;
-    [SerializeField] private ItemData waterAmmo;
-    [SerializeField] private ItemData sparksAmmo;
-    [SerializeField] private ItemData sporeAmmo;
-
-
-    private GameObject _projectilePrefab;
-    private int magicChange = 0;
+    
+    [Header("Combat")]
+    [SerializeField] private LayerMask _groundLayers;
+    
+    [Header("Audio")]
+    [SerializeField] private SimpleAudioEmitter _footstepsEmitter;
     
     // Use this bool to gate all your Debug.Log Statements please
-    [Header("Debugging")]
+    [Header("Debugging")] 
+    [SerializeField] private float cameraRotateSpeed;
     [SerializeField] private bool _doDebugLog;
-
-    // Ian HACK: We probably shouldnt use the character controller for
-    // this, so script the movement system ourselves later for more granular control
-    [SerializeField] private CharacterController _characterController;
-
-    #region Audio References
-    private EventInstance _playerFootstepSFX;
-    private EventInstance _playerAttackSFX;
-    #endregion
-
+    
+    // Local Variables
+    private PlayerAmmoManager ammoManager;
+    private float _elapsedMovementTime = 0; // Time since movement in the current direction started
+    private Vector3 _previousInputVector = Vector3.zero;
+    private readonly int IsMoving = Animator.StringToHash("IsMoving");
+    
 	private void Start()
 	{
-        PlayerData.Instance.PlayerController = this;
+        // Get Components
+        ammoManager = GetComponent<PlayerAmmoManager>();
+        
+        PlayerDataManager.Instance.playerController = this;
+        
+        // Player HUD Binds
+        InputManager.OnChangeElement += SwitchAmmoSlotHUD;
 
 		InputManager.OnAttack += AttackAction;
-        InputManager.ChangeElement += ChangeElementAction;
-        _projectilePrefab = _projectileNeutralPrefab;
         //_playerFootstepSFX = AudioManager.Instance.CreateEventInstance(FMODEvents.instance.playerFootstepSFX);
         //_playerAttackSFX = AudioManager.Instance.CreateEventInstance(FMODEvents.instance.playerAttackSFX);
-	}
+        
+        // Start the projectile dir orientation routine
+        StartCoroutine(ProjectileDirRoutine());
+    }
 
 	// Update is called once per frame
 	void Update()
     {
+        // DEBUGGING: Dont thing we will keep the camera movable
+        if(Input.GetKey(KeyCode.E))
+        {
+            transform.Rotate(0, cameraRotateSpeed * Time.deltaTime, 0);
+        } 
+        else if(Input.GetKey(KeyCode.Q))
+        {
+            transform.Rotate(0, -cameraRotateSpeed * Time.deltaTime, 0);
+        }
+        
         // Get Vector2 Input from Input Manager
         Vector3 input = InputManager.Instance.movementInput;
+        // Play sound if there was movement input
+        if (input != Vector3.zero)
+        {
+            _footstepsEmitter.PlaySound();
+        }
 
         // Since the player could be slightly rotated from the
         // world axis, we compute the rotation
@@ -91,9 +104,12 @@ public class PlayerController : MonoBehaviour
         Vector3 moveDirWorldSpace = (forward * input.y + right * input.x).normalized;
 
         // Set movement duration
-        if (input == _previousInputVector) {
+        if (input == _previousInputVector) 
+        {
             _elapsedMovementTime += Time.deltaTime;
-        } else {
+        } 
+        else 
+        {
             _elapsedMovementTime = 0;
             _previousInputVector = input;
         }
@@ -103,17 +119,16 @@ public class PlayerController : MonoBehaviour
         float relativeSpeedIncrease = finalRelativeSpeedIncrease * Mathf.Clamp01((_elapsedMovementTime - _delayBeforeAcceleration) / _durationOfAcceleration);
         float speedMultiplier = 1 + relativeSpeedIncrease;
         _characterController.Move(Time.deltaTime * _speedBeforeAcceleration * speedMultiplier * moveDirWorldSpace);
-        if (_speedBeforeAcceleration == 0) { Debug.Log("Not moving: change _speedBeforeAcceleration to > 0"); }
-        if (_speedAfterAcceleration < _speedBeforeAcceleration) { Debug.Log("Not moving: change _speedAfterAcceleration to >= _speedBeforeAcceleration"); }
 
         // Play walking animation if moving
-        moveController.SetBool("IsMoving", Mathf.Abs(input.x) > 0 || Mathf.Abs(input.y) > 0);
+        moveController.SetBool(IsMoving, Mathf.Abs(input.x) > 0 || Mathf.Abs(input.y) > 0);
 
         //Set sprite direction
         if (input.x < 0)
         {
             playerRenderer.flipX = true;
-        } else if (input.x > 0)
+        } 
+        else if (input.x > 0)
         {
             playerRenderer.flipX = false;
         }
@@ -138,94 +153,92 @@ public class PlayerController : MonoBehaviour
     {
         // Un-subscribe from events
         InputManager.OnAttack -= AttackAction;
-        InputManager.ChangeElement -= ChangeElementAction;
+        //InputManager.ChangeElement -= ChangeElementAction;
 
-		PlayerData.Instance.PlayerController = null;
+		//PlayerData.Instance.PlayerController = null;
+        
+        // Player HUD De-Binds
+        InputManager.OnChangeElement -= SwitchAmmoSlotHUD;
 	}
+
+    /// <summary>
+    /// Function that switches the HUD Display to the desired ammo slot
+    /// </summary>
+    /// <param name="isNext"></param>
+    private void SwitchAmmoSlotHUD(bool isNext)
+    {
+        ammoManager.ChangeElement(isNext);
+    }
 
     private void AttackAction()
 	{
-        if (Camera.main == null) Debug.Log("CAMERA WAS NULL!");
-
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-		RaycastHit hit;
+        // Check that there's a camera tagged with main
+        if (Camera.main == null)
+        {
+            // There wasnt
+            Debug.LogError("ERROR! MAIN CAMERA WAS NULL! CANT FIRE PROJECTILES FROM PLAYER");
+            return;
+        }
+        
         // Every scene must have a ground object to raycast onto
-        if(Physics.Raycast(ray, out hit, 100f, LayerMask.GetMask(new string[] { "Ground" })))
-		{
-            if(InventorySystem.Instance.CheckForAmmo()){
-                switch(InventorySystem.Instance.GetSelectedAmmo()){
-                    case AmmoType.Fire:
-                        Debug.Log("Fire ammo");
-                        _projectilePrefab = _projectileFirePrefab;
-                        InventorySystem.Instance.Remove(fireAmmo);
-                        break;
-                    case AmmoType.Water:
-                    Debug.Log("Water ammo");
-                        _projectilePrefab = _projectileWaterPrefab;
-                        InventorySystem.Instance.Remove(waterAmmo);
-                        break;
-                    case AmmoType.Sparks:
-                        Debug.Log("Sparks ammo");
-                        _projectilePrefab = _projectileSparksPrefab;
-                        InventorySystem.Instance.Remove(sparksAmmo);
-                        break;
-                    case AmmoType.Spore:
-                        Debug.Log("Spore ammo");
-                        _projectilePrefab = _projectileSporePrefab;
-                        InventorySystem.Instance.Remove(sporeAmmo);
-                        break;
-                    case AmmoType.None:
-                        _projectilePrefab = _projectileNeutralPrefab;
-                        break;
-                    default:
-                        Debug.Log("Error with ammo");
-                        break;
-                }
-                
-            }else{
-                Debug.Log("Neutral ammo");
-                _projectilePrefab = _projectileNeutralPrefab;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        bool didHit = Physics.Raycast(ray, out RaycastHit hitInfo, 100f, _groundLayers);
+
+        if (!didHit) return; // No hit, return early
+        
+        // Compute Direction
+        Vector3 direction = new Vector3(hitInfo.point.x - transform.position.x, 0, hitInfo.point.z - transform.position.z).normalized;
+        
+        // Call the fire function on the ammo manager
+        ammoManager.FireCurrentElement(transform.position, direction);
+    }
+
+    /// <summary>
+    /// Routine that handles the orientation of the firing arrow placed at the player's feet
+    /// </summary>
+    private IEnumerator ProjectileDirRoutine()
+    {
+        // Variables Pre-Declared to optimize memory allocation
+        RaycastHit hitInfo;
+        Ray ray;
+        bool didHit;
+        Vector3 direction = new Vector3();
+        Quaternion lookRotation;
+        
+        // Run while active
+        while (true)
+        {
+            // Dont run this code if there isnt a main camera set up
+            if (!Camera.main)
+            {
+                yield return null;
+                continue;
             }
-            // Spawn projectile prefab
-            GameObject projectile = Instantiate(_projectilePrefab);
-            projectile.SetActive(false);
-			projectile.transform.position = _projectileSpawnPoint.position;
-			
-            // Set target to the point on the ray that matches the y position of the spawn point
-			float hitY = hit.point.y;
-			float targetY = _projectileSpawnPoint.position.y;
-            Vector3 rayVector = ray.direction.normalized;
-			Vector3 target = hit.point + rayVector / rayVector.y * Mathf.Abs(targetY - hitY);
-
-            //Debug.DrawRay(ray.origin, 1000f * ray.direction, Color.red, 2.5f);
-            //Debug.DrawRay(hit.point, rayVector / rayVector.y * Mathf.Abs(targetY - hitY), Color.green, 5f);
-            projectile.GetComponent<Projectile>().target = target;
-			projectile.SetActive(true);
-            //AudioManager.Instance.PlayEventNoDuplicate(_playerAttackSFX);
-
-		}
-	}
-
-    private void ChangeElementAction(){
-        //change between 4 elements of nothing(aka physical prolly), fire, water, sparks. More of a test feature as the game seems to not include switching. Prolly
-        magicChange++;
-        magicChange%=4;
-        switch(magicChange){
-            case 0: 
-                _projectilePrefab = _projectileNeutralPrefab;
-                break;
-            case 1:
-                _projectilePrefab = _projectileFirePrefab;
-                break;
-            case 2:
-                _projectilePrefab = _projectileWaterPrefab;
-                break;
-            case 3:
-                _projectilePrefab = _projectileSparksPrefab;
-                break;
-            default:
-                Debug.Log("Something broke, it is over. This is the issue ---> " + magicChange);
-                break;
+            
+            // TODO: Add a bool gate in case we need to hide hud during an event or something
+            
+            // Get the location of the mouse
+            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            didHit = Physics.Raycast(ray, out hitInfo, 100f, _groundLayers);
+            
+            // No hit, restart loop
+            if (!didHit)
+            {
+                yield return null;
+                continue;
+            }
+        
+            // Compute Direction and Set the firing arrow to the direction
+            direction.x = hitInfo.point.x - transform.position.x;
+            direction.z = hitInfo.point.z - transform.position.z;
+            direction.y = 0;
+            Vector3.Normalize(direction);
+            if (direction != Vector3.zero)
+            {
+                lookRotation = Quaternion.LookRotation(direction, Vector3.up);
+                projectileDirArrow.transform.rotation = Quaternion.Euler(90f, lookRotation.eulerAngles.y - 45f, 0f);
+            }
+            yield return null;
         }
     }
 

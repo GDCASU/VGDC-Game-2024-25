@@ -87,9 +87,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Change Element",
+                    "name": "Change Next Element",
                     "type": "Button",
-                    "id": "e9b1d7c4-c384-432a-944a-169f986521e6",
+                    "id": "ff24896c-812b-4278-b28a-b2e2cc8009ab",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Change Previous Element",
+                    "type": "Button",
+                    "id": "6f86ccd1-10e7-4aef-ba07-43056ac0cd99",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -110,14 +119,58 @@
                 },
                 {
                     "name": "",
-                    "id": "70321dde-4c5a-4b2b-bce2-ac270dfdac4b",
+                    "id": "803929cc-b868-46b4-8033-f7a95d822471",
                     "path": "<Keyboard>/tab",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Change Element",
+                    "action": "Change Next Element",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "Scroll Wheel Up",
+                    "id": "48892dc3-663a-43a5-83b0-9cb8609cabd4",
+                    "path": "1DAxis(whichSideWins=1)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Change Next Element",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "positive",
+                    "id": "4c4a5d6a-5ecf-4551-b67e-19be60606ae8",
+                    "path": "<Mouse>/scroll/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Change Next Element",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Scroll Wheel Down",
+                    "id": "a33f0db2-cb64-40a1-91f1-8151dff30f2a",
+                    "path": "1DAxis(whichSideWins=1)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Change Previous Element",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "positive",
+                    "id": "d3bf309f-cbd7-4a97-add3-4707b3003d1a",
+                    "path": "<Mouse>/scroll/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Change Previous Element",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         },

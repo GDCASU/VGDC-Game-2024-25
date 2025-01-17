@@ -109,9 +109,18 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Change Element"",
+                    ""name"": ""Change Next Element"",
                     ""type"": ""Button"",
-                    ""id"": ""e9b1d7c4-c384-432a-944a-169f986521e6"",
+                    ""id"": ""ff24896c-812b-4278-b28a-b2e2cc8009ab"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Change Previous Element"",
+                    ""type"": ""Button"",
+                    ""id"": ""6f86ccd1-10e7-4aef-ba07-43056ac0cd99"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -132,14 +141,58 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""70321dde-4c5a-4b2b-bce2-ac270dfdac4b"",
+                    ""id"": ""803929cc-b868-46b4-8033-f7a95d822471"",
                     ""path"": ""<Keyboard>/tab"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Change Element"",
+                    ""action"": ""Change Next Element"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Scroll Wheel Up"",
+                    ""id"": ""48892dc3-663a-43a5-83b0-9cb8609cabd4"",
+                    ""path"": ""1DAxis(whichSideWins=1)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Change Next Element"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""4c4a5d6a-5ecf-4551-b67e-19be60606ae8"",
+                    ""path"": ""<Mouse>/scroll/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Change Next Element"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Scroll Wheel Down"",
+                    ""id"": ""a33f0db2-cb64-40a1-91f1-8151dff30f2a"",
+                    ""path"": ""1DAxis(whichSideWins=1)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Change Previous Element"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""d3bf309f-cbd7-4a97-add3-4707b3003d1a"",
+                    ""path"": ""<Mouse>/scroll/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Change Previous Element"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -211,7 +264,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         // PlayerActions
         m_PlayerActions = asset.FindActionMap("PlayerActions", throwIfNotFound: true);
         m_PlayerActions_Attack = m_PlayerActions.FindAction("Attack", throwIfNotFound: true);
-        m_PlayerActions_ChangeElement = m_PlayerActions.FindAction("Change Element", throwIfNotFound: true);
+        m_PlayerActions_ChangeNextElement = m_PlayerActions.FindAction("Change Next Element", throwIfNotFound: true);
+        m_PlayerActions_ChangePreviousElement = m_PlayerActions.FindAction("Change Previous Element", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Interaction = m_UI.FindAction("Interaction", throwIfNotFound: true);
@@ -324,13 +378,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_PlayerActions;
     private List<IPlayerActionsActions> m_PlayerActionsActionsCallbackInterfaces = new List<IPlayerActionsActions>();
     private readonly InputAction m_PlayerActions_Attack;
-    private readonly InputAction m_PlayerActions_ChangeElement;
+    private readonly InputAction m_PlayerActions_ChangeNextElement;
+    private readonly InputAction m_PlayerActions_ChangePreviousElement;
     public struct PlayerActionsActions
     {
         private @PlayerControls m_Wrapper;
         public PlayerActionsActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Attack => m_Wrapper.m_PlayerActions_Attack;
-        public InputAction @ChangeElement => m_Wrapper.m_PlayerActions_ChangeElement;
+        public InputAction @ChangeNextElement => m_Wrapper.m_PlayerActions_ChangeNextElement;
+        public InputAction @ChangePreviousElement => m_Wrapper.m_PlayerActions_ChangePreviousElement;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -343,9 +399,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Attack.started += instance.OnAttack;
             @Attack.performed += instance.OnAttack;
             @Attack.canceled += instance.OnAttack;
-            @ChangeElement.started += instance.OnChangeElement;
-            @ChangeElement.performed += instance.OnChangeElement;
-            @ChangeElement.canceled += instance.OnChangeElement;
+            @ChangeNextElement.started += instance.OnChangeNextElement;
+            @ChangeNextElement.performed += instance.OnChangeNextElement;
+            @ChangeNextElement.canceled += instance.OnChangeNextElement;
+            @ChangePreviousElement.started += instance.OnChangePreviousElement;
+            @ChangePreviousElement.performed += instance.OnChangePreviousElement;
+            @ChangePreviousElement.canceled += instance.OnChangePreviousElement;
         }
 
         private void UnregisterCallbacks(IPlayerActionsActions instance)
@@ -353,9 +412,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Attack.started -= instance.OnAttack;
             @Attack.performed -= instance.OnAttack;
             @Attack.canceled -= instance.OnAttack;
-            @ChangeElement.started -= instance.OnChangeElement;
-            @ChangeElement.performed -= instance.OnChangeElement;
-            @ChangeElement.canceled -= instance.OnChangeElement;
+            @ChangeNextElement.started -= instance.OnChangeNextElement;
+            @ChangeNextElement.performed -= instance.OnChangeNextElement;
+            @ChangeNextElement.canceled -= instance.OnChangeNextElement;
+            @ChangePreviousElement.started -= instance.OnChangePreviousElement;
+            @ChangePreviousElement.performed -= instance.OnChangePreviousElement;
+            @ChangePreviousElement.canceled -= instance.OnChangePreviousElement;
         }
 
         public void RemoveCallbacks(IPlayerActionsActions instance)
@@ -434,7 +496,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     public interface IPlayerActionsActions
     {
         void OnAttack(InputAction.CallbackContext context);
-        void OnChangeElement(InputAction.CallbackContext context);
+        void OnChangeNextElement(InputAction.CallbackContext context);
+        void OnChangePreviousElement(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

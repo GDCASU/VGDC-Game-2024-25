@@ -27,10 +27,10 @@ public class DamageableEntity : MonoBehaviour
     [SerializeField] private bool doDebugLog;
 	[SerializeField] private DamageMultiplier[] _damageMultipliers = new DamageMultiplier[]
 	{
-		new DamageMultiplier{ element = Elements.neutral, multiplier = 1f },
-		new DamageMultiplier{ element = Elements.fire, multiplier = 1f },
-		new DamageMultiplier{ element = Elements.water, multiplier = 1f },
-		new DamageMultiplier{ element = Elements.sparks, multiplier = 1f },
+		new DamageMultiplier{ element = Elements.Neutral, multiplier = 1f },
+		new DamageMultiplier{ element = Elements.Fire, multiplier = 1f },
+		new DamageMultiplier{ element = Elements.Water, multiplier = 1f },
+		new DamageMultiplier{ element = Elements.Sparks, multiplier = 1f },
 	};
 	private Dictionary<Elements, float> _damageMultiplierDict;
 
