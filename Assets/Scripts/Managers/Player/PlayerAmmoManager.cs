@@ -9,6 +9,9 @@ using UnityEngine.Serialization;
 /* -----------------------------------------------------------
  * Author:
  * Ian Fletcher
+ *
+ * Merging work done by:
+ * TJ
  * 
  * Modified By:
  * 
@@ -25,12 +28,10 @@ using UnityEngine.Serialization;
 /// </summary>
 public class PlayerAmmoManager : MonoBehaviour
 {
-    
-
     [Header("References")] 
     [SerializeField] private GameObject ammoDisplayParent;
     [SerializeField] private Material cooldownShaderMat;
-    [SerializeField] private SimpleAudioEmitter projectileSoundEmitter;
+    [SerializeField] private MultiAudioEmitter soundEmitter;
 
     [Header("Ammo Slots")]
     // Neutral element must be first in the list
@@ -47,12 +48,13 @@ public class PlayerAmmoManager : MonoBehaviour
     [SerializeField] private bool doDebugLog;
     
     // Local Variables
+    private readonly int projectileAudioHash = Animator.StringToHash("Projectile");
     private List<ElementHUDPair> activeAmmoSlots = new List<ElementHUDPair>();
     private ElementHUDPair currentAmmoSlot;
     private Vector3 defaultAmmoPos;
     private Coroutine ammoRotatingRoutine;
     private Coroutine cooldownRoutine;
-    private int Arc1 = Shader.PropertyToID("_Arc1");
+    private readonly int arc1Property = Shader.PropertyToID("_Arc1");
     
     private void Start()
     {
@@ -61,7 +63,7 @@ public class PlayerAmmoManager : MonoBehaviour
         defaultAmmoPos = direction * displayRadius;
         
         // Set the arc point 2 of the material shader to 360 as default (clear)
-        cooldownShaderMat.SetFloat(Arc1, 360f);
+        cooldownShaderMat.SetFloat(arc1Property, 360f);
 
         // Disable all elements just in case someone forgot to do so in the inspector
         // Also set up references to element storage
@@ -165,7 +167,7 @@ public class PlayerAmmoManager : MonoBehaviour
         elementProjectile.GetComponent<ElementProjectile>().moveDir = direction;
         
         // Play projectile fire sound
-        projectileSoundEmitter.PlaySound();
+        soundEmitter.PlaySound(projectileAudioHash);
         
         // Trigger Cooldown
         cooldownRoutine = StartCoroutine(CooldownRoutine());
@@ -199,17 +201,17 @@ public class PlayerAmmoManager : MonoBehaviour
         float angle = 0f;
         
         // Set the arc value to 0, then increase to 360 as cooldown progresses
-        cooldownShaderMat.SetFloat(Arc1, 0f);
+        cooldownShaderMat.SetFloat(arc1Property, 0f);
         
         while (elapsedTime < cooldownDuration)
         {
             angle = (elapsedTime / cooldownDuration) * 360f;
-            cooldownShaderMat.SetFloat(Arc1, angle);
+            cooldownShaderMat.SetFloat(arc1Property, angle);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
         // Finished
-        cooldownShaderMat.SetFloat(Arc1, 360f);
+        cooldownShaderMat.SetFloat(arc1Property, 360f);
         cooldownRoutine = null;
     }
 
@@ -465,7 +467,7 @@ public class PlayerAmmoManager : MonoBehaviour
         // Store a reference to the Inventory Slot
         [HideInInspector] public ElementInvSlot elementInvSlot;
         // Store the current angle difference from the central slot to avoid excessive calculation of angles
-        [HideInInspector] public float currentAngle = 0;
+        [InspectorReadOnly] public float currentAngle = 0;
         
         /// <summary>
         /// Helper function to enable/disable the HUD GameObject

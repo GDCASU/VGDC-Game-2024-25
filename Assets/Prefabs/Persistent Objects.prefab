@@ -188,14 +188,14 @@ MonoBehaviour:
     ammoAmount: 4
     ammoMaxAmount: 5
   fungalElement:
-    element: 5
+    element: 4
     projectilePrefab: {fileID: 3053767172377724150, guid: 113cdedee7ea18a45980cc12a26193ea,
       type: 3}
     isInfinite: 0
     ammoAmount: 2
     ammoMaxAmount: 5
   sparkElement:
-    element: 7
+    element: 5
     projectilePrefab: {fileID: 3053767172377724150, guid: 6f2a4c5b0a56de54d980e2be044ed07c,
       type: 3}
     isInfinite: 0
@@ -297,14 +297,11 @@ MonoBehaviour:
   _masterVCAString: Master
   _musicVCAString: Music
   _sfxVCAString: SFX
-  _ambienceVCAString: Ambience
   _sfxGroupPath: SFX
   _musicGroupPath: Music
-  _ambienceGroupPath: Ambience
   _combatGroupPath: SFX/Combat
   _masterSlider: 0.5
   _musicSlider: 0.5
-  _ambienceSlider: 0
   _sfxSlider: 0.5
   _disableSliders: 0
   _doDebugLog: 0
