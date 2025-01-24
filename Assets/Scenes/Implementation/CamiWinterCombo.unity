@@ -634,7 +634,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 9cf535d581b955244b83e91bc9e6b3b2,
         type: 3}
       propertyPath: m_Name
-      value: 1x1_room (4)
+      value: End_Room
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1019,6 +1019,16 @@ PrefabInstance:
       propertyPath: attenuationObject
       value: 
       objectReference: {fileID: 317657670}
+    - target: {fileID: 4702234235888479508, guid: 7a27a01553aa4f34e848cabda38d6d75,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.3967729
+      objectReference: {fileID: 0}
+    - target: {fileID: 4702234235888479508, guid: 7a27a01553aa4f34e848cabda38d6d75,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -2.2748775
+      objectReference: {fileID: 0}
     - target: {fileID: 5048592309342998137, guid: 7a27a01553aa4f34e848cabda38d6d75,
         type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
@@ -1576,7 +1586,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 1ef2966d09c275b4ba29ee552d50b7a8,
         type: 3}
       propertyPath: m_Name
-      value: 2x1_room (1)
+      value: Mushroom3
       objectReference: {fileID: 0}
     - target: {fileID: 8905543949627666897, guid: 1ef2966d09c275b4ba29ee552d50b7a8,
         type: 3}
@@ -1648,6 +1658,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1522198154372349937, guid: d52b7a87d6e4435438c2534623cb1c15,
     type: 3}
   m_PrefabInstance: {fileID: 1434505372}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &263711671 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6728592557690765619, guid: 2cd6866d5e233a54e8f72ef92c5c7cd7,
+    type: 3}
+  m_PrefabInstance: {fileID: 1566300025}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &317657670 stripped
 GameObject:
@@ -2836,17 +2852,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37259e97671ab2c4db799ae11b0ee901, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventReference:
-    Guid:
-      Data1: 901452799
-      Data2: 1196343431
-      Data3: 999902902
-      Data4: 1590191227
-    Path: event:/SFX/TESTING/playerFootstepsSFX
-  eventPlayTrigger: 0
-  eventStopTrigger: 0
-  playConditions: 0
-  playCooldown: 0
+  settings:
+    eventReference:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    eventPlayTrigger: 0
+    eventStopTrigger: 0
+    playConditions: 0
+    playCooldown: 0
   doDebugLog: 0
 --- !u!1 &438043079
 GameObject:
@@ -4632,6 +4649,12 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 665794005}
   m_Mesh: {fileID: 4205741240996404516, guid: 1ef2966d09c275b4ba29ee552d50b7a8, type: 3}
+--- !u!1 &675608135 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 662770385354768684, guid: 2cd6866d5e233a54e8f72ef92c5c7cd7,
+    type: 3}
+  m_PrefabInstance: {fileID: 1566300025}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &684724956
 GameObject:
   m_ObjectHideFlags: 0
@@ -6255,7 +6278,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 258d40ec8a954a544befee734ed5cd9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 843027901}
+  targetObject: {fileID: 843027898}
   lockX: 0
   lockY: 0
   lockZ: 0
@@ -6586,7 +6609,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 1ef2966d09c275b4ba29ee552d50b7a8,
         type: 3}
       propertyPath: m_Name
-      value: 2x1_room
+      value: Mushroom2
       objectReference: {fileID: 0}
     - target: {fileID: 7929751439760325666, guid: 1ef2966d09c275b4ba29ee552d50b7a8,
         type: 3}
@@ -10615,6 +10638,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1383077441}
     m_Modifications:
+    - target: {fileID: 3431031953278502751, guid: 2cd6866d5e233a54e8f72ef92c5c7cd7,
+        type: 3}
+      propertyPath: targetObject
+      value: 
+      objectReference: {fileID: 263711671}
     - target: {fileID: 6363788782021913216, guid: 2cd6866d5e233a54e8f72ef92c5c7cd7,
         type: 3}
       propertyPath: m_Name
@@ -10670,6 +10698,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7137532347750465272, guid: 2cd6866d5e233a54e8f72ef92c5c7cd7,
+        type: 3}
+      propertyPath: targetObject
+      value: 
+      objectReference: {fileID: 675608135}
+    - target: {fileID: 8057753769551497320, guid: 2cd6866d5e233a54e8f72ef92c5c7cd7,
+        type: 3}
+      propertyPath: targetObject
+      value: 
+      objectReference: {fileID: 2038538520}
     - target: {fileID: 8926678641173633585, guid: 2cd6866d5e233a54e8f72ef92c5c7cd7,
         type: 3}
       propertyPath: player
@@ -14039,6 +14077,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2023674332}
   m_CullTransparentMesh: 1
+--- !u!1 &2038538520 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6057446425879173795, guid: 2cd6866d5e233a54e8f72ef92c5c7cd7,
+    type: 3}
+  m_PrefabInstance: {fileID: 1566300025}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2053565627
 GameObject:
   m_ObjectHideFlags: 0
@@ -14681,17 +14725,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37259e97671ab2c4db799ae11b0ee901, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventReference:
-    Guid:
-      Data1: -1491659171
-      Data2: 1227564112
-      Data3: 1294923137
-      Data4: 742891468
-    Path: event:/SFX/TESTING/playerAttackSFX
-  eventPlayTrigger: 0
-  eventStopTrigger: 0
-  playConditions: 0
-  playCooldown: 0
+  settings:
+    eventReference:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+    eventPlayTrigger: 0
+    eventStopTrigger: 0
+    playConditions: 0
+    playCooldown: 0
   doDebugLog: 0
 --- !u!1001 &7524642177757907916
 PrefabInstance:
