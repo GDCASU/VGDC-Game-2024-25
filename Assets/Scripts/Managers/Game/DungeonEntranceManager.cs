@@ -19,42 +19,44 @@ public class DungeonEntranceManager : MonoBehaviour
     [SerializeField] public Vector3 targetPosition;
     [SerializeField] public bool isOpen = true;
 
-    private Scene_Transition_Script sceneManager;
+    private LevelManager sceneManager;
+    private Interactions interactions;
+    private SpriteRenderer[] sprites;
+    private GameObject[] spriteObjects;
 
     private void Awake()
     {
-        sceneManager = GameObject.Find("Scene_Transition_Manager").GetComponent<Scene_Transition_Script>();
-        open();
+        sprites = GetComponentsInChildren<SpriteRenderer>();
+        spriteObjects = new GameObject[2] { sprites[0].gameObject, sprites[1].gameObject };
+        interactions = GetComponent<Interactions>();
+        interactions.ChangeInteraction(EnterDungeon);
+
+        sceneManager = GameObject.Find("Level Manager").GetComponent<LevelManager>();
+
     }
-    private void OnTriggerEnter(Collider other)
+
+    private void EnterDungeon()
     {
-        if (other.gameObject == player && isOpen) {
-            sceneManager.LoadSceneByName(targetSceneName,targetPosition);
+        if (isOpen)
+        {
+            sceneManager.LoadSceneByName(targetSceneName, targetPosition);
         }
     }
 
     public void close() {
-        isOpen = false;
-        SpriteRenderer[] sprites = GetComponentsInChildren<SpriteRenderer>();
-        sprites[1].enabled = true;
-        sprites[0].enabled = false;
+        spriteObjects[0].SetActive(false);
+        spriteObjects[1].SetActive(true);
     }
 
     public void open() {
-        isOpen = true;
-        SpriteRenderer[] sprites = GetComponentsInChildren<SpriteRenderer>();
-        sprites[1].enabled = false;
-        sprites[0].enabled = true;
+        spriteObjects[0].SetActive(true);
+        spriteObjects[1].SetActive(false);
     }
 
     private void Update()
     {
-        if (isOpen){
-            open();
-        } else
-        {
-            close();
-        }
+        if (isOpen){ open(); } 
+        else { close(); }
     }
 
 

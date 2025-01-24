@@ -117,10 +117,15 @@ public class InteractionManager : MonoBehaviour
         isRunning = true;
 
         SpriteRenderer popupMenu = highlightedObject.GetComponentInChildren<SpriteRenderer>();
-        TMP_Text popupText = highlightedObject.GetComponentInChildren<TMP_Text>(); // Action and object type
-        TMP_Text popupText2 = highlightedObject.GetComponentsInChildren<TMP_Text>()[1]; // keybind
+        int textNumber = highlightedObject.GetComponentsInChildren<TMP_Text>().Length;
+        TMP_Text[] popupTexts = new TMP_Text[textNumber];
 
-        if (popupMenu == null || popupText == null || popupText2 == null) { Debug.LogError("Missing component on highlighted object (Sprite Renderer or TMP_Text)"); }
+        for (int i = 0; i < textNumber; ++i)
+        {
+            popupTexts[i] = highlightedObject.GetComponentsInChildren<TMP_Text>()[i];
+        }
+
+        if (textNumber > 0 && popupMenu == null) { Debug.LogError("Missing Sprite Renderer component on highlighted object"); }
         
         float transition; // fade in vs fade out
         if (fadeIn) { transition = .1f; }
@@ -135,8 +140,10 @@ public class InteractionManager : MonoBehaviour
         {
             transparencyMenu += transition;
             popupMenu.color = new Color(popupMenu.color.r, popupMenu.color.g, popupMenu.color.b, transparencyMenu);
-            popupText.color = new Color(popupText.color.r, popupText.color.g, popupText.color.b, transparencyMenu);
-            popupText2.color = new Color(popupText2.color.r, popupText2.color.g, popupText2.color.b, transparencyMenu);
+            foreach (TMP_Text popupText in popupTexts)
+            {
+                popupText.color = new Color(popupText.color.r, popupText.color.g, popupText.color.b, transparencyMenu);
+            }
 
             yield return new WaitForSeconds(0.01f);
         }
