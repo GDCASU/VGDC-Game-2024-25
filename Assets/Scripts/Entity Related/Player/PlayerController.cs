@@ -57,8 +57,6 @@ public class PlayerController : MonoBehaviour
         // Get Components
         ammoManager = GetComponent<PlayerAmmoManager>();
         
-        PlayerDataManager.Instance.playerController = this;
-        
         // Player HUD Binds
         InputManager.OnChangeElement += SwitchAmmoSlotHUD;
 		InputManager.OnAttack += AttackAction;

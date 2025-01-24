@@ -195,7 +195,7 @@ PrefabInstance:
     - target: {fileID: 1024075932493480754, guid: 024d5ac63d0053540b0d0887c505b6f0,
         type: 3}
       propertyPath: m_Name
-      value: Enemy Capsule
+      value: Basic Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 4484544789662233782, guid: 024d5ac63d0053540b0d0887c505b6f0,
         type: 3}
@@ -329,12 +329,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 378237835}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1991421163}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &410087039
 GameObject:
@@ -725,7 +725,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 378237838}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &57533178824503230
@@ -804,16 +805,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4702234235888479508, guid: 7a27a01553aa4f34e848cabda38d6d75,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.3437729
-      objectReference: {fileID: 0}
-    - target: {fileID: 4702234235888479508, guid: 7a27a01553aa4f34e848cabda38d6d75,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -2.2748783
-      objectReference: {fileID: 0}
     - target: {fileID: 5058281500528716855, guid: 7a27a01553aa4f34e848cabda38d6d75,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1173,4 +1164,3 @@ SceneRoots:
   - {fileID: 84841835}
   - {fileID: 1991421163}
   - {fileID: 5690622273550298659}
-  - {fileID: 378237838}
