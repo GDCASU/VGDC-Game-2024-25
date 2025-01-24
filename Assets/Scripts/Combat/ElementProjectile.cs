@@ -65,7 +65,7 @@ public class ElementProjectile : MonoBehaviour
             return;
         }
         // Otherwise it did, deal damage and see if we need to generate a reaction
-        ReactionType reaction = damageable.TakeDamage(damage,element);
+        ReactionType reaction = damageable.TakeDamage(damage, element, moveDir);
         if (reaction == ReactionType.Undefined)
         {
             // No reaction to process

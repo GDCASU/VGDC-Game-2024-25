@@ -33,6 +33,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _speedAfterAcceleration;
     [SerializeField] private float _delayBeforeAcceleration;
     [SerializeField] private float _durationOfAcceleration;
+    [SerializeField] private float _knockbackDeceleration;
+    [SerializeField] private float _knockbackStunDuration;
     
     [Header("Combat")]
     [SerializeField] private LayerMask _groundLayers;
@@ -50,7 +52,9 @@ public class PlayerController : MonoBehaviour
     private PlayerAmmoManager ammoManager;
     private float _elapsedMovementTime = 0; // Time since movement in the current direction started
     private Vector3 _previousInputVector = Vector3.zero;
-    private readonly int IsMoving = Animator.StringToHash("IsMoving");
+    private Coroutine _knockbackCoro;
+    private bool _handlingKnockback;
+	private readonly int IsMoving = Animator.StringToHash("IsMoving");
     
 	private void Start()
 	{
@@ -77,9 +81,16 @@ public class PlayerController : MonoBehaviour
         {
             transform.Rotate(0, -cameraRotateSpeed * Time.deltaTime, 0);
         }
-        
-        // Get Vector2 Input from Input Manager
-        Vector3 input = InputManager.Instance.movementInput;
+
+        // Test button for knockback
+        //if(Input.GetKeyDown(KeyCode.K))
+        //{
+        //    float angle = Mathf.Deg2Rad * (projectileDirArrow.transform.rotation.eulerAngles.y + 45f);
+        //    Knockback(new Vector3(-Mathf.Sin(angle), 0f, -Mathf.Cos(angle)), 5f);
+        //}
+
+        // Get Vector2 Input from Input Manager - if player is hit and knocked back, ignore input
+        Vector3 input = _handlingKnockback ? Vector3.zero : InputManager.Instance.movementInput;
 
         // Since the player could be slightly rotated from the
         // world axis, we compute the rotation
@@ -90,11 +101,11 @@ public class PlayerController : MonoBehaviour
         Vector3 moveDirWorldSpace = (forward * input.y + right * input.x).normalized;
 
         // Set movement duration
-        if (input == _previousInputVector) 
+        if (input == _previousInputVector)
         {
             _elapsedMovementTime += Time.deltaTime;
         } 
-        else 
+        else
         {
             _elapsedMovementTime = 0;
             _previousInputVector = input;
@@ -146,6 +157,25 @@ public class PlayerController : MonoBehaviour
     {
         ammoManager.ChangeElement(isNext);
     }
+
+    public void Knockback(Vector3 direction, float magnitude)
+	{
+        if(_knockbackCoro != null) StopCoroutine(_knockbackCoro);
+        _handlingKnockback = true;
+		_knockbackCoro = StartCoroutine(KnockbackCoroutine(direction, magnitude));
+	}
+
+    private IEnumerator KnockbackCoroutine(Vector3 direction, float magnitude)
+    {
+		while(magnitude > 0)
+        {
+			_characterController.Move(Time.deltaTime * direction.normalized * magnitude);
+            yield return null;
+			magnitude -= _knockbackDeceleration * Time.deltaTime;
+		}
+        yield return new WaitForSeconds(_knockbackStunDuration);
+        _handlingKnockback = false;
+	}
 
     private void AttackAction()
 	{
