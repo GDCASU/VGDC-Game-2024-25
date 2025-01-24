@@ -986,6 +986,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2391930757929744352}
+  - component: {fileID: 2221568796221056736}
   - component: {fileID: 6697751668706597001}
   - component: {fileID: 7667864572134118126}
   - component: {fileID: 2928181521467997156}
@@ -1020,6 +1021,25 @@ Transform:
   - {fileID: 5698791469193059211}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2221568796221056736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5486136789815482219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da9e00439e59bc9439543e15d1f4f413, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  playerAmmoManager: {fileID: 7667864572134118126}
+  playerController: {fileID: 6697751668706597001}
+  magnetAttraction: {fileID: 2525701321551742629}
+  audioEmitter: {fileID: 3864376432590520672}
+  currentHealth: 0
+  _doDebugLog: 0
 --- !u!114 &6697751668706597001
 MonoBehaviour:
   m_ObjectHideFlags: 0
