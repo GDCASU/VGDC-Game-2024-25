@@ -27,6 +27,8 @@ using TMPro;
 /// 
 public class Interactions : MonoBehaviour
 {
+    public bool displaysInteractKeybind; // whether or not there's text on how to interact displays on screen
+    public bool displaysInteractObjectType; // whether or not there's text on what object is being interacted with
     string typeName; // name of current function
     System.Action currentEvent; // current function
     bool canInteract; // whether the player is near the interactable
@@ -37,8 +39,9 @@ public class Interactions : MonoBehaviour
         if (currentEvent == null) { Debug.LogError("No function assigned to currentEvent. Use ChangeInteraction() to assign a new interaction event."); }
 
         typeName = currentEvent.Method.Name;
-        this.GetComponentInChildren<TMP_Text>().text = $"<b>{name}</b> \n {typeName}";
-        this.GetComponentsInChildren<TMP_Text>()[1].text = $"{GetInputKey()}";
+
+        if (displaysInteractObjectType) { GetComponentInChildren<TMP_Text>().text = $"<b>{name}</b> \n {typeName}"; }
+        if (displaysInteractKeybind) { GetComponentsInChildren<TMP_Text>()[1].text = $"{GetInputKey()}"; }
 
         InputManager.OnInteract += currentEvent;
         canInteract = true;
