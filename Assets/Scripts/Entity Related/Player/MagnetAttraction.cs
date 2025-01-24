@@ -1,74 +1,159 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
+/* -----------------------------------------------------------
+ * Author:
+ * Eliza Chook
+ *
+ * Modified By:
+ * Jacob Kaufman-Warner, Ian Fletcher
+ */// --------------------------------------------------------
+
+/* -----------------------------------------------------------
+ * Pupose:
+ * Handle Item attraction and pickup
+ */// --------------------------------------------------------
+
+/// <summary>
+/// Attracts objects that has the tag collectible to collect them (applies to all collectable objects/enemy drops)
+/// </summary>
 public class MagnetAttraction : MonoBehaviour
-//Summary: Attracts objects that has the tag collectible to collect them (applies to all collectable objects/enemy drops)
-//Made by Eliza Chook
 {
-    public float attractionSpeed = 5f;  // Speed at which objects are pulled towards the player
-    public float collectionThreshold = 40f; // Distance threshold for collecting the object
+    [Header("Settings")]
+    [SerializeField][Range(0f,10f)] private float attractionSpeed; // Speed at which objects are pulled towards the player
+    [SerializeField][Range(0.1f,10f)] private float pickupRadius = 0.1f;
 
-    private List<Transform> collectiblesInRange = new List<Transform>();
+    // Local variables
+    private Dictionary<Collider, ItemPickups> cachedScripts = new(); // Script Cache
 
-    //Detects if object enters attraction field/capsule collider and adds them to list
+    private void Start()
+    {
+        StartCoroutine(NullColliderCheckRoutine());
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Collectible"))
+        // Check if the collider is already cached
+        if (cachedScripts.ContainsKey(other)) return; // It does, dont need to do anything
+        
+        // Check if the item is of type collectible
+        if (!other.CompareTag(TagDefinitions.CollectibleTag)) return; // Not a collectible
+        
+        // Else, add it to the dictionary
+        ItemPickups scr = other.GetComponent<ItemPickups>();
+        if (scr == null) return; // dont add if null
+        if (!scr.isMagnetAttractable) return; // Dont add if not magnet attractable
+        cachedScripts.Add(other, scr);
+    }
+    
+    // Runs per collider found within the sphere
+    private void OnTriggerStay(Collider other)
+    {
+        // Check if its on cache
+        if (!cachedScripts.TryGetValue(other, out ItemPickups itemPickup)) return; // Not on cache
+
+        // Check which type of collectible it is
+        switch (itemPickup.itemData.itemType)
         {
-            collectiblesInRange.Add(other.transform); 
+            case CollectibleType.Ammo:
+                HandleAmmoCollectible(itemPickup);
+                break;
+            default:
+                // TODO: HANDLE OTHER TYPES
+                Debug.LogError("ERROR! ITEM TYPE CASE NOT DEFINED! We dont know how to handle = " + itemPickup.itemData.itemType);
+                return;
         }
     }
-
-    //Detects if object leaves attraction field/capsule collider and removes them from list
+    
+    // Remove the collider from the cache when it exits the trigger
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Collectible"))
-        {
-            collectiblesInRange.Remove(other.transform); 
-        }
+        // Remove from cache
+        cachedScripts.Remove(other);
     }
 
-    private void Update()
+    /// <summary>
+    /// Handle the collection of ammo drops
+    /// </summary>
+    private void HandleAmmoCollectible(ItemPickups itemPickup)
     {
-        
-        // Loop through collectibles within the attraction range
-        for (int i = collectiblesInRange.Count - 1; i >= 0; i--)
+        // Only attract if not at max ammo
+        ElementInvSlot elementInvSlot = ElementInventoryManager.Instance.GetInvSlotFromElement(itemPickup.itemData.element);
+        if (elementInvSlot == null) return;
+        if (elementInvSlot.ammoAmount >= elementInvSlot.ammoMaxAmount)
         {
-            Transform collectible = collectiblesInRange[i];
+            // At max ammo, re-enable gravity
+            itemPickup.rb.useGravity = true;
+            return;
+        }
+        // Check if not within pickup radius
+        float distance = Vector3.Distance(itemPickup.transform.position, transform.position);
+        if (distance <= pickupRadius)
+        {
+            // Pick up ammo
+            ElementInventoryManager.Instance.AddAmmoToElement(itemPickup.itemData.element, itemPickup.itemData.value);
+            Destroy(itemPickup.gameObject);
+            return;
+        }
+        // Else, Attract
+        AttractObject(itemPickup);
+    }
 
-            // If the collectible is destroyed continue with other objects within loop
-            if (collectible == null)
+    /// <summary>
+    /// Function to call if the object is to be attracted to player
+    /// </summary>
+    private void AttractObject(ItemPickups itemPickup)
+    {
+        // Disable gravity
+        itemPickup.rb.useGravity = false;
+        // Attract
+        itemPickup.transform.position = Vector3.MoveTowards(itemPickup.transform.position, transform.position, attractionSpeed * Time.deltaTime);
+    }
+
+    /// <summary>
+    /// Coroutine that will check periodically if the cache dictionary contains null keys
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator NullColliderCheckRoutine()
+    {
+        float checkPeriod = 5f;
+        float elapsedTime = 0f;
+        List<Collider> keyList;
+        
+        while (true)
+        {
+            elapsedTime += Time.deltaTime;
+            if (elapsedTime <= checkPeriod)
             {
-                collectiblesInRange.RemoveAt(i);
+                // Haven't reached the check period yet
+                yield return null;
                 continue;
             }
-
-            // Delay attracting collectable so that it doesn't attract object too fast 
-            StartCoroutine(AttractCollectible(collectible));
+            
+            // We have started our periodic check, check for null keys
+            keyList = new List<Collider>(cachedScripts.Keys);
+            foreach (Collider key in keyList)
+            {
+                if (!key) // The object has been destroyed
+                {
+                    cachedScripts.Remove(key);
+                }
+            }
+            
+            // Restart timer
+            elapsedTime = 0f;
+            yield return null;
         }
     }
 
-    // Coroutine to gradually pull the object towards the player
-    private IEnumerator AttractCollectible(Transform collectible)
+    // Function to draw a sphere representing the item pickup zone
+    private void OnDrawGizmosSelected()
     {
-
-        // Move the collectible towards the player
-        while (Vector3.Distance(collectible.position, transform.position) > collectionThreshold)
-        {
-            collectible.position = Vector3.MoveTowards(collectible.position, transform.position, attractionSpeed * Time.deltaTime);
-            yield return null; // Wait for the next frame to continue moving
-        }
-
-        //Destroy/collect the item
-        CollectItem(collectible);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, pickupRadius);
     }
-
-    // Collect/destroy the item
-    private void CollectItem(Transform collectible)
-    {
-        // Destroy the item and remove it from the list of items in attraction field
-        Destroy(collectible.gameObject);
-        collectiblesInRange.Remove(collectible);
-    }
+    
 }
