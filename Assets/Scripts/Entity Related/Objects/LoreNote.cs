@@ -42,7 +42,7 @@ public class LoreNote : MonoBehaviour
     public void InRange()//when in range
     {
         Debug.Log("is in range");
-        if (Time.timeScale != 0)//pause game with inputKey ('E' for keyboard, 'A' for console)
+        if (Time.timeScale != 0)//pause game with inputKey ('T' for keyboard, 'A' for console)
         {
             Time.timeScale = 0;
             Debug.Log("Time Stopped");
@@ -50,7 +50,7 @@ public class LoreNote : MonoBehaviour
         }
         else
         {
-            Time.timeScale = 1;//resume game with inputKey ('E' for keyboard, 'A' for console)
+            Time.timeScale = 1;//resume game with inputKey ('T' for keyboard, 'A' for console)
             Debug.Log("Resumed");
             canvas.gameObject.SetActive(false); //disable lore note UI
         }

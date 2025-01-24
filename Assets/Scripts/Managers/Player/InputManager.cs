@@ -51,6 +51,8 @@ public class InputManager : MonoBehaviour
 
     /// <summary> Player's UI Event </summary>
     public static event System.Action OnInteract;
+    public static event System.Action OnPause;
+    public static event System.Action OnChangeDialogue;
 
     /// <summary>
     /// Binds all of the Players' controls to their respective events.
@@ -75,6 +77,8 @@ public class InputManager : MonoBehaviour
     {
         // Subscribe to input events
         _playerControls.UI.Interaction.performed += i => HandleInteractionInput(i);
+        _playerControls.UI.Pause.performed += i => HandlePauseInput(i);
+        _playerControls.UI.ContinueDialogue.performed += i => HandleDialogueInput(i);
     }
 
     #endregion
@@ -105,6 +109,7 @@ public class InputManager : MonoBehaviour
 
     private void OnDestroy()
     {
+        if (_playerControls != null) { _playerControls.Disable(); }
         StopAllCoroutines();
     }
 
@@ -156,5 +161,16 @@ public class InputManager : MonoBehaviour
         OnInteract?.Invoke();
     }
 
+    private void HandlePauseInput(InputAction.CallbackContext context)
+    {
+        if (_doDebugLog) Debug.Log("Paused");
+        OnPause?.Invoke();
+    }
+
+    private void HandleDialogueInput(InputAction.CallbackContext context)
+    {
+        if (_doDebugLog) Debug.Log("Dialogue was Changed");
+        OnChangeDialogue?.Invoke();
+    }
     #endregion
 }
