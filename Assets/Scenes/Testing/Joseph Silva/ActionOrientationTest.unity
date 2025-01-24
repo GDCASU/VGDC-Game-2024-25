@@ -678,14 +678,14 @@ MonoBehaviour:
       Data2: 1196343431
       Data3: 999902902
       Data4: 1590191227
-    Path: event:/SFX/TESTING/footstepsWood
+    Path: event:/SFX/TESTING/playerFootstepsSFX
   <playerAttackSFX>k__BackingField:
     Guid:
       Data1: -1491659171
       Data2: 1227564112
       Data3: 1294923137
       Data4: 742891468
-    Path: event:/SFX/TESTING/playerElectricBlast
+    Path: event:/SFX/TESTING/playerAttackSFX
   <coinCollect>k__BackingField:
     Guid:
       Data1: -1205151317
@@ -1204,11 +1204,13 @@ PrefabInstance:
       value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: [{fileID: 6582798097405661628, guid: 2ea8d9a76f52ca04a840bfe9eee5dd3e,
-        type: 3}]
-    m_AddedGameObjects: [{targetCorrespondingSourceObject: {fileID: 5060238407036317655,
-          guid: 2ea8d9a76f52ca04a840bfe9eee5dd3e, type: 3}, insertIndex: 3, addedObject: {
-          fileID: 1336888005}}]
+    m_RemovedGameObjects:
+    - {fileID: 6582798097405661628, guid: 2ea8d9a76f52ca04a840bfe9eee5dd3e, type: 3}
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 5060238407036317655, guid: 2ea8d9a76f52ca04a840bfe9eee5dd3e,
+        type: 3}
+      insertIndex: 3
+      addedObject: {fileID: 1336888005}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2ea8d9a76f52ca04a840bfe9eee5dd3e, type: 3}
 --- !u!4 &5690622273550298660 stripped
@@ -1283,9 +1285,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: [{targetCorrespondingSourceObject: {fileID: 5486136789815482219,
-          guid: 3929c72507c5b98469226ce0caeccc72, type: 3}, insertIndex: -1, addedObject: {
-          fileID: 6152133294446301505}}]
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5486136789815482219, guid: 3929c72507c5b98469226ce0caeccc72,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6152133294446301505}
   m_SourcePrefab: {fileID: 100100000, guid: 3929c72507c5b98469226ce0caeccc72, type: 3}
 --- !u!1 &6152133294446301503 stripped
 GameObject:
@@ -1306,12 +1310,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _persistent: 1
-  health: 0
-  mana: 0
-  experience: 0
-  OnPlayerConnectToPlayerData:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

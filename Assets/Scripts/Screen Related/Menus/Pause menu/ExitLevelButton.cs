@@ -1,15 +1,23 @@
+using FMOD.Studio;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SceneChanger : MonoBehaviour
 {
-    public string sceneName; //scene can be specified in the inspector
+    public string sceneName; // scene can be specified in the inspector
+    private LevelManager levelManager;
+
+    private void Start()
+    {
+        levelManager = GameObject.Find("Level Manager").GetComponent<LevelManager>();  
+        if (levelManager == null) { Debug.LogWarning("No 'Level Manager' found."); }
+    }
 
     public void ChangeScene()
     {
         if (!string.IsNullOrEmpty(sceneName))
         {
-            SceneManager.LoadScene(sceneName);
+            levelManager.LoadSceneByName(sceneName, Vector3.zero);
         }
         else
         {
