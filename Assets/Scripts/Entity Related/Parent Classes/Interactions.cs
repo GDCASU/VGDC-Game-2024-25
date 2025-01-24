@@ -84,7 +84,6 @@ public class Interactions : MonoBehaviour
             // Player is using a keyboard
             input = "E";
         }
-
         return input;
     }
 
