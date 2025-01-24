@@ -1,7 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,7 +10,7 @@ using UnityEngine.UI;
  * Alexander Black
  * 
  * Modified By:
- * 
+ * Ian Fletcher
  */// --------------------------------------------------------
 
 /* -----------------------------------------------------------
@@ -20,27 +20,35 @@ using UnityEngine.UI;
 
 public class FloatingHealthBar : MonoBehaviour
 {
-    [SerializeField] private Slider slider;
-    [SerializeField] private Camera camera;
-    [SerializeField] private Transform target;
-    [SerializeField] private Vector3 offset;
-    CanvasGroup canvasGroup;
+    [Header("References")] [SerializeField]
+    private Slider slider;
 
+    // Local variables
+    private Image fillImage = null;
+
+    private void Awake()
+    {
+        fillImage = slider.fillRect.GetComponent<Image>();
+    }
+
+    /// <summary>
+    /// Function to call to set the health bar value
+    /// </summary>
     public void UpdateHealthBar(float currentValue, float maxValue)
     {
         slider.value = currentValue / maxValue;
     }
 
-    private void Start()
+    /// <summary>
+    /// Function to call to change the color of the health bar
+    /// </summary>
+    public void SetHealthBarColor(Color color)
     {
-        canvasGroup = GetComponent<CanvasGroup>();
+        fillImage.color = color;
     }
 
-    void Update()
+    public void ResetHealthBarColor()
     {
-        if (slider.value <= 0 || slider.value == slider.maxValue) { canvasGroup.alpha = 0; }
-        else { canvasGroup.alpha = 1; }
-        transform.rotation = camera.transform.rotation;
-        transform.position = target.position + offset;
+        fillImage.color = Color.white;
     }
 }
