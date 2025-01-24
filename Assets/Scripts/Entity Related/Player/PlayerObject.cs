@@ -5,45 +5,90 @@ using UnityEngine;
 /* -----------------------------------------------------------
  * Author:
  * Ian Fletcher
- * 
+ *
  * Modified By:
- * 
- */// --------------------------------------------------------
+ *
+ */ // --------------------------------------------------------
 
 /* -----------------------------------------------------------
  * Pupose:
  * Interface to the player object in the scene
- */// --------------------------------------------------------
+ */ // --------------------------------------------------------
 
 
 /// <summary>
-/// Handles the interaction between the player object and its inventory, data, etc.
+/// Manager of all the components that make up the player
 /// </summary>
-public class PlayerObject : MonoBehaviour
+public class PlayerObject : MonoBehaviour, IDamageable
 {
+    // Singleton
+    public static PlayerObject Instance;
+    
+    [Header("Settings")]
+    [SerializeField] private int maxHealth = 100;
+    
+    [Header("References")]
+    [SerializeField] private PlayerAmmoManager playerAmmoManager;
+    [SerializeField] private PlayerController playerController;
+    [SerializeField] private MagnetAttraction magnetAttraction;
+    [SerializeField] private MultiAudioEmitter audioEmitter;
+    
+    [Header("Readouts")]
+    [InspectorReadOnly] [SerializeField] private int currentHealth = 0;
 
-    private static PlayerObject Instance {get; set;}
     // Use this bool to gate all your Debug.Log Statements please
-    [Header("Debugging")]
+    [Header("Debugging")] 
     [SerializeField] private bool _doDebugLog;
     
-    void Awake(){
-        if (Instance != null && Instance != this){
+    // Local Variables
+
+    void Awake()
+    {
+        // Set the Singleton
+        if (Instance != null && Instance != this)
+        {
+            // Already set, destroy this object
             Destroy(gameObject);
             return;
         }
+        // Not set yet
         Instance = this;
+        
+        // Set up stats
+        currentHealth = maxHealth;
     }
 
-    // Start is called before the first frame update
-    void Start()
+    void OnDestroy()
     {
-        
+        // Null singleton
+        Instance = null;
     }
 
-    // Update is called once per frame
-    void Update()
+    /// <summary>
+    /// Function called when the player is hit by a projectile.
+    /// </summary>
+    public ReactionType TakeDamage(int damage, Elements element)
     {
+        // TODO: The player doesnt trigger reactions right?
+        // Damage health
+        currentHealth -= damage;
+        // Check for death
+        if (currentHealth <= 0)
+        {
+            // Player died
+            OnDeath();
+            return ReactionType.Undefined;
+        }
         
+        // Return undefined
+        return ReactionType.Undefined;
+    }
+
+    /// <summary>
+    /// Function called when the player's health drops to or below 0
+    /// </summary>
+    public void OnDeath()
+    {
+        // TODO: Unfinished
     }
 }

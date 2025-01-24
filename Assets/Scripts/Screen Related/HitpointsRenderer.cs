@@ -6,7 +6,6 @@ using TMPro;
 using System.Buffers.Text;
 using static UnityEngine.GraphicsBuffer;
 using UnityEngine.UIElements;
-using Unity.VisualScripting;
 
 /// <summary> Script used to display damage numbers on the game </summary>
 public class HitpointsRenderer : MonoBehaviour

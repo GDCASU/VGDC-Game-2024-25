@@ -1,16 +1,12 @@
 using System.Collections;
 using UnityEngine;
-using FMOD.Studio;
-using FMODUnity;
-using UnityEngine.Serialization;
-using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 /* -----------------------------------------------------------
  * Author:
  * Ian Fletcher
  * 
  * Modified By: 
- * William Peng, Jacob Kaufman-Warner, Sameer Reza (Audio)
+ * William Peng, Jacob Kaufman-Warner
  */// --------------------------------------------------------
 
 /* -----------------------------------------------------------
@@ -25,7 +21,6 @@ using STOP_MODE = FMOD.Studio.STOP_MODE;
 public class PlayerController : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private Transform _projectileSpawnPoint;
     [SerializeField] private Animator moveController;
     [SerializeField] private SpriteRenderer playerRenderer;
     // Ian HACK: We probably shouldnt use the character controller for
@@ -43,7 +38,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask _groundLayers;
     
     [Header("Audio")]
-    [SerializeField] private SimpleAudioEmitter _footstepsEmitter;
+    [SerializeField] private MultiAudioEmitter _audioEmitter;
+    private readonly int footstepsHash = AudioEmitterTools.StringToInteger("Footsteps");
     
     // Use this bool to gate all your Debug.Log Statements please
     [Header("Debugging")] 
@@ -61,14 +57,9 @@ public class PlayerController : MonoBehaviour
         // Get Components
         ammoManager = GetComponent<PlayerAmmoManager>();
         
-        PlayerDataManager.Instance.playerController = this;
-        
         // Player HUD Binds
         InputManager.OnChangeElement += SwitchAmmoSlotHUD;
-
 		InputManager.OnAttack += AttackAction;
-        //_footstepsEmitter = AudioManager.Instance.CreateEventInstance(FMODEvents.instance.playerFootstepSFX);
-        //_playerAttackSFX = AudioManager.Instance.CreateEventInstance(FMODEvents.instance.playerAttackSFX);
         
         // Start the projectile dir orientation routine
         StartCoroutine(ProjectileDirRoutine());
@@ -89,11 +80,6 @@ public class PlayerController : MonoBehaviour
         
         // Get Vector2 Input from Input Manager
         Vector3 input = InputManager.Instance.movementInput;
-        // Play sound if there was movement input
-        if (input != Vector3.zero)
-        {
-            _footstepsEmitter.PlaySound();
-        }
 
         // Since the player could be slightly rotated from the
         // world axis, we compute the rotation
@@ -132,20 +118,11 @@ public class PlayerController : MonoBehaviour
         {
             playerRenderer.flipX = false;
         }
-
-        UpdateSound();
-    }
-
-    private void UpdateSound()
-    {
-        //if moving, play the footstep sound
-        if (Mathf.Abs(InputManager.Instance.movementInput.x) > 0)
+        
+        // Play sound if there was movement input
+        if (input != Vector3.zero)
         {
-            //AudioManager.Instance.PlayEventNoDuplicate(_playerFootstepSFX);
-        }
-        else
-        {
-            //_playerFootstepSFX.stop(STOP_MODE.ALLOWFADEOUT);
+            _audioEmitter.PlaySound(footstepsHash);
         }
     }
 

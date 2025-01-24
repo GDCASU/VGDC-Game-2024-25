@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 258d40ec8a954a544befee734ed5cd9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 4883781492600064867}
+  targetObject: {fileID: 1126436133547562490}
   lockX: 0
   lockY: 0
   lockZ: 0
@@ -112,6 +112,7 @@ GameObject:
   - component: {fileID: 5742771812754122774}
   - component: {fileID: 4680368142316700901}
   - component: {fileID: 6863210492710567649}
+  - component: {fileID: 6921345970803513990}
   m_Layer: 8
   m_Name: Projectile Sparks
   m_TagString: Untagged
@@ -149,10 +150,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   lifetime: 10
-  element: 5
   damage: 1
-  status: 1
+  element: 5
   doDebugLog: 0
+  moveDir: {x: 0, y: 0, z: 0}
 --- !u!136 &6863210492710567649
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -176,3 +177,30 @@ CapsuleCollider:
   m_Height: 0.1
   m_Direction: 1
   m_Center: {x: 0.11, y: 0.01, z: 0}
+--- !u!54 &6921345970803513990
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3053767172377724150}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
