@@ -72,6 +72,7 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
 # FMOD IGNORE LIST
+
 # Never ignore DLLs in the FMOD subfolder.
 !/[Aa]ssets/Plugins/FMOD/**/lib/*
 
@@ -90,13 +91,10 @@ crashlytics-build.properties
 # Log files can be ignored.
 fmod_editor.log
 
-# VISUAL STUDIO CODE IGNORE LIST
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-!.vscode/*.code-snippets
+### VISUAL STUDIO CODE IGNORE LIST ###
+
+# Visual Studio Code Cache Folder
+.vscode/
 
 # Local History for Visual Studio Code
 .history/
@@ -104,8 +102,15 @@ fmod_editor.log
 # Built Visual Studio Code Extensions
 *.vsix
 
-# CLUB IGNORE LIST
+### RIDER IGNORE LIST ###
+
+# Jetbrain Rider Cache
+.idea/
+Assets/Plugins/Editor/JetBrains*
+
+### CLUB IGNORE LIST ###
 
 # Ignore the save file location on the assets folder
 /[Aa]ssets/VGDC2024-25 SaveData/
 /[Aa]ssets/VGDC2024-25 SaveData.meta
+
