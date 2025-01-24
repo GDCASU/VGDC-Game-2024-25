@@ -1,35 +1,53 @@
 using UnityEngine;
+using UnityEngine.Serialization;
+
+/* -----------------------------------------------------------
+ * Author:
+ * Jacob Kaufman-Warner
+ *
+ * Modified By:
+ * Ian Fletcher
+ */ // --------------------------------------------------------
+
+/* -----------------------------------------------------------
+ * Purpose:
+ * Make the target object billboard towards the camera
+ */ // --------------------------------------------------------
 
 /// <summary>
-/// Script used to make a sprite billboard towards the camera
+/// Script used to make an object billboard towards the camera
 /// </summary>
 public class FaceCamera : MonoBehaviour
 {
-   [SerializeField] SpriteRenderer spriteRenderer;
+    [Header("References")] 
+    [SerializeField] private GameObject targetObject;
 
-   private Camera mainCamera;
+    [Header("Lock Roataion")] 
+    [SerializeField] private bool lockX;
+    [SerializeField] private bool lockY;
+    [SerializeField] private bool lockZ;
 
-   [Header("Lock Roataion")]
-   [SerializeField] private bool lockX;
-   [SerializeField] private bool lockY;
-   [SerializeField] private bool lockZ;
+    // Local variables
+    private Quaternion originalRotation;
 
-   private Vector3 originalRotation;
+    private void Awake()
+    {
+        originalRotation = targetObject.transform.rotation;
+    }
 
-   private void Awake(){
-      originalRotation = spriteRenderer.transform.rotation.eulerAngles;
-      mainCamera = Camera.main;
-   }
-
-   void LateUpdate(){
-      //Face object toward camera
-      spriteRenderer.transform.rotation = mainCamera.transform.rotation;
-
-      //Lock object from rotating in specified direction
-      Vector3 rotation = spriteRenderer.transform.rotation.eulerAngles;
-      if (lockX) {rotation.x = originalRotation.x;}
-      if (lockY) {rotation.y = originalRotation.y;}
-      if (lockZ) {rotation.z = originalRotation.z;} 
-      spriteRenderer.transform.rotation = Quaternion.Euler(rotation);
-   }
+    void LateUpdate()
+    {
+        // Face object toward camera
+        if (Camera.main)
+        {
+            targetObject.transform.rotation = Camera.main.transform.rotation;
+        }
+        
+        //Lock object from rotating in specified direction
+        Quaternion rotation = targetObject.transform.rotation;
+        if (lockX) rotation.x = originalRotation.x;
+        if (lockY) rotation.y = originalRotation.y;
+        if (lockZ) rotation.z = originalRotation.z;
+        targetObject.transform.rotation = rotation;
+    }
 }

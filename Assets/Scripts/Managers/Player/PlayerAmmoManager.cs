@@ -164,7 +164,9 @@ public class PlayerAmmoManager : MonoBehaviour
         // Spawn a projectile of the current ammo
         Vector3 offsetCenter = center + direction * projectileSpawnRadius;
         GameObject elementProjectile = Instantiate(currentAmmoSlot.elementInvSlot.projectilePrefab, offsetCenter, Quaternion.identity);
-        elementProjectile.GetComponent<ElementProjectile>().moveDir = direction;
+        ElementProjectile projectile = elementProjectile.GetComponent<ElementProjectile>();
+        projectile.moveDir = direction;
+        projectile.ownerTag = this.gameObject.tag;
         
         // Play projectile fire sound
         soundEmitter.PlaySound(projectileAudioHash);

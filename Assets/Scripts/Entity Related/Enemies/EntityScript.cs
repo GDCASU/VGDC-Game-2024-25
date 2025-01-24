@@ -23,53 +23,74 @@ using UnityEngine;
 /// <summary>
 /// Handles everything about the enemy, health, status effects, death, etc.
 /// </summary>
+[RequireComponent(typeof(ElementStatusHandler))]
 public class EntityScript : MonoBehaviour, IDamageable
 {
     [Header("References")]
     [SerializeField] private ElementStatusHandler elementStatusHandler;
+    public FloatingHealthBar healthBar;
     
     [Header("Entity Stats")]
-    [SerializeField] private int currentHealth;
-
-    [Header("Entity Settings")]
+    [SerializeField] private float baseSpeed;
     [SerializeField] private int maxHealth = 10;
 
     [Header("Multipliers")] 
     [SerializeField] private DamageMultiplier damageMults;
+    
+    [Header("Readouts")]
+    [InspectorReadOnly] [SerializeField] private int currentHealth;
+    [InspectorReadOnly] public float speedMult = 1f; // Used by statuses to slow down the entity
     
     // Use this bool to gate all your Debug.Log Statements please
     [Header("Debugging")]
     [SerializeField] private bool doDebugLog;
 
     // Local Variables
-
+    
 
     private void Start()
     {
-        // Set stats
+        // Set stats and references
         currentHealth = maxHealth;
-        elementStatusHandler.damageable = this;
+        elementStatusHandler.entityScript = this;
     }
 
     /// <summary>
     /// Function derived from interface to deal damage to this entity
     /// </summary>
+    /// <param name="damage">The damage to deal</param>
+    /// <param name="element">The element the damage represents</param>
+    /// <returns></returns>
     public ReactionType TakeDamage(int damage, Elements element)
     {
         // Compute damage through multiplier
         int newDamage = damageMults.ComputeDamage(damage, element);
+        // Ignore if zero/immune
+        if (newDamage <= 0) return ReactionType.Undefined;
         // Damage health
         currentHealth -= newDamage;
+        // Update health bar
+        healthBar.UpdateHealthBar(currentHealth, maxHealth);
         if (currentHealth <= 0)
         {
             // Enemy died
             OnDeath();
-            // FIXME:
+            // FIXME: Return undefined?
             return ReactionType.Undefined;
         }
-        
-        // DELETE THIS:
-        return ReactionType.Undefined;
+        // Send the element to the status handler and return a reaction if caused
+        return elementStatusHandler.HandleElementStatus(element);
+    }
+    
+    /// <summary>
+    /// Function called by the ElementStatusHandler to deal status damage to entity
+    /// </summary>
+    public void StatusDamage(int damage)
+    {
+        // Damage health
+        currentHealth -= damage;
+        healthBar.UpdateHealthBar(currentHealth, maxHealth);
+        if (currentHealth <= 0) OnDeath(); // Enemy died
     }
 
     /// <summary>
@@ -77,7 +98,8 @@ public class EntityScript : MonoBehaviour, IDamageable
     /// </summary>
     private void OnDeath()
     {
-        
+        // TODO: UNFINISHED
+        Destroy(gameObject);
     }
 }
 

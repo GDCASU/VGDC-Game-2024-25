@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 6247929078046165050}
   m_Layer: 3
   m_Name: Ammunition Display
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -217,7 +217,7 @@ GameObject:
   - component: {fileID: 1106403835039029718}
   m_Layer: 3
   m_Name: Fire Slot
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -250,7 +250,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 258d40ec8a954a544befee734ed5cd9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 7037694382792147281}
+  targetObject: {fileID: 2287559719701597665}
   lockX: 0
   lockY: 0
   lockZ: 0
@@ -266,7 +266,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 258d40ec8a954a544befee734ed5cd9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 6202256042638677469}
+  targetObject: {fileID: 4967074479600539885}
   lockX: 0
   lockY: 0
   lockZ: 0
@@ -368,7 +368,7 @@ GameObject:
   - component: {fileID: 2361428746271117927}
   m_Layer: 10
   m_Name: Magnet Attraction Collider
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -435,7 +435,7 @@ GameObject:
   - component: {fileID: 1781024244057459271}
   m_Layer: 0
   m_Name: Player Virtual Cam
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -507,7 +507,7 @@ GameObject:
   - component: {fileID: 81367034800111157}
   m_Layer: 0
   m_Name: Sprite
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -592,7 +592,7 @@ GameObject:
   - component: {fileID: 9056467434442379440}
   m_Layer: 3
   m_Name: Spark Slot
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -625,7 +625,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 258d40ec8a954a544befee734ed5cd9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 5020800333253662649}
+  targetObject: {fileID: 7953223946532051089}
   lockX: 0
   lockY: 0
   lockZ: 0
@@ -641,7 +641,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 258d40ec8a954a544befee734ed5cd9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 8197515671006573338}
+  targetObject: {fileID: 3910949976358138514}
   lockX: 0
   lockY: 0
   lockZ: 0
@@ -740,7 +740,7 @@ GameObject:
   - component: {fileID: 608102882232420975}
   m_Layer: 0
   m_Name: Camera Follow Point
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -957,7 +957,7 @@ GameObject:
   - component: {fileID: 7007761719522431672}
   m_Layer: 0
   m_Name: Projectile Spawn Point
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1032,7 +1032,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf718814f69a9454a839a1f433656361, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _projectileSpawnPoint: {fileID: 7007761719522431672}
   moveController: {fileID: 2344377123844442254}
   playerRenderer: {fileID: 81367034800111157}
   _characterController: {fileID: 2928181521467997156}
@@ -1191,7 +1190,7 @@ GameObject:
   - component: {fileID: 2700205605370659277}
   m_Layer: 3
   m_Name: Shoot Dir Pointer
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1275,7 +1274,7 @@ GameObject:
   - component: {fileID: 1782373616795486461}
   m_Layer: 3
   m_Name: Neutral Cooldown Sprite
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1358,7 +1357,7 @@ GameObject:
   - component: {fileID: 5698791469193059211}
   m_Layer: 3
   m_Name: In-World UI
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1393,7 +1392,7 @@ GameObject:
   - component: {fileID: 5298255338604549533}
   m_Layer: 3
   m_Name: Fungal Slot
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1426,7 +1425,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 258d40ec8a954a544befee734ed5cd9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 3741743334121296077}
+  targetObject: {fileID: 527634986247091697}
   lockX: 0
   lockY: 0
   lockZ: 0
@@ -1442,7 +1441,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 258d40ec8a954a544befee734ed5cd9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 6790517837790421606}
+  targetObject: {fileID: 1293541043428520286}
   lockX: 0
   lockY: 0
   lockZ: 0
@@ -1458,7 +1457,7 @@ GameObject:
   - component: {fileID: 4711602717224801177}
   m_Layer: 3
   m_Name: Neutral Sprite
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1543,7 +1542,7 @@ GameObject:
   - component: {fileID: 3864376432590520672}
   m_Layer: 3
   m_Name: Sounds Emitter
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1702,7 +1701,7 @@ GameObject:
   - component: {fileID: 7497268990416631181}
   m_Layer: 3
   m_Name: Neutral Slot
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1735,7 +1734,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 258d40ec8a954a544befee734ed5cd9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 4711602717224801177}
+  targetObject: {fileID: 7841238310060669048}
   lockX: 0
   lockY: 0
   lockZ: 0
@@ -1751,7 +1750,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 258d40ec8a954a544befee734ed5cd9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 1782373616795486461}
+  targetObject: {fileID: 6592500213862913339}
   lockX: 0
   lockY: 0
   lockZ: 0

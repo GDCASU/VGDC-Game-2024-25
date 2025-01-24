@@ -34,6 +34,7 @@ public class ElementProjectile : MonoBehaviour
     [SerializeField] private bool doDebugLog;
     
     // Local variables
+    [HideInInspector] public string ownerTag = "";
     [HideInInspector] public Vector3 moveDir = Vector3.zero;
 
     private void Start()
@@ -51,6 +52,9 @@ public class ElementProjectile : MonoBehaviour
 	private void OnTriggerEnter(Collider other)
 	{
 		if(doDebugLog) Debug.Log(gameObject.name + " hit " + other.gameObject.name);
+        
+        // Dont collide if on the same tag
+        if (other.CompareTag(ownerTag)) return; // Same tag, dont damage owner
         
         // Try to damage the other object
         IDamageable damageable = other.gameObject.GetComponent<IDamageable>();

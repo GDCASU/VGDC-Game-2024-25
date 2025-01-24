@@ -181,6 +181,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1695980438}
+  - {fileID: 204853784}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &204853783
@@ -189,17 +190,12 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 84841835}
     m_Modifications:
     - target: {fileID: 1024075932493480754, guid: 024d5ac63d0053540b0d0887c505b6f0,
         type: 3}
       propertyPath: m_Name
       value: Enemy Capsule
-      objectReference: {fileID: 0}
-    - target: {fileID: 4484544789662233782, guid: 024d5ac63d0053540b0d0887c505b6f0,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.42415
       objectReference: {fileID: 0}
     - target: {fileID: 4484544789662233782, guid: 024d5ac63d0053540b0d0887c505b6f0,
         type: 3}
@@ -224,17 +220,17 @@ PrefabInstance:
     - target: {fileID: 4484544789662233782, guid: 024d5ac63d0053540b0d0887c505b6f0,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4484544789662233782, guid: 024d5ac63d0053540b0d0887c505b6f0,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4484544789662233782, guid: 024d5ac63d0053540b0d0887c505b6f0,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4484544789662233782, guid: 024d5ac63d0053540b0d0887c505b6f0,
         type: 3}
@@ -261,33 +257,16 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8885779437720730205, guid: 024d5ac63d0053540b0d0887c505b6f0,
-        type: 3}
-      propertyPath: camera
-      value: 
-      objectReference: {fileID: 354752351}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1024075932493480754, guid: 024d5ac63d0053540b0d0887c505b6f0,
-        type: 3}
-      insertIndex: 1
-      addedObject: {fileID: 550730425}
-    - targetCorrespondingSourceObject: {fileID: 1024075932493480754, guid: 024d5ac63d0053540b0d0887c505b6f0,
-        type: 3}
-      insertIndex: 2
-      addedObject: {fileID: 550730424}
-    - targetCorrespondingSourceObject: {fileID: 1024075932493480754, guid: 024d5ac63d0053540b0d0887c505b6f0,
-        type: 3}
-      insertIndex: 3
-      addedObject: {fileID: 550730423}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 024d5ac63d0053540b0d0887c505b6f0, type: 3}
---- !u!20 &354752351 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 5212956489691751527, guid: 7a27a01553aa4f34e848cabda38d6d75,
+--- !u!4 &204853784 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4484544789662233782, guid: 024d5ac63d0053540b0d0887c505b6f0,
     type: 3}
-  m_PrefabInstance: {fileID: 531891225330658190}
+  m_PrefabInstance: {fileID: 204853783}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &378237835
 GameObject:
@@ -475,62 +454,6 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 1
---- !u!1 &550730418 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1024075932493480754, guid: 024d5ac63d0053540b0d0887c505b6f0,
-    type: 3}
-  m_PrefabInstance: {fileID: 204853783}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &550730423
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 550730418}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5babba0e4336ee34298625fcbeb31cd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentStatusEffect: 0
-  doDebugLog: 0
---- !u!114 &550730424
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 550730418}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49948451bbfcd804dbd20598470a7d7d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dropForceMult: 2
-  dropList: []
-  doDebugLog: 0
---- !u!114 &550730425
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 550730418}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce141d8f8bb50a84e956751aac591f88, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  elementStatusHandler: {fileID: 0}
-  currentHealth: 0
-  maxHealth: 10
-  damageMults:
-    neutralMultiplier: 1
-    fungalMultiplier: 1
-    sparkMultiplier: 1
-    fireMultiplier: 1
-  doDebugLog: 0
 --- !u!1 &664663053
 GameObject:
   m_ObjectHideFlags: 0
@@ -1249,6 +1172,5 @@ SceneRoots:
   - {fileID: 664663055}
   - {fileID: 84841835}
   - {fileID: 1991421163}
-  - {fileID: 204853783}
   - {fileID: 5690622273550298659}
   - {fileID: 378237838}

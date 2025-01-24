@@ -21,7 +21,6 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private Transform _projectileSpawnPoint;
     [SerializeField] private Animator moveController;
     [SerializeField] private SpriteRenderer playerRenderer;
     // Ian HACK: We probably shouldnt use the character controller for
