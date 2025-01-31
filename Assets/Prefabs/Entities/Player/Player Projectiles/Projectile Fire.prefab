@@ -52,6 +52,7 @@ MonoBehaviour:
   damage: 1
   element: 2
   doDebugLog: 0
+  ownerTag: 
   moveDir: {x: 0, y: 0, z: 0}
 --- !u!136 &6863210492710567649
 CapsuleCollider:
