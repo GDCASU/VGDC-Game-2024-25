@@ -68,7 +68,7 @@ public class PlayerController : MonoBehaviour
 	// Update is called once per frame
 	void Update()
     {
-        // DEBUGGING: Dont thing we will keep the camera movable
+        // DEBUGGING: Dont think we will keep the camera movable
         if(Input.GetKey(KeyCode.E))
         {
             transform.Rotate(0, cameraRotateSpeed * Time.deltaTime, 0);
