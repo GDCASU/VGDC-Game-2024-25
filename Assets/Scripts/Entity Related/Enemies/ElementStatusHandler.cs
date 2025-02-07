@@ -12,7 +12,7 @@ using UnityEngine.Serialization;
  * Davyd Yehudin
  * 
  * Modified By:
- * 
+ * Chandler Van
  */// --------------------------------------------------------
 
 /* -----------------------------------------------------------
@@ -91,7 +91,9 @@ public class ElementStatusHandler : MonoBehaviour
             // Refresh routine
             StopCoroutine(statusEffectCo);
             statusEffectCo = StartCoroutine(targetRoutine());
-            
+
+            if (doDebugLog) Debug.Log("Status Effect Refreshed: " + currentStatusEffect.ToString(), gameObject);
+
             // Returns undefined since we only refreshed the timer
             return ReactionType.Undefined;
         }
