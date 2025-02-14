@@ -6,22 +6,25 @@ using System.Text.RegularExpressions;
 using TMPro;
 using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.Events;
 
+[RequireComponent(typeof(Interactions))]
 public class Dialogue : MonoBehaviour
 {
-    /* -----------------------------------------------------------
+ /* -----------------------------------------------------------
  * Author:
  * Cami Lee
  * 
  * Modified By:
- * 
+ * Chandler Van
  */// --------------------------------------------------------
 
- /* -----------------------------------------------------------
-  * Purpose:
-  * Handle the Dialogue System for NPCs
- */// --------------------------------------------------------
+/* -----------------------------------------------------------
+    * Purpose:
+    * Handle the Dialogue System for NPCs
+*/// --------------------------------------------------------
 
+    
     public enum DialogueOptions
     {
         PauseGameTime,
@@ -32,10 +35,12 @@ public class Dialogue : MonoBehaviour
     [Header("Dialogue Settings")]
     public DialogueOptions dialogueOptions;
     public bool hasCharacterPortrait;
-    public bool pressToStart; // whether dialogue starts automatically
+    public bool pressToStart = true; // whether dialogue starts automatically
+    public float charactersPerSecond = 30;
+    // If forgetting to toggle this to false was the issue: Flame Chandler 
 
     [Header("External Objects")]
-    public Event dialogueEvent; // only needed if the dialogue type is TriggerEvent
+    public UnityEvent dialogueEvent; // only needed if the dialogue type is TriggerEvent
     public TextAsset script;
     TMP_Text dialogueText;
     public GameObject dialogueBackground;
@@ -43,22 +48,21 @@ public class Dialogue : MonoBehaviour
 
     [Header("Preset Options")]
     public string[] characterNames;
-
-    // Others
-    float charactersPerSecond = 30;
-
+    
     // Current Dialogue variables
     string currentLine;
     int currentLineNo;
     string[][] dialogue;
     bool finishedTyping;
 
+    private Coroutine currentDialogCoroutine;
 
     void Start()
     {
         // Instantiates interactions script 
         interactions = GetComponent<Interactions>();
-        if (interactions == null && pressToStart) { Debug.LogWarning("No Interactions script found on " + this.gameObject.name); }
+        if (interactions == null && pressToStart) 
+            Debug.LogWarning("No Interactions script found on " + this.gameObject.name);
         else if (pressToStart) // dialogue changes with button press
         {
             switch ((int)dialogueOptions)
@@ -72,7 +76,7 @@ public class Dialogue : MonoBehaviour
         // Instantiates dialogue text TMP component
         dialogueText = GetComponentInChildren<TMP_Text>();
         if (dialogueText == null) { Debug.LogWarning("No TMP_Text component found on the child of " + this.gameObject.name); }
-
+        dialogueText.text = "";
         // Initializes current dialogue sequence
         dialogue = ReadFile();
         currentLine = dialogue[currentLineNo][0] + ": " + dialogue[currentLineNo][1];
@@ -85,17 +89,18 @@ public class Dialogue : MonoBehaviour
         {
             if (InRange()) // inside if statement so doesn't run when pressToStart is true
             {
-                switch ((int)dialogueOptions)
-                {
-                    case 0: PauseGameTime(); break;
-                    case 1: TextBox(); break;
-                    case 2: TriggerEvent(); break;
-                }
+                if(currentDialogCoroutine == null)
+                    switch ((int)dialogueOptions)
+                    {
+                        case 0: PauseGameTime(); break;
+                        case 1: TextBox(); break;
+                        case 2: TriggerEvent(); break;
+                    }
             }
         }
     }
 
-    bool InRange()
+    private bool InRange()
     {
         Collider[] hits = Physics.OverlapSphere(transform.position, 20);
 
@@ -120,18 +125,18 @@ public class Dialogue : MonoBehaviour
     void TriggerEvent() 
     {
         StartDialogue();
-        dialogueEvent.Use();
+        dialogueEvent?.Invoke();
     }
 
     //-- Dialogue Controllers --//
     void StartDialogue()
     {
-        // add change dialogue behavior to input system
+        // Add change dialogue behavior to input system
         InputManager.OnChangeDialogue += ChangeDialogue;
         if (dialogueBackground != null) { dialogueBackground.SetActive(true); }
-
-        StartCoroutine(TypewriterText(currentLine));
+        currentDialogCoroutine = StartCoroutine(TypewriterText(currentLine));
     }
+
     public void ChangeDialogue()
     {
         if (dialogue[currentLineNo+1] == null && currentLine == dialogueText.text) { ExitDialogue(); }
@@ -149,6 +154,7 @@ public class Dialogue : MonoBehaviour
             finishedTyping = true;
         }
     }
+
     void ExitDialogue()
     {
         Time.timeScale = 1f;
@@ -157,6 +163,8 @@ public class Dialogue : MonoBehaviour
 
         // remove change dialogue behavior from input system
         InputManager.OnChangeDialogue -= ChangeDialogue;
+
+        dialogueText.text = currentLine;
     }
 
     IEnumerator TypewriterText(string line)
@@ -186,6 +194,8 @@ public class Dialogue : MonoBehaviour
                 yield return null;
             }
         }
+
+        currentDialogCoroutine = null;
     }
 
     /// <summary>  Takes information from text files and transfers into something the system can read </summary>
@@ -201,31 +211,25 @@ public class Dialogue : MonoBehaviour
 
         foreach (string line in lines)
         {
-            if (line.StartsWith("//")) { return act; } // if is a comment
+            if (line.TrimStart().StartsWith('#') || string.IsNullOrWhiteSpace(line)) { continue; } // if is a comment or blank
+             
+            else if (IsCharacterName(line)) { currentSpeaker = line;} // If is a name
 
-            else if (line == "END") // Checks if the file is done
+            else
             {
-                act[dialogueIndex] = new string[2];
-                act[dialogueIndex][0] = "END";
-                act[dialogueIndex][1] = "END";
-                return act;
-            }
+                string finalString = line;
 
-            else if (IsCharacterName(line)) { currentSpeaker = line; } // If is a name
+                //finalString = finalString.Replace("\\n", "\n"); // check for line breaks
 
-            // If line isn't blank, store dialogue
-            else if (!string.IsNullOrWhiteSpace(line))
-            {
                 act[dialogueIndex] = new string[2];
                 act[dialogueIndex][0] = currentSpeaker;
-                act[dialogueIndex][1] = line;
+                act[dialogueIndex][1] = finalString;
                 dialogueIndex++;
             }
         }
         
         return act;
     }
-
     private bool IsCharacterName(string text)
     {
         foreach (string name in characterNames)
