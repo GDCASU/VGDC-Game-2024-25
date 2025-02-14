@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6671601254053662489}
   - component: {fileID: 2859279734049640399}
   - component: {fileID: 3690686944361117376}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Pillar E - Connector Half
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -128,7 +128,7 @@ GameObject:
   - component: {fileID: 8262709396074510938}
   - component: {fileID: 8481098173428180537}
   - component: {fileID: 3941810263640374378}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Pillar E
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -211,7 +211,7 @@ GameObject:
   - component: {fileID: 4939179944148071770}
   - component: {fileID: 2545406283703608640}
   - component: {fileID: 8847489203909731752}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Pillar N - Connector Half
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -400,7 +400,7 @@ GameObject:
   - component: {fileID: 4134848452520223981}
   - component: {fileID: 47389532376429674}
   - component: {fileID: 7313730611009288883}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Window.007
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -481,7 +481,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7662204844998422450}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Wall_Closed_E
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -518,7 +518,7 @@ GameObject:
   - component: {fileID: 1352769234698895572}
   - component: {fileID: 7727044280629895891}
   - component: {fileID: 4958449914348962560}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Wall_Top.006
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -601,7 +601,7 @@ GameObject:
   - component: {fileID: 5419740842296392078}
   - component: {fileID: 2103594274891914029}
   - component: {fileID: 9222607460824224295}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Wall_Top.008
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -684,7 +684,7 @@ GameObject:
   - component: {fileID: 394972180219835251}
   - component: {fileID: 1262917325028130628}
   - component: {fileID: 8544367432112907490}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Pillar N
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -765,7 +765,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8447433304025122008}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Wall_Closed_N
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -802,7 +802,7 @@ GameObject:
   - component: {fileID: 1625001044202118027}
   - component: {fileID: 5264062964513790237}
   - component: {fileID: 4367932258811745572}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Window.009
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -885,7 +885,7 @@ GameObject:
   - component: {fileID: 4305316879146255183}
   - component: {fileID: 6226354057916880729}
   - component: {fileID: 3205978465798003030}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Wall_Base.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -966,7 +966,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1205075823373926733}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Walls and Statics (Blocks Pathfinding)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1037,7 +1037,7 @@ GameObject:
   - component: {fileID: 8647935480523313425}
   - component: {fileID: 5506253191699630827}
   - component: {fileID: 6585565696090533183}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Window.010
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1120,7 +1120,7 @@ GameObject:
   - component: {fileID: 6311711126504216055}
   - component: {fileID: 7224308158152163410}
   - component: {fileID: 35703096572112787}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Window.008
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1203,7 +1203,7 @@ GameObject:
   - component: {fileID: 6075471092845010969}
   - component: {fileID: 6664560363587530811}
   - component: {fileID: 5226749830350023399}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Pillar NE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1286,7 +1286,7 @@ GameObject:
   - component: {fileID: 6766379412212409288}
   - component: {fileID: 7777510732983673133}
   - component: {fileID: 1861255852528911111}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Wall_Base.004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
