@@ -55,6 +55,8 @@ public class Dialogue : MonoBehaviour
     string[][] dialogue;
     bool finishedTyping;
 
+    [HideInInspector] public UnityEvent onDialogEnd;
+    [HideInInspector] public UnityEvent onDialogStart;
     private Coroutine currentDialogCoroutine;
 
     void Start()
@@ -131,6 +133,7 @@ public class Dialogue : MonoBehaviour
     //-- Dialogue Controllers --//
     void StartDialogue()
     {
+        onDialogStart?.Invoke();
         // Add change dialogue behavior to input system
         InputManager.OnChangeDialogue += ChangeDialogue;
         if (dialogueBackground != null) { dialogueBackground.SetActive(true); }
@@ -165,6 +168,8 @@ public class Dialogue : MonoBehaviour
         InputManager.OnChangeDialogue -= ChangeDialogue;
 
         dialogueText.text = currentLine;
+
+        onDialogEnd?.Invoke();
     }
 
     IEnumerator TypewriterText(string line)
