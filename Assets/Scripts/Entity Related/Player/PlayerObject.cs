@@ -32,6 +32,7 @@ public class PlayerObject : MonoBehaviour, IDamageable
     [SerializeField] private PlayerController playerController;
     [SerializeField] private MagnetAttraction magnetAttraction;
     [SerializeField] private MultiAudioEmitter audioEmitter;
+    public CapsuleCollider capsuleCollider;
     
     [Header("Readouts")]
     [InspectorReadOnly] [SerializeField] private int currentHealth = 0;
