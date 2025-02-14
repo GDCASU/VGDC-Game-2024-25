@@ -448,8 +448,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2483792640609784494}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.21643959, y: -0.000000014901161, z: -0, w: 0.97629607}
-  m_LocalPosition: {x: 0, y: 0.7452356, z: -1.8126138}
+  m_LocalRotation: {x: 0.25941753, y: -0.00021354838, z: -0.0009632449, w: 0.9657648}
+  m_LocalPosition: {x: 0.002399963, y: 1.2179722, z: -2.2762775}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -753,13 +753,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3953699502371803734}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.2164396, y: 0, z: 0, w: 0.97629607}
-  m_LocalPosition: {x: 0, y: -0.1, z: 0}
+  m_LocalRotation: {x: 0.2594176, y: -0.0002135485, z: -0.00096324517, w: 0.9657647}
+  m_LocalPosition: {x: 0, y: -0.10000002, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2391930757929744352}
-  m_LocalEulerAnglesHint: {x: 25, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 30.071, y: -0.06, z: -0.131}
 --- !u!1 &4967074479600539885
 GameObject:
   m_ObjectHideFlags: 0
@@ -912,7 +912,7 @@ MonoBehaviour:
   m_TargetMovementOnly: 1
   m_ScreenX: 0.5
   m_ScreenY: 0.5
-  m_CameraDistance: 2
+  m_CameraDistance: 8.68
   m_DeadZoneWidth: 0
   m_DeadZoneHeight: 0
   m_DeadZoneDepth: 0
@@ -1009,7 +1009,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 19.159, y: 0.552, z: 4.365}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3.3, y: 3.3, z: 3.3}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2062494646552693392}
@@ -1038,6 +1038,7 @@ MonoBehaviour:
   playerController: {fileID: 6697751668706597001}
   magnetAttraction: {fileID: 2525701321551742629}
   audioEmitter: {fileID: 3864376432590520672}
+  capsuleCollider: {fileID: 5704535376199298561}
   currentHealth: 0
   _doDebugLog: 0
 --- !u!114 &6697751668706597001
@@ -1056,10 +1057,10 @@ MonoBehaviour:
   playerRenderer: {fileID: 81367034800111157}
   _characterController: {fileID: 2928181521467997156}
   projectileDirArrow: {fileID: 6109860477779707055}
-  _speedBeforeAcceleration: 1
-  _speedAfterAcceleration: 1
-  _delayBeforeAcceleration: 1
-  _durationOfAcceleration: 1
+  _speedBeforeAcceleration: 3
+  _speedAfterAcceleration: 3
+  _delayBeforeAcceleration: 3
+  _durationOfAcceleration: 3
   _groundLayers:
     serializedVersion: 2
     m_Bits: 641
@@ -1169,7 +1170,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2

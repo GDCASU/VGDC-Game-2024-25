@@ -82,7 +82,7 @@ public class InteractionManager : MonoBehaviour
     private void ToggleHighlight(GameObject newObject)
     {
         // Fade in
-        StartCoroutine(Fade(true));
+        if (interactions.displaysInteractKeybind && interactions.displaysInteractObjectType) { StartCoroutine(Fade(true)); }
 
         // Highlights the raycast object
         materials = newObject.GetComponent<Renderer>().materials.ToList();
