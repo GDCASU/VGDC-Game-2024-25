@@ -1,3 +1,4 @@
+using Pathfinding;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -36,14 +37,30 @@ public class RatEnemyControl : MonoBehaviour
 	[SerializeField] private bool doDebugLog;
 
 	private Animator _anim;
+	private AIPath _aiPath;
 	private GameObject _spriteObj;
+	private Transform _target;
 	private bool _attacking;
+	private Vector3 _lookVector;
 
 	void Start()
 	{
 		_anim = GetComponent<Animator>();
+		_aiPath = GetComponent<AIPath>();
 		_spriteObj = transform.Find("Sprite").gameObject;
+		_target = transform.Find("Target");
+		_target.parent = null;
+
+		_aiPath.maxSpeed = _runSpeed;
+		_aiPath.maxAcceleration = 999999999f;
+		_lookVector = new Vector3(1f, 0f, 0f);
+		GetComponent<AIDestinationSetter>().target = _target;
 		StartCoroutine(Idle());
+	}
+
+	private void Update()
+	{
+		
 	}
 
 	private IEnumerator Idle()
@@ -64,33 +81,31 @@ public class RatEnemyControl : MonoBehaviour
 
 		// Skitt in some cardinal direction
 		int dir = Random.Range(0, 4);
-		Vector3 move = new Vector3();
 		if(dir == 0)
 		{
-			move = new Vector3(0f, 0f, -1f);
+			_lookVector = new Vector3(0f, 0f, -1f);
 			yield return _anim.PlayBlocking("IdleToSide");
 			_anim.Play("RunForward");
 		}
 		else if(dir == 1)
 		{
-			move = new Vector3(0f, 0f, 1f);
+			_lookVector = new Vector3(0f, 0f, 1f);
 			yield return _anim.PlayBlocking("IdleToSide");
 			_anim.Play("RunBack");
 		}
 		else
 		{
-			move = new Vector3(dir == 2 ? -1f : 1f, 0f, 0f);
+			_lookVector = new Vector3(dir == 2 ? -1f : 1f, 0f, 0f);
 			transform.localScale = new Vector3(dir == 2 ? 1f : -1f, 1f, 1f);
 			yield return _anim.PlayBlocking("IdleToSide");
 			_anim.Play("RunSide");
 		}
-		float timer = Random.Range(_minRunTime, _maxRunTime);
-		while(timer > 0f)
-		{
-			transform.position += _runSpeed * move * Time.deltaTime;
-			timer -= Time.deltaTime;
-			yield return null;
-		}
+		_target.position = transform.position + 50f * _lookVector;
+
+		_aiPath.canMove = true;
+		yield return new WaitForSeconds(Random.Range(_minRunTime, _maxRunTime));
+		_aiPath.canMove = false;
+
 		StartCoroutine(Attack());
 		yield break;
 	}
@@ -98,26 +113,25 @@ public class RatEnemyControl : MonoBehaviour
 	private IEnumerator Attack()
 	{
 		// Pause and play antic animation
-		_anim.StopPlayback();
+		_anim.Play("Idle");
 		yield return new WaitForSeconds(1f);
 
 		// Attack in some direction
 		_attacking = true;
 		int dir = Random.Range(0, 4);
-		Vector3 move = new Vector3();
 		if(dir == 0)
 		{
-			move = new Vector3(0f, 0f, -1f);
+			_lookVector = new Vector3(0f, 0f, -1f);
 			_anim.Play("LungeForward");
 		}
 		else if(dir == 1)
 		{
-			move = new Vector3(0f, 0f, 1f);
+			_lookVector = new Vector3(0f, 0f, 1f);
 			_anim.Play("LungeBack");
 		}
 		else
 		{
-			move = new Vector3(dir == 2 ? -1f : 1f, 0f, 0f);
+			_lookVector = new Vector3(dir == 2 ? -1f : 1f, 0f, 0f);
 			transform.localScale = new Vector3(dir == 2 ? 1f : -1f, 1f, 1f);
 			_anim.Play("LungeSide");
 		}
@@ -128,15 +142,15 @@ public class RatEnemyControl : MonoBehaviour
 			float percent = timer / _attackTime;
 
 			// Move sprite up and down to have a parabolic arc
-			float yPos = 0.25f * (1f - Mathf.Pow(2f * percent - 1f, 2f));
+			float yPos = 0.2f + 0.25f * (1f - Mathf.Pow(2f * percent - 1f, 2f));
 			_spriteObj.transform.localPosition = new Vector3(0f, yPos);
 
-			transform.position += _runSpeed * move * Time.deltaTime;
+			transform.position += _runSpeed * _lookVector * Time.deltaTime;
 
 			timer += Time.deltaTime;
 			yield return null;
 		}
-		_spriteObj.transform.localPosition = new Vector3(0f, 0f);
+		_spriteObj.transform.localPosition = new Vector3(0f, 0.2f);
 		_attacking = false;
 
 		StartCoroutine(Idle());
