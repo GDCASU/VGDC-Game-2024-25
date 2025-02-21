@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8800827992368691475}
   - component: {fileID: 3521520214571780855}
   - component: {fileID: 7898752995696474851}
+  - component: {fileID: 343540400056642083}
   m_Layer: 6
   m_Name: Sprite
   m_TagString: Enemy
@@ -125,6 +126,20 @@ CapsuleCollider:
   m_Height: 0.2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &343540400056642083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 132185593873922368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38e3d18e81e4f3f44b22115d960d297c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 1
+  element: 1
 --- !u!1 &158052018064347610
 GameObject:
   m_ObjectHideFlags: 0
@@ -374,6 +389,7 @@ MonoBehaviour:
   _attackTime: 0.5
   _maxAttackHeight: 0.25
   _runSpeed: 3
+  _detectionAngle: 30
   _detectedUI: {fileID: 6337221535202532174}
   doDebugLog: 0
 --- !u!114 &4009430850306400533
