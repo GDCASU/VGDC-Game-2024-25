@@ -2,7 +2,6 @@ using Pathfinding;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem.XR.Haptics;
 
 /* -----------------------------------------------------------
  * Author: William
@@ -24,13 +23,18 @@ using UnityEngine.InputSystem.XR.Haptics;
 public class RatEnemyControl : MonoBehaviour
 {
 	[Header("Control")]
-	[SerializeField] private float _minIdleTime = 3f;
+	[SerializeField] private float _minIdleTime = 2f;
 	[SerializeField] private float _maxIdleTime = 5f;
-	[SerializeField] private float _minRunTime = 0.25f;
-	[SerializeField] private float _maxRunTime = 0.75f;
+	[SerializeField] private float _minRunTime = 1f;
+	[SerializeField] private float _maxRunTime = 3f;
 	[SerializeField] private float _attackTime = 0.5f;
 	[SerializeField] private float _maxAttackHeight = 0.25f;
 	[SerializeField] private float _runSpeed = 3f;
+	// The rat will detect the player if the player is within x degrees of the direction it is looking
+	[SerializeField] private float _detectionAngle = 30f;
+
+	[Header("UI")]
+	[SerializeField] private GameObject _detectedUI;
 
 	// Use this bool to gate all your Debug.Log Statements please
 	[Header("Debugging")]
@@ -41,7 +45,8 @@ public class RatEnemyControl : MonoBehaviour
 	private GameObject _spriteObj;
 	private Transform _target;
 	private bool _attacking;
-	private Vector3 _lookVector;
+	private int _lookDir;
+	private readonly Vector3[] _dirToVector = new Vector3[] { Vector3.back, Vector3.forward, Vector3.left, Vector3.right };
 
 	void Start()
 	{
@@ -53,23 +58,45 @@ public class RatEnemyControl : MonoBehaviour
 
 		_aiPath.maxSpeed = _runSpeed;
 		_aiPath.maxAcceleration = 999999999f;
-		_lookVector = new Vector3(1f, 0f, 0f);
+		_lookDir = 0;
 		GetComponent<AIDestinationSetter>().target = _target;
 		StartCoroutine(Idle());
 	}
 
 	private void Update()
 	{
-		
+		// If already attacking, return
+		if(_attacking) return;
+
+		// Check if the rat is looking at the player
+		Vector3 ratToPlayer = new Vector3(
+			PlayerObject.Instance.transform.position.x - transform.position.x,
+			0f, 
+			PlayerObject.Instance.transform.position.z - transform.position.z);
+		float angleToPlayer = Vector3.Angle(ratToPlayer, _dirToVector[_lookDir]);
+		Debug.Log(angleToPlayer);
+
+		// If the rat detects the player, stop current movement and attack
+		if(angleToPlayer < _detectionAngle)
+		{
+			StopAllCoroutines();
+
+			// Prevent AI from interrupting attack
+			_aiPath.canMove = false;
+
+			StartCoroutine(Attack());
+		}
 	}
 
 	private IEnumerator Idle()
 	{
 		if(doDebugLog) Debug.Log(gameObject.name + " Idle");
 
+		// Animation to idle state
 		yield return _anim.PlayBlocking("SideToIdle");
 
-		_anim.Play(Random.Range(0, 2) == 0 ? "Dance" : "Idle");
+		// Small chance to dance
+		_anim.Play(Random.Range(0, 100) == 0 ? "Dance" : "Idle");
 		yield return new WaitForSeconds(Random.Range(_minIdleTime, _maxIdleTime));
 
 		StartCoroutine(Wander());
@@ -80,62 +107,61 @@ public class RatEnemyControl : MonoBehaviour
 		if(doDebugLog) Debug.Log(gameObject.name + " Wander");
 
 		// Skitt in some cardinal direction
-		int dir = Random.Range(0, 4);
-		if(dir == 0)
+		_lookDir = Random.Range(0, 4);
+		if(_lookDir == 0)
 		{
-			_lookVector = new Vector3(0f, 0f, -1f);
 			yield return _anim.PlayBlocking("IdleToSide");
 			_anim.Play("RunForward");
 		}
-		else if(dir == 1)
+		else if(_lookDir == 1)
 		{
-			_lookVector = new Vector3(0f, 0f, 1f);
 			yield return _anim.PlayBlocking("IdleToSide");
 			_anim.Play("RunBack");
 		}
 		else
 		{
-			_lookVector = new Vector3(dir == 2 ? -1f : 1f, 0f, 0f);
-			transform.localScale = new Vector3(dir == 2 ? 1f : -1f, 1f, 1f);
+			transform.localScale = new Vector3(_lookDir == 2 ? 1f : -1f, 1f, 1f);
 			yield return _anim.PlayBlocking("IdleToSide");
 			_anim.Play("RunSide");
 		}
-		_target.position = transform.position + 50f * _lookVector;
+		_target.position = transform.position + 50f * _dirToVector[_lookDir];
 
+		// Move in the cardinal direction
 		_aiPath.canMove = true;
 		yield return new WaitForSeconds(Random.Range(_minRunTime, _maxRunTime));
 		_aiPath.canMove = false;
 
-		StartCoroutine(Attack());
+		// Return to idle state
+		StartCoroutine(Idle());
 		yield break;
 	}
 
 	private IEnumerator Attack()
 	{
+		_attacking = true;
+
 		// Pause and play antic animation
 		_anim.Play("Idle");
+		_detectedUI.SetActive(true);
 		yield return new WaitForSeconds(1f);
+		_detectedUI.SetActive(false);
 
-		// Attack in some direction
-		_attacking = true;
-		int dir = Random.Range(0, 4);
-		if(dir == 0)
+		// Play attack animation
+		if(_lookDir == 0)
 		{
-			_lookVector = new Vector3(0f, 0f, -1f);
 			_anim.Play("LungeForward");
 		}
-		else if(dir == 1)
+		else if(_lookDir == 1)
 		{
-			_lookVector = new Vector3(0f, 0f, 1f);
 			_anim.Play("LungeBack");
 		}
 		else
 		{
-			_lookVector = new Vector3(dir == 2 ? -1f : 1f, 0f, 0f);
-			transform.localScale = new Vector3(dir == 2 ? 1f : -1f, 1f, 1f);
+			transform.localScale = new Vector3(_lookDir == 2 ? 1f : -1f, 1f, 1f);
 			_anim.Play("LungeSide");
 		}
 
+		// Attack in the direction the rat is looking
 		float timer = 0f;
 		while(timer < _attackTime)
 		{
@@ -145,25 +171,16 @@ public class RatEnemyControl : MonoBehaviour
 			float yPos = 0.2f + 0.25f * (1f - Mathf.Pow(2f * percent - 1f, 2f));
 			_spriteObj.transform.localPosition = new Vector3(0f, yPos);
 
-			transform.position += _runSpeed * _lookVector * Time.deltaTime;
+			transform.position += _runSpeed * _dirToVector[_lookDir] * Time.deltaTime;
 
 			timer += Time.deltaTime;
 			yield return null;
 		}
 		_spriteObj.transform.localPosition = new Vector3(0f, 0.2f);
+
+		// Return to wandering state
+		StartCoroutine(Wander());
 		_attacking = false;
-
-		StartCoroutine(Idle());
 		yield break;
-	}
-
-	private void OnCollisionEnter(Collision collision)
-	{
-		Debug.Log(collision);
-		if(_attacking && collision.collider.CompareTag("Player"))
-		{
-			if(doDebugLog) Debug.Log(gameObject.name + " hit player");
-			collision.gameObject.GetComponent<IDamageable>().TakeDamage(5, Elements.Neutral);
-		}
 	}
 }
