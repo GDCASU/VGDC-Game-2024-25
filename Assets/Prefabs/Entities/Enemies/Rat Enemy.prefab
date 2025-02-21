@@ -12,7 +12,9 @@ GameObject:
   - component: {fileID: 8800827992368691475}
   - component: {fileID: 3521520214571780855}
   - component: {fileID: 7898752995696474851}
-  - component: {fileID: 343540400056642083}
+  - component: {fileID: 3965117697542169905}
+  - component: {fileID: 3448662320548575203}
+  - component: {fileID: 2581318882312673827}
   m_Layer: 6
   m_Name: Sprite
   m_TagString: Enemy
@@ -123,10 +125,57 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.1
-  m_Height: 0.2
+  m_Height: 5
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &343540400056642083
+--- !u!114 &3965117697542169905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 132185593873922368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5babba0e4336ee34298625fcbeb31cd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statusSettings:
+    burnDuration: 5
+    burnIntervalTime: 1
+    burnDmgPerInterval: 1
+    sporedDuration: 5
+    slowSpeedBy: 0.3
+  currentStatusEffect: 0
+  timeLeft: 0
+  doDebugLog: 0
+  entityScript: {fileID: 0}
+--- !u!114 &3448662320548575203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 132185593873922368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce141d8f8bb50a84e956751aac591f88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  elementStatusHandler: {fileID: 3965117697542169905}
+  healthBar: {fileID: 3086981818858818833}
+  destroyOnDeath: {fileID: 4817063602568806315}
+  baseSpeed: 3
+  maxHealth: 5
+  damageMults:
+    neutralMultiplier: 1
+    fungalMultiplier: 1
+    sparkMultiplier: 1
+    fireMultiplier: 1
+  currentHealth: 0
+  speedMult: 1
+  doDebugLog: 0
+--- !u!114 &2581318882312673827
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -270,8 +319,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 112531971933403581}
-  - component: {fileID: 3315973096482862755}
-  - component: {fileID: 1103993271219694944}
   - component: {fileID: 2472222149934369977}
   - component: {fileID: 677009837052582731}
   - component: {fileID: 4009430850306400533}
@@ -303,52 +350,6 @@ Transform:
   - {fileID: 5812607813631421846}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 86.688, y: -113.429, z: -194.315}
---- !u!114 &3315973096482862755
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4817063602568806315}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5babba0e4336ee34298625fcbeb31cd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  statusSettings:
-    burnDuration: 5
-    burnIntervalTime: 1
-    burnDmgPerInterval: 1
-    sporedDuration: 5
-    slowSpeedBy: 0.3
-  currentStatusEffect: 0
-  timeLeft: 0
-  doDebugLog: 0
-  entityScript: {fileID: 0}
---- !u!114 &1103993271219694944
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4817063602568806315}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce141d8f8bb50a84e956751aac591f88, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  elementStatusHandler: {fileID: 3315973096482862755}
-  healthBar: {fileID: 3086981818858818833}
-  baseSpeed: 2
-  maxHealth: 10
-  damageMults:
-    neutralMultiplier: 1
-    fungalMultiplier: 1
-    sparkMultiplier: 1
-    fireMultiplier: 1
-  currentHealth: 0
-  speedMult: 1
-  doDebugLog: 1
 --- !u!95 &2472222149934369977
 Animator:
   serializedVersion: 5
@@ -391,6 +392,7 @@ MonoBehaviour:
   _runSpeed: 3
   _detectionAngle: 30
   _detectedUI: {fileID: 6337221535202532174}
+  _spriteObj: {fileID: 132185593873922368}
   doDebugLog: 0
 --- !u!114 &4009430850306400533
 MonoBehaviour:

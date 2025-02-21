@@ -33,8 +33,9 @@ public class RatEnemyControl : MonoBehaviour
 	// The rat will detect the player if the player is within x degrees of the direction it is looking
 	[SerializeField] private float _detectionAngle = 30f;
 
-	[Header("UI")]
+	[Header("Objects")]
 	[SerializeField] private GameObject _detectedUI;
+	[SerializeField] private GameObject _spriteObj;
 
 	// Use this bool to gate all your Debug.Log Statements please
 	[Header("Debugging")]
@@ -42,7 +43,6 @@ public class RatEnemyControl : MonoBehaviour
 
 	private Animator _anim;
 	private AIPath _aiPath;
-	private GameObject _spriteObj;
 	private Transform _target;
 	private bool _attacking;
 	private int _lookDir;
@@ -52,7 +52,6 @@ public class RatEnemyControl : MonoBehaviour
 	{
 		_anim = GetComponent<Animator>();
 		_aiPath = GetComponent<AIPath>();
-		_spriteObj = transform.Find("Sprite").gameObject;
 		_target = transform.Find("Target");
 		_target.parent = null;
 
@@ -61,6 +60,11 @@ public class RatEnemyControl : MonoBehaviour
 		_lookDir = 0;
 		GetComponent<AIDestinationSetter>().target = _target;
 		StartCoroutine(Idle());
+	}
+
+	private void OnDestroy()
+	{
+		Destroy(_target.gameObject);
 	}
 
 	private void Update()
@@ -74,7 +78,6 @@ public class RatEnemyControl : MonoBehaviour
 			0f, 
 			PlayerObject.Instance.transform.position.z - transform.position.z);
 		float angleToPlayer = Vector3.Angle(ratToPlayer, _dirToVector[_lookDir]);
-		Debug.Log(angleToPlayer);
 
 		// If the rat detects the player, stop current movement and attack
 		if(angleToPlayer < _detectionAngle)
@@ -120,7 +123,7 @@ public class RatEnemyControl : MonoBehaviour
 		}
 		else
 		{
-			transform.localScale = new Vector3(_lookDir == 2 ? 1f : -1f, 1f, 1f);
+			_spriteObj.transform.localScale = new Vector3(_lookDir == 2 ? 2f : -2f, 2f, 2f);
 			yield return _anim.PlayBlocking("IdleToSide");
 			_anim.Play("RunSide");
 		}
@@ -157,7 +160,7 @@ public class RatEnemyControl : MonoBehaviour
 		}
 		else
 		{
-			transform.localScale = new Vector3(_lookDir == 2 ? 1f : -1f, 1f, 1f);
+			_spriteObj.transform.localScale = new Vector3(_lookDir == 2 ? 2f : -2f, 2f, 2f);
 			_anim.Play("LungeSide");
 		}
 
