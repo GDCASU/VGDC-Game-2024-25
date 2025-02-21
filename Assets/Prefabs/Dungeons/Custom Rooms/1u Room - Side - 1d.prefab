@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 211676396694772613}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Wall_Closed_N
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,7 +73,7 @@ GameObject:
   - component: {fileID: 425891864696418809}
   - component: {fileID: 367312411073338512}
   - component: {fileID: 6496748356663234096}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Pillar S - Connector Half
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -154,7 +154,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 257897745152018233}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Wall_Opened_W
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -293,7 +293,7 @@ GameObject:
   - component: {fileID: 8290252973471128214}
   - component: {fileID: 3294170484656893692}
   - component: {fileID: 3151695066994701820}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Wall_Top.009
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -376,7 +376,7 @@ GameObject:
   - component: {fileID: 4605355896633014602}
   - component: {fileID: 229353043331841722}
   - component: {fileID: 4647395712637462891}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Pillar S - Connector Half (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -457,7 +457,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6776331019783600863}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Wall_Opened_S
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -525,7 +525,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8154001488976760024}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Wall_Closed_E
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -558,7 +558,7 @@ GameObject:
   - component: {fileID: 1049152266535089234}
   - component: {fileID: 7655346234913110192}
   - component: {fileID: 3519196354135796764}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Wall_Base.005
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -639,7 +639,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3847635972983068977}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Walls and Statics (Blocks Pathfinding)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -678,7 +678,7 @@ GameObject:
   - component: {fileID: 4732088554496013343}
   - component: {fileID: 365267196257936698}
   - component: {fileID: 8552741506252635664}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Doorway.003
   m_TagString: Untagged
   m_Icon: {fileID: 0}

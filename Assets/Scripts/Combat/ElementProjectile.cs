@@ -9,9 +9,9 @@ using UnityEngine;
  * 
  * 
  * Modified By:
- * 
+ * Chandler Van
  */// --------------------------------------------------------
-
+ 
 /* -----------------------------------------------------------
  * Purpose: 
  * 
@@ -60,18 +60,22 @@ public class ElementProjectile : MonoBehaviour
         IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
         if (damageable == null)
         {
-            // Didnt contain the interface
+            // Other Gameobject was not Damageable
+
+            // Element Specific Behaviours
+            switch (element)
+            {
+                // This is just here for possible future changes
+                default:
+                    break;
+            }
+
+            // Might move this into the switch later in possible future changes
             Destroy(gameObject);
             return;
         }
         // Otherwise it did, deal damage and see if we need to generate a reaction
         ReactionType reaction = damageable.TakeDamage(damage,element);
-        if (reaction == ReactionType.Undefined)
-        {
-            // No reaction to process
-            Destroy(gameObject);
-            return;
-        }
         
         // There is a reaction do perform
         // TODO: GENERATE REACTION IN THE WORLD
@@ -80,9 +84,20 @@ public class ElementProjectile : MonoBehaviour
             case ReactionType.Fireworks:
                 //
                 break;
+
+            case ReactionType.Undefined:
+                break;
         }
-        
-        // Destroy projectile
-        Destroy(gameObject);
-	}
+
+        // Element Specific End Behaviours
+        switch (element)
+        {
+            case Elements.Fire:
+                break;
+
+            default:
+                Destroy(gameObject);
+                break;
+        }
+    }
 }

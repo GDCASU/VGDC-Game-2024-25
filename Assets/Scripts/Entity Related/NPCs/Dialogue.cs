@@ -9,6 +9,19 @@ using UnityEngine;
 
 public class Dialogue : MonoBehaviour
 {
+    /* -----------------------------------------------------------
+ * Author:
+ * Cami Lee
+ * 
+ * Modified By:
+ * 
+ */// --------------------------------------------------------
+
+ /* -----------------------------------------------------------
+  * Purpose:
+  * Handle the Dialogue System for NPCs
+ */// --------------------------------------------------------
+
     public enum DialogueOptions
     {
         PauseGameTime,
@@ -19,12 +32,13 @@ public class Dialogue : MonoBehaviour
     [Header("Dialogue Settings")]
     public DialogueOptions dialogueOptions;
     public bool hasCharacterPortrait;
-    public bool isInteractable;
+    public bool pressToStart; // whether dialogue starts automatically
 
     [Header("External Objects")]
-    public Action dialogueEvent;
+    public Event dialogueEvent; // only needed if the dialogue type is TriggerEvent
     public TextAsset script;
     TMP_Text dialogueText;
+    public GameObject dialogueBackground;
     Interactions interactions;
 
     [Header("Preset Options")]
@@ -37,20 +51,19 @@ public class Dialogue : MonoBehaviour
     string currentLine;
     int currentLineNo;
     string[][] dialogue;
+    bool finishedTyping;
 
 
     void Start()
     {
         // Instantiates interactions script 
         interactions = GetComponent<Interactions>();
-        if (interactions == null && isInteractable) { Debug.LogWarning("No Interactions script found on " + this.gameObject.name); }
-        else if (isInteractable)
+        if (interactions == null && pressToStart) { Debug.LogWarning("No Interactions script found on " + this.gameObject.name); }
+        else if (pressToStart) // dialogue changes with button press
         {
             switch ((int)dialogueOptions)
             {
-                case 0:
-                    interactions.ChangeInteraction(PauseGameTime);
-                    break;
+                case 0: interactions.ChangeInteraction(PauseGameTime); break;
                 case 1: interactions.ChangeInteraction(TextBox); break;
                 case 2: interactions.ChangeInteraction(TriggerEvent); break;
             }
@@ -66,6 +79,35 @@ public class Dialogue : MonoBehaviour
         currentLineNo = 0;
     }
 
+    private void Update()
+    {
+        if (!pressToStart) // dialogue changes when player is close to object
+        {
+            if (InRange()) // inside if statement so doesn't run when pressToStart is true
+            {
+                switch ((int)dialogueOptions)
+                {
+                    case 0: PauseGameTime(); break;
+                    case 1: TextBox(); break;
+                    case 2: TriggerEvent(); break;
+                }
+            }
+        }
+    }
+
+    bool InRange()
+    {
+        Collider[] hits = Physics.OverlapSphere(transform.position, 20);
+
+        foreach (Collider hit in hits)
+        {
+            if (hit.gameObject.tag == "Player") { return true; }
+        }
+
+        return false;
+    }
+
+    //-- Dialogue Types --//
     void PauseGameTime()
     { 
         Time.timeScale = 0f;
@@ -78,34 +120,40 @@ public class Dialogue : MonoBehaviour
     void TriggerEvent() 
     {
         StartDialogue();
-        //dialogueEvent.Invoke();
+        dialogueEvent.Use();
     }
 
+    //-- Dialogue Controllers --//
     void StartDialogue()
     {
         // add change dialogue behavior to input system
         InputManager.OnChangeDialogue += ChangeDialogue;
+        if (dialogueBackground != null) { dialogueBackground.SetActive(true); }
 
         StartCoroutine(TypewriterText(currentLine));
     }
     public void ChangeDialogue()
     {
-        if (currentLineNo == dialogue.Length) { ExitDialogue(); }
+        if (dialogue[currentLineNo+1] == null && currentLine == dialogueText.text) { ExitDialogue(); }
         else if (currentLine == dialogueText.text) // If the typewriter effect has finished
         {
             currentLineNo++;
             currentLine = dialogue[currentLineNo][0] + ": " + dialogue[currentLineNo][1];
+            StartCoroutine(TypewriterText(currentLine));
         }
         else
         {
             // Skip to the end of the effect
             StopCoroutine(TypewriterText(currentLine));
             dialogueText.text = currentLine;
+            finishedTyping = true;
         }
     }
     void ExitDialogue()
     {
         Time.timeScale = 1f;
+        currentLine = "";
+        if (dialogueBackground != null) { dialogueBackground.SetActive(false); }
 
         // remove change dialogue behavior from input system
         InputManager.OnChangeDialogue -= ChangeDialogue;
@@ -121,8 +169,9 @@ public class Dialogue : MonoBehaviour
         string textBuffer = null;
         char[] chars = line.ToCharArray();
         int i = 0;
+        finishedTyping = false;
 
-        while (i < chars.Length)
+        while (i < chars.Length && !finishedTyping)
         {
             if (timer < 0.01f)
             {
@@ -171,7 +220,6 @@ public class Dialogue : MonoBehaviour
                 act[dialogueIndex][0] = currentSpeaker;
                 act[dialogueIndex][1] = line;
                 dialogueIndex++;
-                Debug.Log(currentSpeaker + ": " + line);
             }
         }
         
