@@ -184,7 +184,7 @@ GameObject:
   - component: {fileID: 5697332588719575098}
   - component: {fileID: 2235584560121298377}
   - component: {fileID: 6617710889821896061}
-  - component: {fileID: 5915937756953035636}
+  - component: {fileID: 5053279635556888003}
   - component: {fileID: 2962689217090747630}
   m_Layer: 0
   m_Name: NPC Template
@@ -201,8 +201,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3280161214251933727}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 19.53, y: 0.1, z: 5.61}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 19.53, y: 0.469, z: 5.61}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -300,12 +300,16 @@ MonoBehaviour:
   dialogueEvent:
     m_PersistentCalls:
       m_Calls: []
-  script: {fileID: 4900000, guid: 466e9f916b76bf346a78ae5e0d9016e0, type: 3}
+  script: {fileID: 0}
   dialogueBackground: {fileID: 0}
-  characterNames:
-  - Ian
-  - Cami
---- !u!114 &5915937756953035636
+  characterNames: []
+  onDialogEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  onDialogStart:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &5053279635556888003
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -314,12 +318,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 3280161214251933727}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8007afc9c44612e4dacbd7714455c20f, type: 3}
+  m_Script: {fileID: 11500000, guid: 3f4f19594f9262e46897be1fd5c1f931, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  drops:
-  - {fileID: 5522982876249640156, guid: 700483ad52a458d49b5c7fa54b10d348, type: 3}
+  drops: []
   dropPoint: {fileID: 2324305836723325160}
+  showDebug: 0
 --- !u!114 &2962689217090747630
 MonoBehaviour:
   m_ObjectHideFlags: 0

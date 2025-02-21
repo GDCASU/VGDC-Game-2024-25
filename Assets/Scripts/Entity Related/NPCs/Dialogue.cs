@@ -41,7 +41,7 @@ public class Dialogue : MonoBehaviour
 
     [Header("External Objects")]
     public UnityEvent dialogueEvent; // only needed if the dialogue type is TriggerEvent
-    public TextAsset script;
+    [SerializeField] private TextAsset script;
     TMP_Text dialogueText;
     public GameObject dialogueBackground;
     Interactions interactions;
@@ -80,6 +80,16 @@ public class Dialogue : MonoBehaviour
         if (dialogueText == null) { Debug.LogWarning("No TMP_Text component found on the child of " + this.gameObject.name); }
         dialogueText.text = "";
         // Initializes current dialogue sequence
+        SetDialogScript(script);
+    }
+
+    /// <summary>
+    /// SetDialogScript changes and Loads a new dialog script
+    /// </summary>
+    /// <param name="newScript"></param>
+    public void SetDialogScript(TextAsset newScript)
+    {
+        script = newScript;
         dialogue = ReadFile();
         currentLine = dialogue[currentLineNo][0] + ": " + dialogue[currentLineNo][1];
         currentLineNo = 0;

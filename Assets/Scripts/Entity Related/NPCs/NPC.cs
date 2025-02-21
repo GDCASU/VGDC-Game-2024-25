@@ -16,7 +16,7 @@ using UnityEngine;
 */// --------------------------------------------------------
 
 [RequireComponent(typeof(Dialogue))]
-public class NPC : MonoBehaviour
+public abstract class NPC : MonoBehaviour
 {
     [Header("Drops")]
     public List<GameObject> drops;
@@ -26,7 +26,7 @@ public class NPC : MonoBehaviour
 
 
     // Local Variables
-    private Dialogue dialog;
+    protected Dialogue dialog;
 
     private void Awake()
     {
@@ -37,12 +37,15 @@ public class NPC : MonoBehaviour
     private void OnEnable()
     {
         dialog.onDialogEnd.AddListener(OnDialogEnd);
+        dialog.onDialogStart.AddListener(OnDialogStart);
         InputManager.OnAttack += _onPlayerAttack;
     }
 
     private void OnDisable()
     {
         dialog.onDialogEnd.RemoveListener(OnDialogEnd);
+        dialog.onDialogStart.RemoveListener(OnDialogStart);
+
         InputManager.OnAttack -= _onPlayerAttack;
     }
 
@@ -57,6 +60,7 @@ public class NPC : MonoBehaviour
         }
     }
     
+    // Intermediate Function that gives OnPlayerAttack its distance and canSeePlayer parameters
     private void _onPlayerAttack()
     {
         PlayerController player = FindObjectOfType<PlayerController>();
