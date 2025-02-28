@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 1876844707561801965}
   - component: {fileID: 6397512419931706433}
   - component: {fileID: 4702182395986146652}
+  - component: {fileID: 4730288011490923566}
+  - component: {fileID: 187300418671473196}
   m_Layer: 0
   m_Name: Body
   m_TagString: Untagged
@@ -107,6 +109,58 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4730288011490923566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 30785464509815172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce141d8f8bb50a84e956751aac591f88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  elementStatusHandler: {fileID: 187300418671473196}
+  aiPath: {fileID: 6657450510555017208}
+  deathDeleteTarget: {fileID: 1024075932493480754}
+  healthBar: {fileID: 2833266598609536103}
+  baseSpeed: 1
+  maxHealth: 10
+  damageMults:
+    neutralMultiplier: 1
+    fungalMultiplier: 1
+    sparkMultiplier: 1
+    fireMultiplier: 1
+  currentHealth: 0
+  speedMult: 1
+  stunned: 0
+  doDebugLog: 1
+--- !u!114 &187300418671473196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 30785464509815172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5babba0e4336ee34298625fcbeb31cd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statusSettings:
+    burnDuration: 5
+    burnIntervalTime: 1
+    burnDmgPerInterval: 1
+    sporedDuration: 5
+    slowSpeedBy: 0.3
+    chargedDuration: 7.5
+    stunInterval: 1
+    stunDuration: 0.5
+  currentStatusEffect: 0
+  timeLeft: 0
+  doDebugLog: 1
+  entityScript: {fileID: 0}
 --- !u!1 &417379855734380349
 GameObject:
   m_ObjectHideFlags: 0
@@ -119,7 +173,7 @@ GameObject:
   - component: {fileID: 5760036054984584953}
   - component: {fileID: 1213381014304845765}
   - component: {fileID: 4583522764574812935}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: Outline
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -205,14 +259,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4484544789662233782}
-  - component: {fileID: 2756898837862903289}
-  - component: {fileID: 972720022822400979}
   - component: {fileID: 3967071068622980003}
   - component: {fileID: 1659898528258396080}
   - component: {fileID: 3735328910299846516}
   - component: {fileID: 3412325400517012747}
   - component: {fileID: 6657450510555017208}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Basic Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -236,52 +288,6 @@ Transform:
   - {fileID: 8280679172700093503}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2756898837862903289
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1024075932493480754}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce141d8f8bb50a84e956751aac591f88, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  elementStatusHandler: {fileID: 972720022822400979}
-  healthBar: {fileID: 2833266598609536103}
-  baseSpeed: 2
-  maxHealth: 10
-  damageMults:
-    neutralMultiplier: 1
-    fungalMultiplier: 1
-    sparkMultiplier: 1
-    fireMultiplier: 1
-  currentHealth: 0
-  speedMult: 1
-  doDebugLog: 1
---- !u!114 &972720022822400979
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1024075932493480754}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5babba0e4336ee34298625fcbeb31cd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  statusSettings:
-    burnDuration: 5
-    burnIntervalTime: 1
-    burnDmgPerInterval: 1
-    sporedDuration: 5
-    slowSpeedBy: 0.3
-  currentStatusEffect: 0
-  timeLeft: 0
-  doDebugLog: 1
-  entityScript: {fileID: 0}
 --- !u!114 &3967071068622980003
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -413,7 +419,7 @@ GameObject:
   - component: {fileID: 3036926781137014275}
   - component: {fileID: 8387088926675552858}
   - component: {fileID: 3321563694115760514}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -489,7 +495,7 @@ GameObject:
   - component: {fileID: 2010524223103131839}
   - component: {fileID: 4552868101344289628}
   - component: {fileID: 3177234114139534386}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: Mask
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -576,7 +582,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7986681592929820548}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: Detected
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -617,7 +623,7 @@ GameObject:
   - component: {fileID: 5235138772390288790}
   - component: {fileID: 2833266598609536103}
   - component: {fileID: 1530395753236695627}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Enemy UI
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -903,10 +909,30 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7424876006355349309, guid: 80dfcec38c094594da11effd76d3a8a1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7935603920560417448, guid: 80dfcec38c094594da11effd76d3a8a1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8077698986645493871, guid: 80dfcec38c094594da11effd76d3a8a1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 9064241163447367110, guid: 80dfcec38c094594da11effd76d3a8a1,
         type: 3}
       propertyPath: m_Name
       value: HealthBar
+      objectReference: {fileID: 0}
+    - target: {fileID: 9064241163447367110, guid: 80dfcec38c094594da11effd76d3a8a1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 9064241163447367110, guid: 80dfcec38c094594da11effd76d3a8a1,
         type: 3}

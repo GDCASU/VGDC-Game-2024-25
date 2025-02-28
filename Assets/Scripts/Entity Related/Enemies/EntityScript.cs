@@ -1,6 +1,5 @@
+using Pathfinding;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /* -----------------------------------------------------------
@@ -11,7 +10,7 @@ using UnityEngine;
  * Davyd Yehudin, William Peng
  * 
  * Modified By:
- * 
+ * Chandler Van
  */// --------------------------------------------------------
 
 /* -----------------------------------------------------------
@@ -28,6 +27,8 @@ public class EntityScript : MonoBehaviour, IDamageable
 {
     [Header("References")]
     [SerializeField] private ElementStatusHandler elementStatusHandler;
+    [SerializeField] private AIPath aiPath;
+    [SerializeField] private GameObject deathDeleteTarget;
     public FloatingHealthBar healthBar;
     
     [Header("Entity Stats")]
@@ -40,6 +41,7 @@ public class EntityScript : MonoBehaviour, IDamageable
     [Header("Readouts")]
     [InspectorReadOnly] [SerializeField] private int currentHealth;
     [InspectorReadOnly] public float speedMult = 1f; // Used by statuses to slow down the entity
+    [InspectorReadOnly] public bool stunned = false;
     
     // Use this bool to gate all your Debug.Log Statements please
     [Header("Debugging")]
@@ -53,6 +55,12 @@ public class EntityScript : MonoBehaviour, IDamageable
         // Set stats and references
         currentHealth = maxHealth;
         elementStatusHandler.entityScript = this;
+    }
+
+    private void LateUpdate()
+    {
+        aiPath.maxSpeed = baseSpeed * speedMult;
+        aiPath.canMove = !stunned;
     }
 
     /// <summary>
@@ -99,7 +107,7 @@ public class EntityScript : MonoBehaviour, IDamageable
     private void OnDeath()
     {
         // TODO: UNFINISHED
-        Destroy(gameObject);
+        Destroy(deathDeleteTarget);
     }
 }
 
