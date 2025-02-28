@@ -7,6 +7,7 @@ using TMPro;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Interactions))]
 public class Dialogue : MonoBehaviour
@@ -34,13 +35,14 @@ public class Dialogue : MonoBehaviour
 
     [Header("Dialogue Settings")]
     public DialogueOptions dialogueOptions;
-    public bool hasCharacterPortrait;
     public bool pressToStart = true; // whether dialogue starts automatically
     public float charactersPerSecond = 30;
     // If forgetting to toggle this to false was the issue: Flame Chandler 
 
-    [Header("External Objects")]
+    [Header("Optional Additions")]
     public UnityEvent dialogueEvent; // only needed if the dialogue type is TriggerEvent
+
+    [Header("External Objects")]
     [SerializeField] private TextAsset script;
     TMP_Text dialogueText;
     public GameObject dialogueBackground;
@@ -79,16 +81,15 @@ public class Dialogue : MonoBehaviour
         dialogueText = GetComponentInChildren<TMP_Text>();
         if (dialogueText == null) { Debug.LogWarning("No TMP_Text component found on the child of " + this.gameObject.name); }
         dialogueText.text = "";
+
         // Initializes current dialogue sequence
         SetDialogScript(script);
     }
 
-    /// <summary>
-    /// SetDialogScript changes and Loads a new dialog script
-    /// </summary>
-    /// <param name="newScript"></param>
+    /// <summary> SetDialogScript changes and Loads a new dialog script </summary>
     public void SetDialogScript(TextAsset newScript)
     {
+        if (dialogueBackground != null) { dialogueBackground.SetActive(false); }
         script = newScript;
         dialogue = ReadFile();
         currentLine = dialogue[currentLineNo][0] + ": " + dialogue[currentLineNo][1];
@@ -171,11 +172,12 @@ public class Dialogue : MonoBehaviour
     void ExitDialogue()
     {
         Time.timeScale = 1f;
-        currentLine = "";
         if (dialogueBackground != null) { dialogueBackground.SetActive(false); }
 
-        // remove change dialogue behavior from input system
+        // remove change dialogue behavior from input system & revert
         InputManager.OnChangeDialogue -= ChangeDialogue;
+        currentLineNo = -1;
+        currentLine = "";
 
         dialogueText.text = currentLine;
 
