@@ -1128,6 +1128,8 @@ MonoBehaviour:
   displayRadius: 0.2
   rotationDuration: 0.2
   projectileSpawnRadius: 0
+  sparkAttackArcAngle: 45
+  sparkProjectileCount: 5
   doDebugLog: 0
 --- !u!143 &2928181521467997156
 CharacterController:

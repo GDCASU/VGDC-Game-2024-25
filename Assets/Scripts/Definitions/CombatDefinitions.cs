@@ -36,6 +36,7 @@ public enum StatusEffect
     Undefined,
     Burning,
     Spored,
+    Charged
 }
 
 /// <summary>
@@ -63,6 +64,8 @@ public static class ElementStatusEffectsCaster
                 return Elements.Fire;
             case StatusEffect.Spored:
                 return Elements.Fungal;
+            case StatusEffect.Charged:
+                return Elements.Sparks;
             default:
                 Debug.LogError("ERROR! STATUS EFFECT NOT DEFINED IN COMBAT DEFINITIONS");
                 return Elements.Undefined;
@@ -80,6 +83,8 @@ public static class ElementStatusEffectsCaster
                 return StatusEffect.Burning;
             case Elements.Fungal:
                 return StatusEffect.Spored;
+            case Elements.Sparks:
+                return StatusEffect.Charged;
             default:
                 Debug.LogError("ERROR! ELEMENT NOT DEFINED IN COMBAT DEFINITIONS");
                 return StatusEffect.Undefined;
