@@ -205,22 +205,22 @@ MonoBehaviour:
     projectilePrefab: {fileID: 3053767172377724150, guid: 6eb9c05bffffbc94f9a309647537321e,
       type: 3}
     isInfinite: 0
-    ammoAmount: 4
-    ammoMaxAmount: 5
+    ammoAmount: 3
+    ammoMaxAmount: 3
   fungalElement:
     element: 4
     projectilePrefab: {fileID: 3053767172377724150, guid: 113cdedee7ea18a45980cc12a26193ea,
       type: 3}
     isInfinite: 0
-    ammoAmount: 2
-    ammoMaxAmount: 5
+    ammoAmount: 3
+    ammoMaxAmount: 3
   sparkElement:
     element: 5
     projectilePrefab: {fileID: 3053767172377724150, guid: 6f2a4c5b0a56de54d980e2be044ed07c,
       type: 3}
     isInfinite: 0
-    ammoAmount: 5
-    ammoMaxAmount: 5
+    ammoAmount: 3
+    ammoMaxAmount: 3
   doDebugLog: 0
 --- !u!1 &6582798097405661628
 GameObject:
@@ -323,10 +323,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   colorDip: {fileID: 0}
   transitionTime: 0.2
-  loadNextLevel: 0
-  loadPreviousLevel: 0
-  reloadLevel: 0
-  unlockNextLevel: 0
   tempStart: {x: 0, y: 0, z: 0}
   _playerPrefab: {fileID: 5486136789815482219, guid: 3929c72507c5b98469226ce0caeccc72,
     type: 3}
