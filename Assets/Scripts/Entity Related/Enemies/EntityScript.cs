@@ -10,8 +10,8 @@ using UnityEngine;
  * Davyd Yehudin, William Peng
  * 
  * Modified By:
- * Chandler Van
- */// --------------------------------------------------------
+ * William Peng, Chandler Van
+/* -----------------------------------------------------------
 
 /* -----------------------------------------------------------
  * Purpose:
@@ -30,6 +30,7 @@ public class EntityScript : MonoBehaviour, IDamageable
     [SerializeField] private AIPath aiPath;
     [SerializeField] private GameObject deathDeleteTarget;
     public FloatingHealthBar healthBar;
+    public GameObject destroyOnDeath;
     
     [Header("Entity Stats")]
     [SerializeField] private float baseSpeed;
