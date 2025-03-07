@@ -62,7 +62,10 @@ public class ElementStatusHandler : MonoBehaviour
                 targetRoutine = SporedCoroutine;
                 break;
             case Elements.Water:
-            case Elements.Sparks: // TODO: unfinished
+                break;
+            case Elements.Sparks:
+                statusEffect = StatusEffect.Charged;
+                targetRoutine = ChargedCoroutine;
                 break;
             case Elements.Neutral:
                 return ReactionType.Undefined; // Neutral doesnt cause a reaction with anything
@@ -110,8 +113,41 @@ public class ElementStatusHandler : MonoBehaviour
         currentStatusEffect = StatusEffect.Undefined;
         return result;
     }
-    
-    
+
+    /// <summary>
+    /// Coroutine that handles the charged effect
+    /// </summary>
+    private IEnumerator ChargedCoroutine()
+    {
+        timeLeft = statusSettings.chargedDuration;
+
+        while (timeLeft > 0)
+        {
+            yield return new WaitForSeconds(statusSettings.stunInterval);
+
+            // Apply stun
+            entityScript.stunned = true;
+            float _oldSpeed = entityScript.speedMult;
+            entityScript.speedMult = 0;
+            if (doDebugLog) Debug.Log("Stun Applied");
+
+            timeLeft -= statusSettings.stunInterval;
+
+            yield return new WaitForSeconds(statusSettings.stunDuration);
+
+            // Remove stun
+            entityScript.stunned = false;
+            entityScript.speedMult = _oldSpeed;
+            if (doDebugLog) Debug.Log("Stun Removed");
+
+            timeLeft -= statusSettings.stunDuration;
+        }
+
+        timeLeft = 0f;
+        currentStatusEffect = StatusEffect.Undefined;
+        statusEffectCo = null;
+    }
+
 
     /// <summary>
     /// Coroutine that handles the burning effect
@@ -182,6 +218,10 @@ public class StatusSettings
     [Header("Spored/Fungal ***************")]
     public float sporedDuration = 5f;
     [Range(0f,1f)] public float slowSpeedBy = 0.3f; // EX: If set to 0.3, it will slow the entity by 30%
+    [Header("Charged/Spark ***************")]
+    public float chargedDuration = 10f;
+    public float stunInterval = 1.0f;
+    public float stunDuration = 0.5f;
 }
 
 

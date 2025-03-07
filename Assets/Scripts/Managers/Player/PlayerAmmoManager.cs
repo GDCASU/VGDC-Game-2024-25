@@ -14,7 +14,7 @@ using UnityEngine.Serialization;
  * TJ
  * 
  * Modified By:
- * 
+ * Chandler Van
  */// --------------------------------------------------------
 
 /* -----------------------------------------------------------
@@ -43,6 +43,10 @@ public class PlayerAmmoManager : MonoBehaviour
     [SerializeField] private float displayRadius;
     [SerializeField] private float rotationDuration; // In Seconds
     [SerializeField] private float projectileSpawnRadius; // Distance from center of player from which to fire ammo
+
+    [Header("Spark Attack Settings")]
+    [SerializeField] private float sparkAttackArcAngle;
+    [SerializeField] private int sparkProjectileCount;
     
     [Header("Debugging")]
     [SerializeField] private bool doDebugLog;
@@ -160,13 +164,23 @@ public class PlayerAmmoManager : MonoBehaviour
         
         // Dont fire if currently on cooldown
         if (cooldownRoutine != null) return;
-        
-        // Spawn a projectile of the current ammo
-        Vector3 offsetCenter = center + direction * projectileSpawnRadius;
-        GameObject elementProjectile = Instantiate(currentAmmoSlot.elementInvSlot.projectilePrefab, offsetCenter, Quaternion.identity);
-        ElementProjectile projectile = elementProjectile.GetComponent<ElementProjectile>();
-        projectile.moveDir = direction;
-        projectile.ownerTag = this.gameObject.tag;
+
+        // Handle spawning projectile based on element of current ammo
+        switch (currentAmmoSlot.element)
+        {
+            case Elements.Sparks:
+                SpawnSparkAttack(center, direction);
+                break;
+
+            default:
+                Vector3 offsetCenter = center + direction * projectileSpawnRadius;
+                GameObject elementProjectile = Instantiate(currentAmmoSlot.elementInvSlot.projectilePrefab, offsetCenter, Quaternion.identity);
+                ElementProjectile projectile = elementProjectile.GetComponent<ElementProjectile>();
+                projectile.moveDir = direction;
+                projectile.ownerTag = this.gameObject.tag;
+
+                break;
+        }
         
         // Play projectile fire sound
         soundEmitter.PlaySound(projectileAudioHash);
@@ -193,7 +207,27 @@ public class PlayerAmmoManager : MonoBehaviour
             AdjustSlots();
         }
     }
-    
+
+    /// <summary>
+    /// Helper function that handles spawning the projectiles for the Spark Attack
+    /// </summary>
+    private void SpawnSparkAttack(Vector3 center, Vector3 direction)
+    {
+        Vector3 offsetCenter = center + direction * projectileSpawnRadius;
+
+        float angleOffset = sparkAttackArcAngle / sparkProjectileCount;
+
+        for(int i = 0; i < sparkProjectileCount; i++)
+        {
+            Vector3 projectileDirection = Quaternion.AngleAxis((-sparkAttackArcAngle / 2) + angleOffset * i, Vector3.up) * direction;
+
+            GameObject elementProjectile = Instantiate(currentAmmoSlot.elementInvSlot.projectilePrefab, offsetCenter, Quaternion.identity);
+            ElementProjectile projectile = elementProjectile.GetComponent<ElementProjectile>();
+            projectile.moveDir = projectileDirection;
+            projectile.ownerTag = this.gameObject.tag;
+        }
+    }
+
     /// <summary>
     /// Routine that handles the cooldown of element firing
     /// </summary>

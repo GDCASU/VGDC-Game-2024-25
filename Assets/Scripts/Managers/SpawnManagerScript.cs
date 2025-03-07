@@ -33,7 +33,7 @@ public class SpawnManagerScript : MonoBehaviour
             }
 
             // Skip if spawn timer has not elapsed
-            if (rd.spawnTimer >= 0) return;
+            if (rd.spawnTimer >= 0) continue;
 
             // Reset the spawn timer
             rd.spawnTimer = UnityEngine.Random.Range(
@@ -42,10 +42,10 @@ public class SpawnManagerScript : MonoBehaviour
             );
 
             // Skip if the room's spawn cap has been reached
-            if (rd.activePool.Count >= rd.spawnCap) return;
+            if (rd.activePool.Count >= rd.spawnCap) continue;
 
             // Skip if there are no remaining enemies to spawn
-            if (rd.remainingEnemyQueue.Count == 0) return;
+            if (rd.remainingEnemyQueue.Count == 0) continue;
 
             // Get a random spawn point and spawn the enemy
             GameObject spawnPoint = rd.dependantSpawnerPool[
