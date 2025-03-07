@@ -152,7 +152,8 @@ MonoBehaviour:
   lifetime: 10
   damage: 1
   element: 5
-  doDebugLog: 0
+  doDebugLog: 1
+  ownerTag: 
   moveDir: {x: 0, y: 0, z: 0}
 --- !u!136 &6863210492710567649
 CapsuleCollider:
