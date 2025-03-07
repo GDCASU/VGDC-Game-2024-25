@@ -10,7 +10,7 @@ using UnityEngine;
  * Using Merged work from
  * Davyd Yehudin, William Peng
  * 
- * Modified By:
+ * Modified By: William Peng
  * 
  */// --------------------------------------------------------
 
@@ -29,6 +29,7 @@ public class EntityScript : MonoBehaviour, IDamageable
     [Header("References")]
     [SerializeField] private ElementStatusHandler elementStatusHandler;
     public FloatingHealthBar healthBar;
+    public GameObject destroyOnDeath;
     
     [Header("Entity Stats")]
     [SerializeField] private float baseSpeed;
@@ -99,7 +100,7 @@ public class EntityScript : MonoBehaviour, IDamageable
     private void OnDeath()
     {
         // TODO: UNFINISHED
-        Destroy(gameObject);
+        Destroy(destroyOnDeath);
     }
 }
 
