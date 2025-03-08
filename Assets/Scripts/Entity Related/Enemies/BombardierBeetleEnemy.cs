@@ -36,3 +36,17 @@ public class BombardierBeetleEnemy : MonoBehaviour
         
     }
 }
+
+/*
+public class DamageMultiplierForBombardierBeetle
+{
+    public float fireMult = 0.3f; // Fire damage is 70% less effective.
+    public float neutralMult = 1.5f; // Neutral damage is 50% more effective.
+    public float fungalMult = 1f; // Fungal damage is normal.
+
+    public int CalculateDamage(int damage, Element element)
+    {
+        return 0;
+    }
+}
+*/
