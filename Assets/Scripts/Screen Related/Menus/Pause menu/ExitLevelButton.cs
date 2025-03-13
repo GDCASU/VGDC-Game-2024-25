@@ -17,7 +17,7 @@ public class SceneChanger : MonoBehaviour
     {
         if (!string.IsNullOrEmpty(sceneName))
         {
-            levelManager.LoadSceneByName(sceneName, Vector3.zero);
+            LevelManager.Instance.ChangeScene(sceneName, Vector3.zero);
         }
         else
         {

@@ -19,7 +19,6 @@ public class DungeonEntranceManager : MonoBehaviour
     [SerializeField] public Vector3 targetPosition;
     [SerializeField] public bool isOpen = true;
 
-    private LevelManager sceneManager;
     private Interactions interactions;
     private SpriteRenderer[] sprites;
     private GameObject[] spriteObjects;
@@ -30,16 +29,13 @@ public class DungeonEntranceManager : MonoBehaviour
         spriteObjects = new GameObject[2] { sprites[0].gameObject, sprites[1].gameObject };
         interactions = GetComponent<Interactions>();
         interactions.ChangeInteraction(EnterDungeon);
-
-        sceneManager = GameObject.Find("Level Manager").GetComponent<LevelManager>();
-
     }
 
     private void EnterDungeon()
     {
         if (isOpen)
         {
-            sceneManager.LoadSceneByName(targetSceneName, targetPosition);
+            LevelManager.Instance.ChangeScene(targetSceneName, targetPosition);
         }
     }
 
