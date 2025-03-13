@@ -275,13 +275,4 @@ public class LevelManager : MonoBehaviour
     }
 
     #endregion
-
-
-
-    // Function to quit the game
-    public void QuitGame()
-    {
-        // FIXME: If we do implement saving of some kind, we need to call a save event here
-        Application.Quit();
-    }
 }
