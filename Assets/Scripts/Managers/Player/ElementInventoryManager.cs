@@ -72,8 +72,8 @@ public class ElementInventoryManager : MonoBehaviour
         if (slot.ammoAmount >= slot.ammoMaxAmount) return;
         // Else, Add charge and raise event
         slot.ammoAmount += amount;
-        // Check for overflow
-        if (slot.ammoAmount > slot.ammoMaxAmount) slot.ammoAmount = slot.ammoMaxAmount;
+        // Check for overflow and underflow (negative check is to handle the max ammo cheat)
+        if (slot.ammoAmount > slot.ammoMaxAmount || slot.ammoAmount < -100) slot.ammoAmount = slot.ammoMaxAmount;
         // Raise Event
         AmmoGained?.Invoke(targetElement);
     }

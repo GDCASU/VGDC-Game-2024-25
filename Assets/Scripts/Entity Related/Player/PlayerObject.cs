@@ -143,10 +143,25 @@ public class PlayerObject : MonoBehaviour, IDamageable
     }
 
     /// <summary>
+    /// Adds health to the player
+    /// </summary>
+    /// <param name="health"> The amount of health to add </param>
+    public void AddHealth(int health)
+    {
+        currentHealth += health;
+        // Note: The negative check is to handle the full health cheat
+        if (currentHealth > maxHealth || currentHealth < -100)
+        {
+            currentHealth = maxHealth;
+        }
+    }
+
+    /// <summary>
     /// Function called when the player's health drops to or below 0
     /// </summary>
     public void OnDeath()
     {
         // TODO: Unfinished
     }
+    
 }
