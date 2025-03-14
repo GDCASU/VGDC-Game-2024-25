@@ -26,12 +26,14 @@ public class AudioMenuManager : MonoBehaviour
     [Header("Audio")] 
     [SerializeField] private Slider masterSlider;
     [SerializeField] private TextMeshProUGUI masterValue;
-    [SerializeField] private TextMeshProUGUI masterShadow;
     [SerializeField] private Slider musicSlider;
     [SerializeField] private TextMeshProUGUI musicValue;
-    [SerializeField] private TextMeshProUGUI musicShadow;
     [SerializeField] private Slider SFXSlider;
     [SerializeField] private TextMeshProUGUI SFXValue;
+    
+    [Header("Optional")]
+    [SerializeField] private TextMeshProUGUI masterShadow;
+    [SerializeField] private TextMeshProUGUI musicShadow;
     [SerializeField] private TextMeshProUGUI SFXShadow;
     
     // Use this bool to gate all your Debug.Log Statements please
@@ -47,17 +49,17 @@ public class AudioMenuManager : MonoBehaviour
         volumeStr = volume.ToString("F0");
         masterSlider.value = volume;
         masterValue.text = volumeStr;
-        masterShadow.text = volumeStr;
+        if (masterShadow != null) masterShadow.text = volumeStr;
         volume = SoundManager.Instance.GetVCAVolume(SoundControllers.Music);
         volumeStr = volume.ToString("F0");
         musicSlider.value = volume;
         musicValue.text = volumeStr;
-        musicShadow.text = volumeStr;
+        if (musicShadow != null) musicShadow.text = volumeStr;
         volume = SoundManager.Instance.GetVCAVolume(SoundControllers.SFX);
         volumeStr = volume.ToString("F0");
         SFXSlider.value = volume;
         SFXValue.text = volumeStr;
-        SFXShadow.text = volumeStr;
+        if (SFXShadow != null) SFXShadow.text = volumeStr;
     }
     
     /// <summary>
@@ -67,7 +69,7 @@ public class AudioMenuManager : MonoBehaviour
     {
         float sliderVal = masterSlider.value;
         string sliderValStr = sliderVal.ToString("F0");
-        masterShadow.text = sliderValStr;
+        if (masterShadow != null) masterShadow.text = sliderValStr;
         masterValue.text = sliderValStr;
         SoundManager.Instance.SetVolume(SoundControllers.Master, sliderVal, masterSlider.maxValue);
     }
@@ -79,7 +81,7 @@ public class AudioMenuManager : MonoBehaviour
     {
         float sliderVal = musicSlider.value;
         string sliderValStr = sliderVal.ToString("F0");
-        musicShadow.text = sliderValStr;
+        if (musicShadow != null) musicShadow.text = sliderValStr;
         musicValue.text = sliderValStr;
         SoundManager.Instance.SetVolume(SoundControllers.Music, sliderVal, musicSlider.maxValue);
     }
@@ -91,7 +93,7 @@ public class AudioMenuManager : MonoBehaviour
     {
         float sliderVal = SFXSlider.value;
         string sliderValStr = sliderVal.ToString("F0");
-        SFXShadow.text = sliderValStr;
+        if (SFXShadow != null) SFXShadow.text = sliderValStr;
         SFXValue.text = sliderValStr;
         SoundManager.Instance.SetVolume(SoundControllers.SFX, sliderVal, SFXSlider.maxValue);
     }

@@ -33,4 +33,12 @@ public class QuitMenuManager : MonoBehaviour
         // TODO: Add saving progress here
         Application.Quit();
     }
+
+    /// <summary>
+    /// Function to quit to the main menu, used by the pause menu
+    /// </summary>
+    public void QuitToMainMenu()
+    {
+        LevelManager.Instance.ChangeScene(LevelNames.MainMenu);
+    }
 }

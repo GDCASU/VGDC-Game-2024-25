@@ -29,8 +29,10 @@ public class GraphicsMenuManager : MonoBehaviour
     [SerializeField] private Toggle fullscreenToggle;
     [SerializeField] private Slider brightnessSlider;
     [SerializeField] private TextMeshProUGUI brightnessValueText;
-    [SerializeField] private TextMeshProUGUI brightnessShadowText;
     [SerializeField] private Volume postProcessingVolume;
+    
+    [Header("Optional")]
+    [SerializeField] private TextMeshProUGUI brightnessShadowText;
     
     // Use this bool to gate all your Debug.Log Statements please
     [Header("Debugging")]
@@ -81,7 +83,7 @@ public class GraphicsMenuManager : MonoBehaviour
         float value = brightnessSlider.value;
         string valueStr = value.ToString("F0");
         brightnessValueText.text = valueStr;
-        brightnessShadowText.text = valueStr;
+        if (brightnessShadowText != null) brightnessShadowText.text = valueStr;
         SetVolumeBrightness(value);
     }
     

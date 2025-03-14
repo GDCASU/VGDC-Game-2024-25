@@ -26,6 +26,8 @@ public class GameplayMenuManager : MonoBehaviour
     [Header("Gameplay")]
     [SerializeField] private Slider sensitivitySlider;
     [SerializeField] private TextMeshProUGUI DPIValue;
+    
+    [Header("Optional")]
     [SerializeField] private TextMeshProUGUI DPIShadow;
     
     // Use this bool to gate all your Debug.Log Statements please
@@ -54,7 +56,7 @@ public class GameplayMenuManager : MonoBehaviour
     {
         float sliderVal = sensitivitySlider.value;
         string sliderValStr = sliderVal.ToString("F0");
-        DPIShadow.text = sliderValStr;
+        if (DPIShadow != null) DPIShadow.text = sliderValStr;
         DPIValue.text = sliderValStr;
         // TODO: Change Sensitivity?
     }

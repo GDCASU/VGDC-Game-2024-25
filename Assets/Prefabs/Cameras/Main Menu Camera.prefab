@@ -61,7 +61,7 @@ PrefabInstance:
     - target: {fileID: 8590936309633077326, guid: 77385e99d41c8e44daa33ee0d547c069,
         type: 3}
       propertyPath: m_Name
-      value: Default Camera
+      value: Main Menu Camera
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

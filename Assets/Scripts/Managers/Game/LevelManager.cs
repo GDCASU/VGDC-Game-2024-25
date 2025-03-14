@@ -32,18 +32,16 @@ public class LevelManager : MonoBehaviour
 {
     // Singleton
     public static LevelManager Instance;
-    
-    [Header("Levels Data")]
-    public bool isLevel1Completed = false;
+
+    [Header("Levels Data")] public bool isLevel1Completed = false;
     public bool isLevel2Unlocked = false;
     public bool isLevel2Completed = false;
-    
-    [Header("Fields")]
-    public Animator colorDip;
+
+    [Header("Fields")] public Animator colorDip;
     public float transitionTime = 0.2f;
     public Vector3 tempStart;
     [SerializeField] private GameObject _playerPrefab;
-    
+
     // Local Variables
     private Coroutine asyncLoadingRoutine = null;
 
@@ -58,21 +56,22 @@ public class LevelManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+
         // Not set yet
         Instance = this;
     }
 
     #endregion
-    
+
     #region Loading Functions
-    
+
     /// <summary> Loads next level and places the player at startPosition </summary>
     public void LoadNextLevel(Vector3 startPosition)
     {
         // FIXME: Had to take unlock checking, Redo
         ChangeScene(SceneManager.GetActiveScene().buildIndex + 1, startPosition);
     }
-    
+
     /* FIXME: Redo this
     /// <summary>
     /// Load scene by specific name and place player in starting position
@@ -208,6 +207,7 @@ public class LevelManager : MonoBehaviour
         {
             yield return null;
         }
+
         // Null the coroutine field when finished
         asyncLoadingRoutine = null;
     }
@@ -219,6 +219,7 @@ public class LevelManager : MonoBehaviour
         {
             yield return null;
         }
+
         // Null the coroutine field when finished
         asyncLoadingRoutine = null;
     }
@@ -273,6 +274,6 @@ public class LevelManager : MonoBehaviour
         // Null the coroutine field when finished
         asyncLoadingRoutine = null;
     }
-
-    #endregion
 }
+
+#endregion
