@@ -102,7 +102,7 @@ public class PuzzleSwitch : Interactable
     /// <returns></returns>
     private IEnumerator WaitForAnimation()
     {
-        yield return new WaitForSeconds(GetAnimationLength()); // Wait for animation to finish
+        yield return new WaitForSeconds(GetAnimationLength());
         isTransitioning = false;
     }
 
