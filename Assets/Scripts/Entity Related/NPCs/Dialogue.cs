@@ -7,26 +7,24 @@ using TMPro;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Playables;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Interactions))]
-public class Dialogue : MonoBehaviour
-{
- /* -----------------------------------------------------------
+/* -----------------------------------------------------------
  * Author:
  * Cami Lee
- * 
+ *
  * Modified By:
- * Chandler Van
+ * Chandler Van, Ian Fletcher
  */// --------------------------------------------------------
 
 /* -----------------------------------------------------------
-    * Purpose:
-    * Handle the Dialogue System for NPCs
-*/// --------------------------------------------------------
+ * Purpose:
+ * Handle the Dialogue System for NPCs
+ */// --------------------------------------------------------
 
-    
+//[RequireComponent(typeof(Interactions))]
+public class Dialogue : Interactable
+{
     public enum DialogueOptions
     {
         PauseGameTime,
@@ -36,19 +34,17 @@ public class Dialogue : MonoBehaviour
 
     [Header("Dialogue Settings")]
     public DialogueOptions dialogueOptions;
-    public bool playOnAwake = true; // whether dialogue starts automatically
+    public bool pressToStart = true; // whether dialogue starts automatically
     public float charactersPerSecond = 30;
     // If forgetting to toggle this to false was the issue: Flame Chandler 
 
     [Header("Optional Additions")]
-    PlayableDirector timeline;
-    bool timelinePlaying;
+    public UnityEvent dialogueEvent; // only needed if the dialogue type is TriggerEvent
 
     [Header("External Objects")]
     [SerializeField] private TextAsset script;
     TMP_Text dialogueText;
     public GameObject dialogueBackground;
-    Interactions interactions;
 
     [Header("Preset Options")]
     public string[] characterNames;
@@ -62,20 +58,17 @@ public class Dialogue : MonoBehaviour
     [HideInInspector] public UnityEvent onDialogEnd;
     [HideInInspector] public UnityEvent onDialogStart;
     private Coroutine currentDialogCoroutine;
-
+    
     void Start()
     {
         // Instantiates interactions script 
-        interactions = GetComponent<Interactions>();
-        if (interactions == null && !playOnAwake) 
-            Debug.LogWarning("No Interactions script found on " + this.gameObject.name);
-        else if (!playOnAwake) // dialogue changes with button press or dialogue event
+        if (pressToStart) // dialogue changes with button press
         {
             switch ((int)dialogueOptions)
             {
-                case 0: interactions.ChangeInteraction(PauseGameTime); break;
-                case 1: interactions.ChangeInteraction(TextBox); break;
-                case 2: break;
+                case 0: OnFocusEnter += PauseGameTime; break;
+                case 1: OnFocusEnter += TextBox; break;
+                case 2: OnFocusEnter += TriggerEvent; break;
             }
         }
 
@@ -86,9 +79,11 @@ public class Dialogue : MonoBehaviour
 
         // Initializes current dialogue sequence
         SetDialogScript(script);
+    }
 
-        // Instantitates timeline object
-        timeline = GetComponent<PlayableDirector>();
+    private void OnDestroy()
+    {
+        OnFocusEnter = null;
     }
 
     /// <summary> SetDialogScript changes and Loads a new dialog script </summary>
@@ -103,16 +98,16 @@ public class Dialogue : MonoBehaviour
 
     private void Update()
     {
-        if (playOnAwake) // dialogue changes when player is close to object
+        if (!pressToStart) // dialogue changes when player is close to object
         {
-            if (InRange()) // inside if statement so doesn't run when playOnAwake is false
+            if (InRange()) // inside if statement so doesn't run when pressToStart is true
             {
                 if(currentDialogCoroutine == null)
                     switch ((int)dialogueOptions)
                     {
                         case 0: PauseGameTime(); break;
                         case 1: TextBox(); break;
-                        case 2: Debug.LogError("TriggerEvent cannot be play on awake"); break;
+                        case 2: TriggerEvent(); break;
                     }
             }
         }
@@ -133,16 +128,20 @@ public class Dialogue : MonoBehaviour
     //-- Dialogue Types --//
     void PauseGameTime()
     { 
+        Debug.Log("Called PauseGameTime");
         Time.timeScale = 0f;
         StartDialogue();
     }
     void TextBox()
     {
+        Debug.Log("Called TextBox");
         StartDialogue();
     }
     void TriggerEvent()
     {
+        Debug.Log("Called TriggerEvent");
         StartDialogue();
+        dialogueEvent?.Invoke();
     }
 
     //-- Dialogue Controllers --//
@@ -160,8 +159,6 @@ public class Dialogue : MonoBehaviour
         if (dialogue[currentLineNo+1] == null && currentLine == dialogueText.text) { ExitDialogue(); }
         else if (currentLine == dialogueText.text) // If the typewriter effect has finished
         {
-            if (dialogue[currentLineNo + 1][0] == "BREAK") { StartTimeline(); return; } // if an action
-
             currentLineNo++;
             currentLine = dialogue[currentLineNo][0] + ": " + dialogue[currentLineNo][1];
             StartCoroutine(TypewriterText(currentLine));
@@ -238,14 +235,6 @@ public class Dialogue : MonoBehaviour
              
             else if (IsCharacterName(line)) { currentSpeaker = line;} // If is a name
 
-            else if (line == "BREAK") // If needs to stop for timeline
-            {
-                act[dialogueIndex] = new string[2];
-                act[dialogueIndex][0] = line;
-                act[dialogueIndex][1] = "";
-                dialogueIndex++;
-            }
-
             else
             {
                 string finalString = line;
@@ -261,7 +250,6 @@ public class Dialogue : MonoBehaviour
         
         return act;
     }
-    
     private bool IsCharacterName(string text)
     {
         foreach (string name in characterNames)
@@ -269,23 +257,5 @@ public class Dialogue : MonoBehaviour
             if (text == name) { return true; }
         }
         return false;
-    }
-
-    public void TimelineIsPaused()
-    {
-        timelinePlaying = false;
-        timeline.Pause();
-        TriggerEvent();
-        InputManager.OnChangeDialogue += ChangeDialogue;
-    }
-
-    private void StartTimeline()
-    {
-        timelinePlaying = true;
-        timeline.Resume();
-        InputManager.OnChangeDialogue -= ChangeDialogue;
-
-        currentLineNo += 2;
-        currentLine = dialogue[currentLineNo][0] + ": " + dialogue[currentLineNo][1];
     }
 }
