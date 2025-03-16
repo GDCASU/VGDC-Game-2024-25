@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -27,6 +28,7 @@ public class PuzzleNode : MonoBehaviour
     
     [Header("Readouts")] 
     [InspectorReadOnly] public bool isNodeActivated = false;
+    [SerializeField] [InspectorReadOnly] private float brightness = 5f;
     
     // Use this bool to gate all your Debug.Log Statements please
     [Header("Debugging")]
@@ -36,22 +38,30 @@ public class PuzzleNode : MonoBehaviour
     public System.Action OnStatusUpdated;
     private static readonly int emissionColor = Shader.PropertyToID("_EmissionColor");
 
+    private void Start()
+    {
+        // Make sure it has emission enabled 
+        meshRenderer.material.EnableKeyword("_EMISSION");
+    }
+
     /// <summary>
     /// Should be called when the requirement for the node to be true is present
     /// </summary>
     public void ActivateNode()
     {
         isNodeActivated = true;
-        meshRenderer.material.color = Color.green;
-        meshRenderer.material.SetColor(emissionColor, Color.green);
+        Color finalColor = Color.green * brightness;
+        meshRenderer.material.color = finalColor;
+        meshRenderer.material.SetColor(emissionColor, finalColor);
         OnStatusUpdated?.Invoke();
     }
 
     public void DeactivateNode()
     {
         isNodeActivated = false;
-        meshRenderer.material.color = Color.red;
-        meshRenderer.material.SetColor(emissionColor, Color.red);
+        Color finalColor = Color.red * brightness;
+        meshRenderer.material.color = finalColor;
+        meshRenderer.material.SetColor(emissionColor, finalColor);
         OnStatusUpdated?.Invoke();
     }
     

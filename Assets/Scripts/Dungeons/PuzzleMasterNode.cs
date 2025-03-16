@@ -35,6 +35,8 @@ public class PuzzleMasterNode : MonoBehaviour
     
     [Header("Readouts")]
     [SerializeField] [InspectorReadOnly] private bool isActivated = false;
+
+    [SerializeField] [InspectorReadOnly] private float brightness = 5f;
     
     // Use this bool to gate all your Debug.Log Statements please
     [Header("Debugging")]
@@ -45,7 +47,8 @@ public class PuzzleMasterNode : MonoBehaviour
     
     private void Start()
     {
-        
+        // Make sure the material has emission enabled
+        meshRenderer.material.EnableKeyword("_EMISSION");
         // NOTE: Adding nodes at runtime is not supported, all nodes must be set
         // in the inspector before hitting play
         foreach (PuzzleNode node in nodes)
@@ -70,8 +73,9 @@ public class PuzzleMasterNode : MonoBehaviour
                 if (isActivated)
                 {
                     // Node went from activated to deactivated, change color and raise event
-                    meshRenderer.material.color = Color.yellow;
-                    meshRenderer.material.SetColor(emissionColor, Color.yellow);
+                    Color finalColor = Color.yellow * brightness;
+                    meshRenderer.material.color = finalColor;
+                    meshRenderer.material.SetColor(emissionColor, finalColor);
                     OnDeactivate.Invoke();
                     isActivated = false;
                 }
@@ -82,8 +86,9 @@ public class PuzzleMasterNode : MonoBehaviour
         // Else all nodes active, change properties and raise event
         if (!isActivated)
         {
-            meshRenderer.material.color = Color.green;
-            meshRenderer.material.SetColor(emissionColor, Color.green);
+            Color finalColor = Color.green * brightness;
+            meshRenderer.material.color = finalColor;
+            meshRenderer.material.SetColor(emissionColor, finalColor);
             OnActivate.Invoke();
             isActivated = true;
         }
