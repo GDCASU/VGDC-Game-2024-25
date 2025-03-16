@@ -22,7 +22,7 @@ using AYellowpaper.SerializedCollections;
 /// <summary>
 /// Class that manages the interactions between the player and items
 /// </summary>
-public class InterMan : MonoBehaviour
+public class InteractionManager : MonoBehaviour
 {
     // Use this bool to gate all your Debug.Log Statements please
     [Header("Debugging")]

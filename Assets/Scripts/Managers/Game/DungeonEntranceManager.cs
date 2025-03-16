@@ -5,6 +5,9 @@ using UnityEngine.SceneManagement;
 /* -----------------------------------------------------------
  * Author:
  * Matthew Glos
+ *
+ * Modified By:
+ * Ian Fletcher
  */// --------------------------------------------------------
 
 /* -----------------------------------------------------------
@@ -12,14 +15,13 @@ using UnityEngine.SceneManagement;
  * Represents dungeon entrance, waits for player to collide 
  * with it and loads the given scene by name when that happens
  */// --------------------------------------------------------
-public class DungeonEntranceManager : MonoBehaviour
+public class DungeonEntranceManager : Interactable
 {
     [SerializeField] public GameObject player;
     [SerializeField] public string targetSceneName;
     [SerializeField] public Vector3 targetPosition;
     [SerializeField] public bool isOpen = true;
-
-    private Interactions interactions;
+    
     private SpriteRenderer[] sprites;
     private GameObject[] spriteObjects;
 
@@ -27,8 +29,13 @@ public class DungeonEntranceManager : MonoBehaviour
     {
         sprites = GetComponentsInChildren<SpriteRenderer>();
         spriteObjects = new GameObject[2] { sprites[0].gameObject, sprites[1].gameObject };
-        interactions = GetComponent<Interactions>();
-        interactions.ChangeInteraction(EnterDungeon);
+        OnInteractionExecuted += EnterDungeon;
+    }
+
+    void OnDestroy()
+    {
+        // Unsub from events
+        OnInteractionExecuted -= EnterDungeon;
     }
 
     private void EnterDungeon()

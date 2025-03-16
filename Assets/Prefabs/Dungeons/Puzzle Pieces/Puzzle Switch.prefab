@@ -289,7 +289,7 @@ GameObject:
   - component: {fileID: 8628470729327523308}
   - component: {fileID: 7500383055051676628}
   m_Layer: 0
-  m_Name: Switch
+  m_Name: Puzzle Switch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
