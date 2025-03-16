@@ -60,7 +60,7 @@ public class InterMan : MonoBehaviour
     /// </summary>
     private void OnInteractionExecuted()
     {
-        focusedInteractable?.OnInteractionExecuted();
+        focusedInteractable?.OnInteractionExecuted?.Invoke();
     }
 
     /// <summary>
@@ -73,7 +73,7 @@ public class InterMan : MonoBehaviour
         {
             if (focusedInteractable)
             {
-                focusedInteractable.OnFocusExit();
+                focusedInteractable.OnFocusExit?.Invoke();
                 focusedInteractable = null;
             }
             hasFocusedEventExecuted = false;
@@ -102,7 +102,7 @@ public class InterMan : MonoBehaviour
         if (focusedInteractable != null && focusedInteractable != closest)
         {
             // It was different, call OnFocusExit
-            focusedInteractable.OnFocusExit();
+            focusedInteractable.OnFocusExit?.Invoke();
             hasFocusedEventExecuted = false;
             focusedInteractable = closest;
         }
@@ -113,12 +113,12 @@ public class InterMan : MonoBehaviour
             // First time this object has been focused
             focusedInteractable = closest;
             hasFocusedEventExecuted = true;
-            focusedInteractable.OnFocusEnter();
+            focusedInteractable.OnFocusEnter?.Invoke();
         }
         else
         {
             // It was, execute OnFocusStay
-            focusedInteractable.OnFocusStay();
+            focusedInteractable.OnFocusStay?.Invoke();
         }
         
         
@@ -133,7 +133,7 @@ public class InterMan : MonoBehaviour
             // Object was of type interactable, add to dictionary and trigger the 
             cachedScripts.Add(other, interactable);
             interactablesList.Add(interactable);
-            interactable.OnInteractionEnter();
+            interactable.OnInteractionEnter?.Invoke();
         }
     }
 
@@ -142,7 +142,7 @@ public class InterMan : MonoBehaviour
         // Execute the stay function if it is an interactable
         cachedScripts.TryGetValue(other, out Interactable interactable);
         // If valid, execute
-        if (interactable) interactable.OnInteractionStay();
+        if (interactable) interactable.OnInteractionStay?.Invoke();
     }
 
     private void OnTriggerExit(Collider other)
@@ -154,7 +154,7 @@ public class InterMan : MonoBehaviour
         {
             interactablesList.Remove(interactable);
             cachedScripts.Remove(other);
-            interactable.OnInteractionExit();
+            interactable.OnInteractionExit?.Invoke();
         }
     }
 

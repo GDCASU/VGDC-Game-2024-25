@@ -9,23 +9,22 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Interactions))]
-public class Dialogue : MonoBehaviour
-{
- /* -----------------------------------------------------------
+/* -----------------------------------------------------------
  * Author:
  * Cami Lee
- * 
+ *
  * Modified By:
- * Chandler Van
+ * Chandler Van, Ian Fletcher
  */// --------------------------------------------------------
 
 /* -----------------------------------------------------------
-    * Purpose:
-    * Handle the Dialogue System for NPCs
-*/// --------------------------------------------------------
+ * Purpose:
+ * Handle the Dialogue System for NPCs
+ */// --------------------------------------------------------
 
-    
+//[RequireComponent(typeof(Interactions))]
+public class Dialogue : Interactable
+{
     public enum DialogueOptions
     {
         PauseGameTime,
@@ -46,7 +45,6 @@ public class Dialogue : MonoBehaviour
     [SerializeField] private TextAsset script;
     TMP_Text dialogueText;
     public GameObject dialogueBackground;
-    Interactions interactions;
 
     [Header("Preset Options")]
     public string[] characterNames;
@@ -60,20 +58,17 @@ public class Dialogue : MonoBehaviour
     [HideInInspector] public UnityEvent onDialogEnd;
     [HideInInspector] public UnityEvent onDialogStart;
     private Coroutine currentDialogCoroutine;
-
+    
     void Start()
     {
         // Instantiates interactions script 
-        interactions = GetComponent<Interactions>();
-        if (interactions == null && pressToStart) 
-            Debug.LogWarning("No Interactions script found on " + this.gameObject.name);
-        else if (pressToStart) // dialogue changes with button press
+        if (pressToStart) // dialogue changes with button press
         {
             switch ((int)dialogueOptions)
             {
-                case 0: interactions.ChangeInteraction(PauseGameTime); break;
-                case 1: interactions.ChangeInteraction(TextBox); break;
-                case 2: interactions.ChangeInteraction(TriggerEvent); break;
+                case 0: OnFocusEnter += PauseGameTime; break;
+                case 1: OnFocusEnter += TextBox; break;
+                case 2: OnFocusEnter += TriggerEvent; break;
             }
         }
 
@@ -84,6 +79,11 @@ public class Dialogue : MonoBehaviour
 
         // Initializes current dialogue sequence
         SetDialogScript(script);
+    }
+
+    private void OnDestroy()
+    {
+        OnFocusEnter = null;
     }
 
     /// <summary> SetDialogScript changes and Loads a new dialog script </summary>
@@ -128,15 +128,18 @@ public class Dialogue : MonoBehaviour
     //-- Dialogue Types --//
     void PauseGameTime()
     { 
+        Debug.Log("Called PauseGameTime");
         Time.timeScale = 0f;
         StartDialogue();
     }
     void TextBox()
     {
+        Debug.Log("Called TextBox");
         StartDialogue();
     }
-    void TriggerEvent() 
+    void TriggerEvent()
     {
+        Debug.Log("Called TriggerEvent");
         StartDialogue();
         dialogueEvent?.Invoke();
     }

@@ -25,47 +25,53 @@ using UnityEngine;
 /// </summary>
 public abstract class Interactable : MonoBehaviour
 {
-    
+
+    #region Interaction Functions
+
     /// <summary>
     /// <para>Executes Once</para>
     /// Will trigger only once when the player enters the range of the interactable
     /// </summary>
-    public virtual void OnInteractionEnter(){}
-    
+    public System.Action OnInteractionEnter;
+
     /// <summary>
     /// <para>Executes every frame if on range</para>
     /// Will run if the player interaction radius is in range
     /// </summary>
-    public virtual void OnInteractionStay(){}
-    
+    public System.Action OnInteractionStay;
+
     /// <summary>
     /// <para>Executes Once</para>
     /// Will execute if the object is the closest to the player
     /// </summary>
-    public virtual void OnFocusEnter(){}
-    
+    public System.Action OnFocusEnter;
+
     /// <summary>
     /// <para>Executes every frame if on range</para>
     /// Will run if the object is the closest to the player on the frame
     /// </summary>
-    public virtual void OnFocusStay(){}
-    
+    public System.Action OnFocusStay;
+
     /// <summary>
     /// <para>Executes Once</para>
     /// Will execute when the object no longer is the closest to the player
     /// </summary>
-    public virtual void OnFocusExit(){}
-    
+    public System.Action OnFocusExit;
+
     /// <summary>
     /// <para>Executes Per Input</para>
     /// Once the player hits the interaction key, this will execute
     /// </summary>
-    public virtual void OnInteractionExecuted(){}
-    
+    public System.Action OnInteractionExecuted;
+
     /// <summary>
     /// <para>Executes Once</para>
     /// Will execute when the player interaction radious no longer reaches the object
     /// </summary>
-    public virtual void OnInteractionExit(){}
+    public System.Action OnInteractionExit;
+
+    #endregion
+
+
 
 }

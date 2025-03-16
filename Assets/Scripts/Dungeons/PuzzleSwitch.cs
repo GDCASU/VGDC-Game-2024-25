@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -51,6 +52,10 @@ public class PuzzleSwitch : Interactable
         _outlineScript.enabled = false;
         isOn = _startOn;
         _animator.SetBool(animatorIsOnParam, isOn);
+        
+        OnFocusEnter += EnableOutline;
+        OnFocusExit += DisableOutline;
+        OnInteractionExecuted += OnInteract;
     }
 
     private void LateUpdate()
@@ -79,7 +84,15 @@ public class PuzzleSwitch : Interactable
         }
     }
 
-    public override void OnInteractionExecuted()
+    private void OnDestroy()
+    {
+        // Unsubscribe from events
+        OnFocusEnter -= EnableOutline;
+        OnFocusExit -= DisableOutline;
+        OnInteractionExecuted -= OnInteract;
+    }
+
+    public void OnInteract()
     {
         // Don't allow interaction during animation
         if (isTransitioning) return;
@@ -113,13 +126,14 @@ public class PuzzleSwitch : Interactable
         return stateInfo.length + 0.5f;
     }
 
-    public override void OnFocusEnter()
+    public void EnableOutline()
     {
         _outlineScript.enabled = true;
     }
-
-    public override void OnFocusExit()
+    
+    public void DisableOutline()
     {
         _outlineScript.enabled = false;
     }
+
 }
