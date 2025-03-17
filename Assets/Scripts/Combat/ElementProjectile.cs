@@ -85,7 +85,13 @@ public class ElementProjectile : MonoBehaviour
                 //
                 break;
 
+
             case ReactionType.Undefined:
+		break;
+
+            case ReactionType.Object:
+                //
+
                 break;
         }
 

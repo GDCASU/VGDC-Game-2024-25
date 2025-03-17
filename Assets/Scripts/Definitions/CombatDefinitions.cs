@@ -45,6 +45,7 @@ public enum ReactionType
 {
     Undefined,
     Fireworks,
+    Object,
 }
 
 /// <summary>
