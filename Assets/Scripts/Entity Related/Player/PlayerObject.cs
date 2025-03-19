@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 /* -----------------------------------------------------------
  * Author:
@@ -26,7 +27,7 @@ public class PlayerObject : MonoBehaviour, IDamageable
     public static PlayerObject Instance;
     
     [Header("Settings")]
-    [SerializeField] private int maxHealth = 100;
+    [Range(1,9)] public int maxHealthInt;
     
     [Header("References")]
     [SerializeField] private PlayerAmmoManager playerAmmoManager;
@@ -36,16 +37,18 @@ public class PlayerObject : MonoBehaviour, IDamageable
     public CapsuleCollider capsuleCollider;
     
     [Header("Readouts")]
-    [InspectorReadOnly] [SerializeField] private int currentHealth = 0;
+    [InspectorReadOnly] public int currentHealth = 0;
+    
 
     // Use this bool to gate all your Debug.Log Statements please
     [Header("Debugging")] 
     [SerializeField] private bool _doDebugLog;
+    
+    // Events
+    public System.Action<int> OnHealthChange;
 
     // Local variables
     private Dictionary<Collider, ItemPickups> cachedScripts = new(); // Script Cache
-
-    // Local Variables
 
     void Awake()
     {
@@ -60,7 +63,7 @@ public class PlayerObject : MonoBehaviour, IDamageable
         Instance = this;
         
         // Set up stats
-        currentHealth = maxHealth;
+        currentHealth = maxHealthInt;
     }
 
     void OnDestroy()
@@ -113,7 +116,7 @@ public class PlayerObject : MonoBehaviour, IDamageable
     {
         if ( itemPickup.itemData.id == "HealthPickup")
         {
-            if (currentHealth < maxHealth)
+            if (currentHealth < maxHealthInt)
             {
                 currentHealth += itemPickup.itemData.value;
                 Destroy(itemPickup.gameObject);
@@ -150,9 +153,9 @@ public class PlayerObject : MonoBehaviour, IDamageable
     {
         currentHealth += health;
         // Note: The negative check is to handle the full health cheat
-        if (currentHealth > maxHealth || currentHealth < -100)
+        if (currentHealth > maxHealthInt || currentHealth < -100)
         {
-            currentHealth = maxHealth;
+            currentHealth = maxHealthInt;
         }
     }
 

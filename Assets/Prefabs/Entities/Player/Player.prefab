@@ -654,7 +654,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 570312993612386985}
-  - component: {fileID: 5757083692588988416}
+  - component: {fileID: 2223349746882383265}
   - component: {fileID: 6957007522813627609}
   m_Layer: 3
   m_Name: Interactions
@@ -678,7 +678,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2391930757929744352}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5757083692588988416
+--- !u!114 &2223349746882383265
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -691,6 +691,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   doDebugLog: 0
+  currListSize: 0
 --- !u!135 &6957007522813627609
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1101,7 +1102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da9e00439e59bc9439543e15d1f4f413, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealthInt: 7
   playerAmmoManager: {fileID: 7667864572134118126}
   playerController: {fileID: 6697751668706597001}
   magnetAttraction: {fileID: 2525701321551742629}

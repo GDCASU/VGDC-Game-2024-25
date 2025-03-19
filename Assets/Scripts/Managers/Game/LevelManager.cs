@@ -237,7 +237,7 @@ public class LevelManager : MonoBehaviour
         }
 
         // Create new player
-        GameObject oldPlayer = GameObject.Find(TagDefinitions.PlayerObjectName);
+        GameObject oldPlayer = GameObject.Find(TagDefinitions.PlayerTag);
         GameObject newPlayer = Instantiate(_playerPrefab);
         newPlayer.transform.position = target + new Vector3(0, 0, -0.5f);
 
@@ -262,7 +262,7 @@ public class LevelManager : MonoBehaviour
         }
 
         // Create new player
-        GameObject oldPlayer = GameObject.Find(TagDefinitions.PlayerObjectName);
+        GameObject oldPlayer = GameObject.Find(TagDefinitions.PlayerTag);
         GameObject newPlayer = Instantiate(_playerPrefab);
         newPlayer.transform.position = target + new Vector3(0, 0, -0.5f);
 

@@ -20,10 +20,12 @@ using UnityEngine;
 /// </summary>
 public static class TagDefinitions
 {
-  public const string PlayerObjectName = "Player";  
-  public const string PlayerTag = "Player";
+  public const string PlayerTag = "Player";  
   public const string EnemyTag = "Enemies";
   public const string CollectibleTag = "Collectible";
   public const string InteractableTag = "Interactable";
+  public const string ProjectileTag = "Projectile";
+  public const string GroundTag = "Ground";
+  public const string WallTag = "Wall";
   
 }
