@@ -137,7 +137,7 @@ MonoBehaviour:
     type: 3}
   hazardTilePrefab: {fileID: 794377156893739889, guid: a3bff8d72d89cea43b140f775556fcf7,
     type: 3}
-  hazardCount: 6
+  hazardCount: 7
   hazardCellCount: 1
   verticalAngle: -56
   force: 7.12

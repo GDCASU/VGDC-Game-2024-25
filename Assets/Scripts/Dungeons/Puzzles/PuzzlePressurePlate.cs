@@ -22,7 +22,7 @@ using UnityEngine.Serialization;
  * It includes protection for multiple objects entering the zone and visual feedback for the plate's state.
  */// --------------------------------------------------------
 
-public class PressurePlateController : MonoBehaviour
+public class PuzzlePressurePlate : MonoBehaviour
 {
     [Header("Events")]
     [SerializeField] UnityEvent objectEnterEvents = new UnityEvent(); // Event invoked when a valid object enters the trigger zone.
