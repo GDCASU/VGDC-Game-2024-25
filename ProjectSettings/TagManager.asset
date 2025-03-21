@@ -7,7 +7,6 @@ TagManager:
   - Collectible
   - Interactable
   - Enemy
-  - Blocking
   layers:
   - Default
   - TransparentFX
