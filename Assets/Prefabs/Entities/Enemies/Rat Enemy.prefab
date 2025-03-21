@@ -146,6 +146,9 @@ MonoBehaviour:
     burnDmgPerInterval: 1
     sporedDuration: 5
     slowSpeedBy: 0.3
+    chargedDuration: 10
+    stunInterval: 1
+    stunDuration: 0.5
   currentStatusEffect: 0
   timeLeft: 0
   doDebugLog: 0
@@ -163,6 +166,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   elementStatusHandler: {fileID: 3965117697542169905}
+  aiPath: {fileID: 805239401150814529}
+  deathDeleteTarget: {fileID: 4817063602568806315}
   healthBar: {fileID: 3086981818858818833}
   destroyOnDeath: {fileID: 4817063602568806315}
   baseSpeed: 3
@@ -174,6 +179,7 @@ MonoBehaviour:
     fireMultiplier: 1
   currentHealth: 0
   speedMult: 1
+  stunned: 0
   doDebugLog: 0
 --- !u!114 &2581318882312673827
 MonoBehaviour:
@@ -490,7 +496,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ed0524ba0b0ad24e9381ce81551dc1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectedUI: {fileID: 0}
+  detectedUI: {fileID: 6337221535202532174}
   aiDestinationSetter: {fileID: 4009430850306400533}
   aiPath: {fileID: 805239401150814529}
   targetMask:
