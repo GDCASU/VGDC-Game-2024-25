@@ -7,6 +7,7 @@ using TMPro;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Playables;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Interactions))]
@@ -35,12 +36,13 @@ public class Dialogue : MonoBehaviour
 
     [Header("Dialogue Settings")]
     public DialogueOptions dialogueOptions;
-    public bool pressToStart = true; // whether dialogue starts automatically
+    public bool playOnAwake = true; // whether dialogue starts automatically
     public float charactersPerSecond = 30;
     // If forgetting to toggle this to false was the issue: Flame Chandler 
 
     [Header("Optional Additions")]
-    public UnityEvent dialogueEvent; // only needed if the dialogue type is TriggerEvent
+    PlayableDirector timeline;
+    bool timelinePlaying;
 
     [Header("External Objects")]
     [SerializeField] private TextAsset script;
@@ -65,15 +67,15 @@ public class Dialogue : MonoBehaviour
     {
         // Instantiates interactions script 
         interactions = GetComponent<Interactions>();
-        if (interactions == null && pressToStart) 
+        if (interactions == null && !playOnAwake) 
             Debug.LogWarning("No Interactions script found on " + this.gameObject.name);
-        else if (pressToStart) // dialogue changes with button press
+        else if (!playOnAwake) // dialogue changes with button press or dialogue event
         {
             switch ((int)dialogueOptions)
             {
                 case 0: interactions.ChangeInteraction(PauseGameTime); break;
                 case 1: interactions.ChangeInteraction(TextBox); break;
-                case 2: interactions.ChangeInteraction(TriggerEvent); break;
+                case 2: break;
             }
         }
 
@@ -84,6 +86,9 @@ public class Dialogue : MonoBehaviour
 
         // Initializes current dialogue sequence
         SetDialogScript(script);
+
+        // Instantitates timeline object
+        timeline = GetComponent<PlayableDirector>();
     }
 
     /// <summary> SetDialogScript changes and Loads a new dialog script </summary>
@@ -98,16 +103,16 @@ public class Dialogue : MonoBehaviour
 
     private void Update()
     {
-        if (!pressToStart) // dialogue changes when player is close to object
+        if (playOnAwake) // dialogue changes when player is close to object
         {
-            if (InRange()) // inside if statement so doesn't run when pressToStart is true
+            if (InRange()) // inside if statement so doesn't run when playOnAwake is false
             {
                 if(currentDialogCoroutine == null)
                     switch ((int)dialogueOptions)
                     {
                         case 0: PauseGameTime(); break;
                         case 1: TextBox(); break;
-                        case 2: TriggerEvent(); break;
+                        case 2: Debug.LogError("TriggerEvent cannot be play on awake"); break;
                     }
             }
         }
@@ -135,10 +140,11 @@ public class Dialogue : MonoBehaviour
     {
         StartDialogue();
     }
-    void TriggerEvent() 
+    void TriggerEvent()
     {
         StartDialogue();
-        dialogueEvent?.Invoke();
+        timeline.Play();
+        timelinePlaying = true;
     }
 
     //-- Dialogue Controllers --//
@@ -154,6 +160,7 @@ public class Dialogue : MonoBehaviour
     public void ChangeDialogue()
     {
         if (dialogue[currentLineNo+1] == null && currentLine == dialogueText.text) { ExitDialogue(); }
+        else if (dialogue[currentLineNo + 1][0] == "BREAK") { StartTimeline(); }
         else if (currentLine == dialogueText.text) // If the typewriter effect has finished
         {
             currentLineNo++;
@@ -232,6 +239,14 @@ public class Dialogue : MonoBehaviour
              
             else if (IsCharacterName(line)) { currentSpeaker = line;} // If is a name
 
+            else if (line == "BREAK") // If needs to stop for timeline
+            {
+                act[dialogueIndex] = new string[2];
+                act[dialogueIndex][0] = line;
+                act[dialogueIndex][1] = "";
+                dialogueIndex++;
+            }
+
             else
             {
                 string finalString = line;
@@ -247,6 +262,7 @@ public class Dialogue : MonoBehaviour
         
         return act;
     }
+    
     private bool IsCharacterName(string text)
     {
         foreach (string name in characterNames)
@@ -254,5 +270,21 @@ public class Dialogue : MonoBehaviour
             if (text == name) { return true; }
         }
         return false;
+    }
+
+    public void TimelineIsPaused()
+    {
+        timelinePlaying = false;
+        timeline.Pause();
+        TriggerEvent();
+    }
+
+    private void StartTimeline()
+    {
+        timelinePlaying = true;
+        timeline.Play();
+
+        currentLineNo += 2;
+        currentLine = dialogue[currentLineNo][0] + ": " + dialogue[currentLineNo][1];
     }
 }
