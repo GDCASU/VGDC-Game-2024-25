@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 3392920627765938245}
   - component: {fileID: 602680390486454188}
   - component: {fileID: 2565608967136881749}
+  - component: {fileID: 2679190281179725120}
+  - component: {fileID: 5405842307691633744}
   m_Layer: 14
   m_Name: Fungal Tile
   m_TagString: Hazard Tile
@@ -126,3 +128,36 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &2679190281179725120
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 794377156893739889}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 10, y: 30, z: 10}
+  m_Center: {x: 0, y: 9, z: 0}
+--- !u!114 &5405842307691633744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 794377156893739889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a94a0d9de69c81340ba75f01fe322084, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
