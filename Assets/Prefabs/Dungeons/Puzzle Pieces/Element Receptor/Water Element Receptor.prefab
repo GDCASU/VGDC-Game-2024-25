@@ -68,6 +68,12 @@ PrefabInstance:
       propertyPath: receptorElement
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 8715158071368305493, guid: c44ec5be5c584184a87712d5f8f1843b,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 8c004f8772ab1b9418ffc2395747ce5e,
+        type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

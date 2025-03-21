@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 166441353101597719}
   - component: {fileID: 4633496935111714106}
   m_Layer: 0
-  m_Name: Charge Receptor
+  m_Name: Element Receptor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
