@@ -33,6 +33,7 @@ public class ElementInventoryManager : MonoBehaviour
     [SerializeField] private ElementInvSlot fireElement;
     [SerializeField] private ElementInvSlot fungalElement;
     [SerializeField] private ElementInvSlot sparkElement;
+    [SerializeField] private ElementInvSlot waterElement;
     
     [Header("Debugging")]
     [SerializeField] private bool doDebugLog;
@@ -93,6 +94,8 @@ public class ElementInventoryManager : MonoBehaviour
                 return fungalElement;
             case Elements.Sparks:
                 return sparkElement;
+            case Elements.Water:
+                return waterElement;
         }
         // Did not find element in inventory
         Debug.LogError("ERROR! DID NOT FIND TARGET ELEMENT CASE ON SWITCH!");

@@ -12,12 +12,12 @@ using UnityEngine;
 
 /* -----------------------------------------------------------
  * Purpose:
- * 
+ * Draws the trajectory of a hazard pellet
  */// --------------------------------------------------------
 
 
 /// <summary>
-/// 
+/// Class that handles the predicting of a hazard pellet, needs more work honestly
 /// </summary>
 [RequireComponent(typeof(LineRenderer))]
 public class TrajectoryPredictor : MonoBehaviour
@@ -35,11 +35,16 @@ public class TrajectoryPredictor : MonoBehaviour
     [Header("References")]
     [SerializeField] private Transform hitMarker; // The marker will show where the projectile will hit
     
+    [Header("Readouts")]
+    [InspectorReadOnly] public float timePassed;
+    [InspectorReadOnly] public Vector3 hitMarkerLocation;
+    
     [Header("Debugging")]
     [SerializeField] private bool doDebugLog;
     
     // Local Variables
     private LineRenderer trajectoryLine;
+    [HideInInspector] public int hazardAmount = 0;
 
     private void Start()
     {
@@ -49,56 +54,98 @@ public class TrajectoryPredictor : MonoBehaviour
         SetTrajectoryVisible(true);
     }
 
-    public void PredictTrajectory(ProjectileProperties projectile)
+    // We draw an arrow on the foward vector as to see which way the pellet is going
+    private void OnDrawGizmosSelected()
     {
-        Vector3 velocity =  projectile.direction * (projectile.initialSpeed / projectile.mass);
+        // Draw the transform.foward to help with alignment work
+        Gizmos.color = Color.red;
+
+        // Define the start and end points of the forward arrow
+        Vector3 start = transform.position;
+        Vector3 end = start + transform.forward * 2f; // Arrow length
+
+        // Draw the main arrow line
+        Gizmos.DrawLine(start, end);
+
+        // Draw arrowhead
+        DrawArrowHead(end, transform.forward);
+    }
+    
+    /// <summary>
+    /// Function that predicts the trajectory of a projectile
+    /// </summary>
+    public void PredictTrajectory(ProjectileProperties projectile, Vector3 currentBallPosition)
+    {
+        // Start simulation from the launch state
+        Vector3 velocity = projectile.direction * (projectile.initialSpeed / projectile.mass);
         Vector3 position = projectile.initialPosition;
-        Vector3 nextPosition;
-        float overlap;
+    
+        List<Vector3> validPoints = new List<Vector3>();
+        float simulationTime = 0f; // Accumulates simulated time as to not draw past lines
 
-        UpdateLineRender(maxPoints, (0, position));
-
-        for (int i = 1; i < maxPoints; i++)
+        for (int i = 0; i < maxPoints; i++)
         {
-            // Estimate velocity and update next predicted position
+            simulationTime += increment; // Increase simulation time per step
+
+            // Update velocity and position for this time step
             velocity = CalculateNewVelocity(velocity, projectile.drag, increment);
-            nextPosition = position + velocity * increment;
+            Vector3 nextPosition = position + velocity * increment;
+            float overlap = Vector3.Distance(position, nextPosition) * rayOverlap;
 
-            // Overlap our rays by small margin to ensure we never miss a surface
-            overlap = Vector3.Distance(position, nextPosition) * rayOverlap;
-
-            //When hitting a surface we want to show the surface marker and stop updating our line
+            // Check for collision
             if (Physics.Raycast(position, velocity.normalized, out RaycastHit hit, overlap, ~predictRayIgnoreMask))
             {
-                UpdateLineRender(i, (i - 1, hit.point));
+                // Only add the hit point if it occurs after timePassed
+                if (simulationTime >= timePassed)
+                {
+                    validPoints.Add(hit.point);
+                }
                 MoveHitMarker(hit);
                 break;
             }
 
-            //If nothing is hit, continue rendering the arc without a visual marker
-            hitMarker.gameObject.SetActive(false);
+            // Only add points that are in the future (simulationTime) 
+            // and are in front of the current ball position
+            if (simulationTime >= timePassed && 
+                Vector3.Dot((nextPosition - currentBallPosition).normalized, projectile.direction) > 0)
+            {
+                validPoints.Add(nextPosition);
+            }
+
             position = nextPosition;
-            UpdateLineRender(maxPoints, (i, position)); //Unneccesary to set count here, but not harmful
+        }
+
+        // Update the line renderer: if no valid future points, hide the trajectory.
+        if (validPoints.Count > 0)
+        {
+            SetTrajectoryVisible(true);
+            trajectoryLine.positionCount = validPoints.Count;
+            trajectoryLine.SetPositions(validPoints.ToArray());
+        }
+        else
+        {
+            SetTrajectoryVisible(false);
         }
     }
+    
     /// <summary>
-    /// Allows us to set line count and an induvidual position at the same time
+    /// Helper func to compute velocity
     /// </summary>
-    /// <param name="count">Number of points in our line</param>
-    /// <param name="pointPos">The position of an induvidual point</param>
-    private void UpdateLineRender(int count, (int point, Vector3 pos) pointPos)
-    {
-        trajectoryLine.positionCount = count;
-        trajectoryLine.SetPosition(pointPos.point, pointPos.pos);
-    }
-
+    /// <param name="velocity"></param>
+    /// <param name="drag"></param>
+    /// <param name="increment"></param>
+    /// <returns></returns>
     private Vector3 CalculateNewVelocity(Vector3 velocity, float drag, float increment)
     {
         velocity += Physics.gravity * increment;
         velocity *= Mathf.Clamp01(1f - drag * increment);
         return velocity;
     }
-
+    
+    /// <summary>
+    /// Helper func to move the hitmarker
+    /// </summary>
+    /// <param name="hit"></param>
     private void MoveHitMarker(RaycastHit hit)
     {
         hitMarker.gameObject.SetActive(true);
@@ -107,11 +154,38 @@ public class TrajectoryPredictor : MonoBehaviour
         float offset = 0.025f;
         hitMarker.position = hit.point + hit.normal * offset;
         hitMarker.rotation = Quaternion.LookRotation(hit.normal, Vector3.up);
+
+        // Store the hit marker position in the field for additional use
+        hitMarkerLocation = hitMarker.position;
     }
 
+    /// <summary>
+    /// Helper func to either show or hide the trajectory
+    /// </summary>
+    /// <param name="visible"></param>
     public void SetTrajectoryVisible(bool visible)
     {
         trajectoryLine.enabled = visible;
         hitMarker.gameObject.SetActive(visible);
+    }
+    
+    /// <summary>
+    /// Draws an arrowhead at the given position, pointing in the specified direction.
+    /// </summary>
+    private void DrawArrowHead(Vector3 position, Vector3 direction)
+    {
+        float arrowHeadSize = 0.3f; // Size of the arrowhead
+        float arrowAngle = 20f; // Angle of arrowhead wings
+
+        // Calculate left and right wing directions
+        Quaternion leftRotation = Quaternion.AngleAxis(arrowAngle, Vector3.up);
+        Quaternion rightRotation = Quaternion.AngleAxis(-arrowAngle, Vector3.up);
+    
+        Vector3 leftWing = leftRotation * -direction * arrowHeadSize;
+        Vector3 rightWing = rightRotation * -direction * arrowHeadSize;
+
+        // Draw arrowhead lines
+        Gizmos.DrawLine(position, position + leftWing);
+        Gizmos.DrawLine(position, position + rightWing);
     }
 }

@@ -69,7 +69,7 @@ public class PlayerObject : MonoBehaviour, IDamageable
     void OnDestroy()
     {
         // Null singleton
-        Instance = null;
+        if (Instance == this) Instance = null;
     }
 
     void OnTriggerEnter(Collider other)

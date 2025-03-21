@@ -7,6 +7,9 @@ TagManager:
   - Collectible
   - Interactable
   - Enemy
+  - Projectile
+  - Ground
+  - Wall
   layers:
   - Default
   - TransparentFX
@@ -21,8 +24,8 @@ TagManager:
   - Collectibles
   - Walls
   - Health Pickup
-  - 
-  - 
+  - Hazard Creator
+  - Hazard Tiles
   - 
   - 
   - 

@@ -85,7 +85,10 @@ public class PlayerHealthBar : MonoBehaviour
     private void OnDestroy()
     {
         // Unsubscribe to events
-        PlayerObject.Instance.OnHealthChange -= OnPlayerHealthChanged;
+        if (PlayerObject.Instance != null)
+        {
+            PlayerObject.Instance.OnHealthChange -= OnPlayerHealthChanged;
+        }
     }
 
     /// <summary>

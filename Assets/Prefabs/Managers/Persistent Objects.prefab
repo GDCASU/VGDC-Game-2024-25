@@ -268,6 +268,13 @@ MonoBehaviour:
     isInfinite: 0
     ammoAmount: 3
     ammoMaxAmount: 3
+  waterElement:
+    element: 3
+    projectilePrefab: {fileID: 3053767172377724150, guid: 26681894572615b4fb8d14e7e25408f2,
+      type: 3}
+    isInfinite: 0
+    ammoAmount: 5
+    ammoMaxAmount: 5
   doDebugLog: 0
 --- !u!1 &6582798097405661628
 GameObject:
