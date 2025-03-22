@@ -143,8 +143,6 @@ public class Dialogue : MonoBehaviour
     void TriggerEvent()
     {
         StartDialogue();
-        timeline.Play();
-        timelinePlaying = true;
     }
 
     //-- Dialogue Controllers --//
@@ -160,9 +158,10 @@ public class Dialogue : MonoBehaviour
     public void ChangeDialogue()
     {
         if (dialogue[currentLineNo+1] == null && currentLine == dialogueText.text) { ExitDialogue(); }
-        else if (dialogue[currentLineNo + 1][0] == "BREAK") { StartTimeline(); }
         else if (currentLine == dialogueText.text) // If the typewriter effect has finished
         {
+            if (dialogue[currentLineNo + 1][0] == "BREAK") { StartTimeline(); return; } // if an action
+
             currentLineNo++;
             currentLine = dialogue[currentLineNo][0] + ": " + dialogue[currentLineNo][1];
             StartCoroutine(TypewriterText(currentLine));
@@ -277,12 +276,14 @@ public class Dialogue : MonoBehaviour
         timelinePlaying = false;
         timeline.Pause();
         TriggerEvent();
+        InputManager.OnChangeDialogue += ChangeDialogue;
     }
 
     private void StartTimeline()
     {
         timelinePlaying = true;
-        timeline.Play();
+        timeline.Resume();
+        InputManager.OnChangeDialogue -= ChangeDialogue;
 
         currentLineNo += 2;
         currentLine = dialogue[currentLineNo][0] + ": " + dialogue[currentLineNo][1];
