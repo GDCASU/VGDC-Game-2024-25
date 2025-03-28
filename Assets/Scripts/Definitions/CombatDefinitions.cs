@@ -111,7 +111,7 @@ public static class ReactionDefinitions
     {
         bool containsPair = reactionDictionary.ContainsKey((element1, element2));
         if (!containsPair) return ReactionType.Undefined; // Wasnt defined
-        
+
         // Else it is defined, return it
         reactionDictionary.TryGetValue((element1, element2), out ReactionType value);
         return value;
