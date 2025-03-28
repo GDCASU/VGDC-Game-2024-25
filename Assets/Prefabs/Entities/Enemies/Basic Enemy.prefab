@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4702182395986146652}
   - component: {fileID: 4730288011490923566}
   - component: {fileID: 187300418671473196}
+  - component: {fileID: 1762736174403486468}
   m_Layer: 0
   m_Name: Body
   m_TagString: Untagged
@@ -124,7 +125,9 @@ MonoBehaviour:
   elementStatusHandler: {fileID: 187300418671473196}
   aiPath: {fileID: 6657450510555017208}
   deathDeleteTarget: {fileID: 1024075932493480754}
+  indicators: {fileID: 1762736174403486468}
   healthBar: {fileID: 2833266598609536103}
+  destroyOnDeath: {fileID: 0}
   baseSpeed: 1
   maxHealth: 10
   damageMults:
@@ -161,6 +164,19 @@ MonoBehaviour:
   timeLeft: 0
   doDebugLog: 1
   entityScript: {fileID: 0}
+--- !u!114 &1762736174403486468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 30785464509815172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec584e287ade3294388e767169303a42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  indicatorSettings: {fileID: 11400000, guid: 3ec5fcb8d52a8c74aa91895ecf2037e4, type: 2}
 --- !u!1 &417379855734380349
 GameObject:
   m_ObjectHideFlags: 0
@@ -301,6 +317,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dropForceMult: 2
+  launchBias: {x: 0, y: 0, z: 0}
   dropList: []
   doDebugLog: 0
 --- !u!114 &1659898528258396080
