@@ -29,6 +29,7 @@ public class EntityScript : MonoBehaviour, IDamageable
     [SerializeField] private ElementStatusHandler elementStatusHandler;
     [SerializeField] private AIPath aiPath;
     [SerializeField] private GameObject deathDeleteTarget;
+    [SerializeField] private DamageIndicators indicators;
     public FloatingHealthBar healthBar;
     public GameObject destroyOnDeath;
     
@@ -74,20 +75,16 @@ public class EntityScript : MonoBehaviour, IDamageable
     {
         // Compute damage through multiplier
         int newDamage = damageMults.ComputeDamage(damage, element);
+
         // Ignore if zero/immune
         if (newDamage <= 0) return ReactionType.Undefined;
         // Damage health
         int previousHealth = currentHealth;
         currentHealth -= newDamage;
-        if (currentHealth <= 0)
-        {
-            // Render damage
-            HitpointsRenderer.Instance.PrintDamage(transform.position, currentHealth, Color.red);
-        }
-        else
-        {
-            HitpointsRenderer.Instance.PrintDamage(transform.position, newDamage, Color.red);
-        }
+        // Spawn Damage Indicator if able
+        if(indicators != null)
+            indicators.SpawnIndicator(damage, element);
+
         // Update health bar
         healthBar.UpdateHealthBar(currentHealth, maxHealth);
         if (currentHealth <= 0)
