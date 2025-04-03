@@ -18,3 +18,7 @@ MonoBehaviour:
     fungalMultiplier: 1
     sparkMultiplier: 1
     fireMultiplier: 1
+  burstProjectilePrefab: {fileID: 0}
+  burstProjectileCount: 5
+  burstAttackSpreadAngle: 30
+  damagePerSecond: 1
