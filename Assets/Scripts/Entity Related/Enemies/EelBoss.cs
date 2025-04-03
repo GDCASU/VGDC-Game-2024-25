@@ -2,13 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(ElementStatusHandler))]
+[RequireComponent(typeof(ElementStatusHandler), typeof(Animator))]
 public class EelBoss : MonoBehaviour, IDamageable
 {
     [Header("References")]
     [SerializeField] private ElementStatusHandler elementStatusHandler;
     [SerializeField] private EelBossSettings settings;
-    [SerializeField] private Animator animator;
     [SerializeField] private Transform burstFirePoint;
 
 
@@ -17,10 +16,22 @@ public class EelBoss : MonoBehaviour, IDamageable
     [InspectorReadOnly] private int aggressionLevel = 1;
 
     private PlayerController player;
+    private Animator animator;
 
     private void Awake()
     {
         player = FindFirstObjectByType<PlayerController>();
+        animator = GetComponent<Animator>();
+    }
+
+    private void Update()
+    {
+        // count down cooldowns
+
+
+        // handle spawn cooldown
+
+        // handle attack cooldown
     }
 
     public ReactionType TakeDamage(int damage, Elements element)
@@ -32,7 +43,7 @@ public class EelBoss : MonoBehaviour, IDamageable
         // Damage health
         int previousHealth = currentHealth;
         currentHealth -= newDamage;
-        if (currentHealth <= 0)
+        /*if (currentHealth <= 0)
         {
             // Render damage
             HitpointsRenderer.Instance.PrintDamage(transform.position, currentHealth, Color.red);
@@ -40,7 +51,7 @@ public class EelBoss : MonoBehaviour, IDamageable
         else
         {
             HitpointsRenderer.Instance.PrintDamage(transform.position, newDamage, Color.red);
-        }
+        }*/
         // Update health bar
         //healthBar.UpdateHealthBar(currentHealth, maxHealth);
 
