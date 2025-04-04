@@ -1,6 +1,5 @@
+using Pathfinding;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /* -----------------------------------------------------------
@@ -11,8 +10,8 @@ using UnityEngine;
  * Davyd Yehudin, William Peng
  * 
  * Modified By:
- * 
- */// --------------------------------------------------------
+ * William Peng, Chandler Van
+/* -----------------------------------------------------------
 
 /* -----------------------------------------------------------
  * Purpose:
@@ -28,7 +27,10 @@ public class EntityScript : MonoBehaviour, IDamageable
 {
     [Header("References")]
     [SerializeField] private ElementStatusHandler elementStatusHandler;
+    [SerializeField] private AIPath aiPath;
+    [SerializeField] private GameObject deathDeleteTarget;
     public FloatingHealthBar healthBar;
+    public GameObject destroyOnDeath;
     
     [Header("Entity Stats")]
     [SerializeField] private float baseSpeed;
@@ -40,6 +42,7 @@ public class EntityScript : MonoBehaviour, IDamageable
     [Header("Readouts")]
     [InspectorReadOnly] [SerializeField] private int currentHealth;
     [InspectorReadOnly] public float speedMult = 1f; // Used by statuses to slow down the entity
+    [InspectorReadOnly] public bool stunned = false;
     
     // Use this bool to gate all your Debug.Log Statements please
     [Header("Debugging")]
@@ -55,6 +58,12 @@ public class EntityScript : MonoBehaviour, IDamageable
         elementStatusHandler.entityScript = this;
     }
 
+    private void LateUpdate()
+    {
+        aiPath.maxSpeed = baseSpeed * speedMult;
+        aiPath.canMove = !stunned;
+    }
+
     /// <summary>
     /// Function derived from interface to deal damage to this entity
     /// </summary>
@@ -68,12 +77,23 @@ public class EntityScript : MonoBehaviour, IDamageable
         // Ignore if zero/immune
         if (newDamage <= 0) return ReactionType.Undefined;
         // Damage health
+        int previousHealth = currentHealth;
         currentHealth -= newDamage;
+        if (currentHealth <= 0)
+        {
+            // Render damage
+            HitpointsRenderer.Instance.PrintDamage(transform.position, currentHealth, Color.red);
+        }
+        else
+        {
+            HitpointsRenderer.Instance.PrintDamage(transform.position, newDamage, Color.red);
+        }
         // Update health bar
         healthBar.UpdateHealthBar(currentHealth, maxHealth);
         if (currentHealth <= 0)
         {
             // Enemy died
+            currentHealth = 0;
             OnDeath();
             // FIXME: Return undefined?
             return ReactionType.Undefined;
@@ -88,9 +108,19 @@ public class EntityScript : MonoBehaviour, IDamageable
     public void StatusDamage(int damage)
     {
         // Damage health
+        int previousHealth = currentHealth;
         currentHealth -= damage;
+        if (currentHealth <= 0)
+        {
+            currentHealth = 0;
+            // Render damage
+            HitpointsRenderer.Instance.PrintDamage(transform.position, currentHealth, Color.red);
+            OnDeath(); // Enemy died
+            return;
+        }
+        // Else update health bar
         healthBar.UpdateHealthBar(currentHealth, maxHealth);
-        if (currentHealth <= 0) OnDeath(); // Enemy died
+        HitpointsRenderer.Instance.PrintDamage(transform.position, damage, Color.red);
     }
 
     /// <summary>
@@ -99,7 +129,7 @@ public class EntityScript : MonoBehaviour, IDamageable
     private void OnDeath()
     {
         // TODO: UNFINISHED
-        Destroy(gameObject);
+        Destroy(deathDeleteTarget);
     }
 }
 

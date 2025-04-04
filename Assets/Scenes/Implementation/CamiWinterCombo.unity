@@ -1021,13 +1021,38 @@ PrefabInstance:
       objectReference: {fileID: 317657670}
     - target: {fileID: 4702234235888479508, guid: 7a27a01553aa4f34e848cabda38d6d75,
         type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4.215637
+      objectReference: {fileID: 0}
+    - target: {fileID: 4702234235888479508, guid: 7a27a01553aa4f34e848cabda38d6d75,
+        type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.3967729
+      value: 4.6708455
       objectReference: {fileID: 0}
     - target: {fileID: 4702234235888479508, guid: 7a27a01553aa4f34e848cabda38d6d75,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.2748775
+      value: -7.443363
+      objectReference: {fileID: 0}
+    - target: {fileID: 4702234235888479508, guid: 7a27a01553aa4f34e848cabda38d6d75,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.94291854
+      objectReference: {fileID: 0}
+    - target: {fileID: 4702234235888479508, guid: 7a27a01553aa4f34e848cabda38d6d75,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.2530599
+      objectReference: {fileID: 0}
+    - target: {fileID: 4702234235888479508, guid: 7a27a01553aa4f34e848cabda38d6d75,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.20882127
+      objectReference: {fileID: 0}
+    - target: {fileID: 4702234235888479508, guid: 7a27a01553aa4f34e848cabda38d6d75,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.057088654
       objectReference: {fileID: 0}
     - target: {fileID: 5048592309342998137, guid: 7a27a01553aa4f34e848cabda38d6d75,
         type: 3}
@@ -7538,13 +7563,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogueOptions: 0
-  hasCharacterPortrait: 0
   pressToStart: 1
+  charactersPerSecond: 30
+  dialogueEvent:
+    m_PersistentCalls:
+      m_Calls: []
   script: {fileID: 4900000, guid: 466e9f916b76bf346a78ae5e0d9016e0, type: 3}
   dialogueBackground: {fileID: 1296763610}
   characterNames:
   - Ian
   - Cami
+  onDialogEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  onDialogStart:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!65 &1007442781
 BoxCollider:
   m_ObjectHideFlags: 0

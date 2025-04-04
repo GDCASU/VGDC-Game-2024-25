@@ -9,7 +9,7 @@ using UnityEngine;
  * Author:
  * Davyd Yehudin
  *
- * Modified By:
+ * Modified By: Matthew Glos
  *
  */ // --------------------------------------------------------
 
@@ -22,22 +22,36 @@ using UnityEngine;
 public class EnemyDrop : MonoBehaviour
 {
     public float dropForceMult = 2f;
+
+    [SerializeField] UnityEngine.Vector3 launchBias;
     [SerializeField] public List<dropStuff> dropList;
     [SerializeField] private bool doDebugLog;
 
     //instantiates the drops, tries to launch them NEEDS SMALL CHANGES SO THAT ITEMS DON'T GO TO OUTER SPACE
     void drop(GameObject dropObj)
     {
+        //old script, edited by Matthew Glos
+        /**
         UnityEngine.Vector3 summonPos = new UnityEngine.Vector3(this.GetComponent<Transform>().position.x,
             this.GetComponent<Transform>().position.y, this.GetComponent<Transform>().position.z);
         GameObject a = Instantiate(dropObj, this.GetComponent<Transform>().position, UnityEngine.Quaternion.identity);
         UnityEngine.Vector3 randomForce = new UnityEngine.Vector3(UnityEngine.Random.Range(-1f, 1f),
             UnityEngine.Random.Range(2f, 3f), UnityEngine.Random.Range(-1f, 1f));
         a.GetComponent<Rigidbody>().AddForce(randomForce * dropForceMult);
+        */
+
+        UnityEngine.Vector3 summonPos = transform.position;
+        GameObject a = Instantiate(dropObj,summonPos,UnityEngine.Quaternion.identity);
+        UnityEngine.Vector3 launch = UnityEngine.Random.onUnitSphere.normalized * dropForceMult;
+        launch += launchBias;
+        
+        a.GetComponent<Rigidbody>().velocity = launch;
+
+
     }
 
     //goes through each drop and its chance, calls drop on success
-    public void onDeath()
+    public void OnDestroy()
     {
         foreach (dropStuff i in dropList)
         {
@@ -51,8 +65,10 @@ public class EnemyDrop : MonoBehaviour
         }
     }
 
-    //For testing
 
+    //commented out by Matthew Glos
+    //For testing
+    /**
     void Start()
     {
         StartCoroutine(Testing());
@@ -68,6 +84,7 @@ public class EnemyDrop : MonoBehaviour
             if (doDebugLog) Debug.Log("PepeAgain");
         }
     }
+    */
 }
 
 /// <summary>
