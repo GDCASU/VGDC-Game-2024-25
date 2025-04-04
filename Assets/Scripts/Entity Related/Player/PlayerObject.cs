@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 /* -----------------------------------------------------------
  * Author:
@@ -27,7 +26,7 @@ public class PlayerObject : MonoBehaviour, IDamageable
     public static PlayerObject Instance;
     
     [Header("Settings")]
-    [Range(1,9)] public int maxHealthInt;
+    [SerializeField] private int maxHealth = 100;
     
     [Header("References")]
     [SerializeField] private PlayerAmmoManager playerAmmoManager;
@@ -37,18 +36,16 @@ public class PlayerObject : MonoBehaviour, IDamageable
     public CapsuleCollider capsuleCollider;
     
     [Header("Readouts")]
-    [InspectorReadOnly] public int currentHealth = 0;
-    
+    [InspectorReadOnly] [SerializeField] private int currentHealth = 0;
 
     // Use this bool to gate all your Debug.Log Statements please
     [Header("Debugging")] 
     [SerializeField] private bool _doDebugLog;
-    
-    // Events
-    public System.Action<int> OnHealthChange;
 
     // Local variables
     private Dictionary<Collider, ItemPickups> cachedScripts = new(); // Script Cache
+
+    // Local Variables
 
     void Awake()
     {
@@ -63,13 +60,13 @@ public class PlayerObject : MonoBehaviour, IDamageable
         Instance = this;
         
         // Set up stats
-        currentHealth = maxHealthInt;
+        currentHealth = maxHealth;
     }
 
     void OnDestroy()
     {
         // Null singleton
-        if (Instance == this) Instance = null;
+        Instance = null;
     }
 
     void OnTriggerEnter(Collider other)
@@ -116,7 +113,7 @@ public class PlayerObject : MonoBehaviour, IDamageable
     {
         if ( itemPickup.itemData.id == "HealthPickup")
         {
-            if (currentHealth < maxHealthInt)
+            if (currentHealth < maxHealth)
             {
                 currentHealth += itemPickup.itemData.value;
                 Destroy(itemPickup.gameObject);
@@ -132,33 +129,17 @@ public class PlayerObject : MonoBehaviour, IDamageable
     {
         // TODO: The player doesnt trigger reactions right?
         // Damage health
-        int previousHealth = currentHealth;
         currentHealth -= damage;
         // Check for death
         if (currentHealth <= 0)
         {
-            HitpointsRenderer.Instance.PrintDamage(transform.position, previousHealth, Color.red);
-            currentHealth = 0;
+            // Player died
             OnDeath();
             return ReactionType.Undefined;
         }
-        HitpointsRenderer.Instance.PrintDamage(transform.position, damage, Color.red);
+        
         // Return undefined
         return ReactionType.Undefined;
-    }
-
-    /// <summary>
-    /// Adds health to the player
-    /// </summary>
-    /// <param name="health"> The amount of health to add </param>
-    public void AddHealth(int health)
-    {
-        currentHealth += health;
-        // Note: The negative check is to handle the full health cheat
-        if (currentHealth > maxHealthInt || currentHealth < -100)
-        {
-            currentHealth = maxHealthInt;
-        }
     }
 
     /// <summary>
@@ -168,5 +149,4 @@ public class PlayerObject : MonoBehaviour, IDamageable
     {
         // TODO: Unfinished
     }
-    
 }

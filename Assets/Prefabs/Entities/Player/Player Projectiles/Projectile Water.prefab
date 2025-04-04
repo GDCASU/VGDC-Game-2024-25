@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -8997641281449923190}
   m_Layer: 8
   m_Name: Projectile Water
-  m_TagString: Projectile
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -52,7 +52,6 @@ MonoBehaviour:
   damage: 1
   element: 3
   doDebugLog: 0
-  ownerTag: 
   moveDir: {x: 0, y: 0, z: 0}
 --- !u!136 &6863210492710567649
 CapsuleCollider:

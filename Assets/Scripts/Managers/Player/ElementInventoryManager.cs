@@ -33,7 +33,6 @@ public class ElementInventoryManager : MonoBehaviour
     [SerializeField] private ElementInvSlot fireElement;
     [SerializeField] private ElementInvSlot fungalElement;
     [SerializeField] private ElementInvSlot sparkElement;
-    [SerializeField] private ElementInvSlot waterElement;
     
     [Header("Debugging")]
     [SerializeField] private bool doDebugLog;
@@ -73,8 +72,8 @@ public class ElementInventoryManager : MonoBehaviour
         if (slot.ammoAmount >= slot.ammoMaxAmount) return;
         // Else, Add charge and raise event
         slot.ammoAmount += amount;
-        // Check for overflow and underflow (negative check is to handle the max ammo cheat)
-        if (slot.ammoAmount > slot.ammoMaxAmount || slot.ammoAmount < -100) slot.ammoAmount = slot.ammoMaxAmount;
+        // Check for overflow
+        if (slot.ammoAmount > slot.ammoMaxAmount) slot.ammoAmount = slot.ammoMaxAmount;
         // Raise Event
         AmmoGained?.Invoke(targetElement);
     }
@@ -94,8 +93,6 @@ public class ElementInventoryManager : MonoBehaviour
                 return fungalElement;
             case Elements.Sparks:
                 return sparkElement;
-            case Elements.Water:
-                return waterElement;
         }
         // Did not find element in inventory
         Debug.LogError("ERROR! DID NOT FIND TARGET ELEMENT CASE ON SWITCH!");

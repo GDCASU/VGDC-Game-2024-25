@@ -12,8 +12,9 @@ using UnityEngine.InputSystem;
 
 
 
-public class LoreNote : Interactable
+public class LoreNote : MonoBehaviour
 {
+    [SerializeField] Interactions interactions;
     [SerializeField] bool rangeOfObj; // placeholder bool to change functions
     private float fixedDeltaTime;//game's flow of time
     public GameObject targetObject; // Reference to the object with the Canvas
@@ -27,15 +28,9 @@ public class LoreNote : Interactable
 
         if (rangeOfObj)
         {
-            OnFocusExit += OutOfRange; // Makes it so the function OutOfRange will be called with the interaction key
+            interactions.ChangeInteraction(OutOfRange); // Makes it so the function OutOfRange will be called with the interaction key
         }
-        else { OnFocusEnter += InRange; }
-    }
-
-    void OnDestroy()
-    {
-        OnFocusExit -= OutOfRange;
-        OnFocusEnter -= InRange;
+        else { interactions.ChangeInteraction(InRange); }
     }
 
     /// <summary> Sample Functions </summary>
