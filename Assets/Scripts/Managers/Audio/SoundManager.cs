@@ -352,10 +352,36 @@ public class SoundManager : MonoBehaviour
 
     #endregion
 
+    #region Getters and Setters
+
+    public float GetVCAVolume(SoundControllers targetVCA)
+    {
+        float volume = 0f;
+        switch (targetVCA)
+        {
+            case SoundControllers.Master:
+                _masterVCA.getVolume(out volume);
+                return volume;
+            case SoundControllers.Music:
+                _musicVCA.getVolume(out volume);
+                return volume;
+            case SoundControllers.SFX:
+                _sfxVCA.getVolume(out volume);
+                return volume;
+            default:
+                Debug.LogError("ERROR! Target VCA Specified does not exist within dictionary!");
+                return volume;
+        }
+    }
+
+    #endregion
+    
     // NOT IMPLEMENTED YET ******************************
 
     // TODO: Implement bank loading/de-loading for better memory?
     //public void LoadBank() { throw new System.NotImplementedException(); }
     //public void UnloadBank() { throw new System.NotImplementedException(); }
+    
+    
 
 }

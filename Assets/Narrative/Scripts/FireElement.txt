@@ -1,0 +1,11 @@
+# MUSHROOM FOREST CLEARING - DAY
+	
+AUBREY
+Huh? What are these?
+
+#AUBREY picks up FIRE FRAGMENTS and unlocks her FIRE power.
+BREAK
+
+AUBREY
+Feels warm, like the heat outside…
+BREAK

@@ -10,8 +10,9 @@ using UnityEngine.UIElements;
 /// <summary> Script used to display damage numbers on the game </summary>
 public class HitpointsRenderer : MonoBehaviour
 {
-    [Header("Hitpoints Container")]
+    [Header("References")]
     [SerializeField] private GameObject HitPointPrefab;
+    [SerializeField] private GameObject HitPointsParent;
 
     [Header("Hitpoints Settings")]
     [SerializeField] private float acceleration = 0.01f;
@@ -32,12 +33,21 @@ public class HitpointsRenderer : MonoBehaviour
 
     void Awake()
     {
-        // Get the rect transform of the hitpoint container
-        hitpointContainerRect = GetComponent<RectTransform>();
-
-        // Handle Singleton
-        if (Instance != null) { Destroy(gameObject); }
+        // Set the Singleton
+        if (Instance != null && Instance != this)
+        {
+            // Already set, destroy this object
+            Destroy(gameObject);
+            return;
+        }
+        // Not set yet
         Instance = this;
+    }
+    
+    void OnDestroy()
+    {
+        // Null singleton
+        if (Instance == this) Instance = null;
     }
 
     //Testing
@@ -50,61 +60,61 @@ public class HitpointsRenderer : MonoBehaviour
         }
     }
 
-    /// <summary> Display the damage number on the screen canvas </summary>
+    /// <summary>
+    /// Spawns a floating damage text in world space using a world-space TextMesh Pro object.
+    /// </summary>
+    /// <param name="entityPos"> Where to spawn the hitpoint text in the world. </param>
+    /// <param name="damage"> Damage value to show. </param>
+    /// <param name="colorIn"> Color of the damage text. </param>
     public void PrintDamage(Vector3 entityPos, int damage, Color colorIn)
     {
-        //Dont do anything if disabled or damage is less than 1
-        if (DisableHitpoints || (damage < 1) ) { return; }
+        if (DisableHitpoints || damage < 1) return;
 
-        // Convert enemy position from world space to screen space
-        Vector2 screenPoint = Camera.main.WorldToScreenPoint(entityPos);
+        // Instantiate the 3D text directly in world space
+        GameObject hitpoint = Instantiate(
+            HitPointPrefab, 
+            entityPos, 
+            Quaternion.identity,
+            HitPointsParent.transform
+        );
 
-        // Use ScreenPointToWorldPointInRectangle to convert screen space point to canvas space
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(hitpointContainerRect, screenPoint, Camera.main, out Vector2 canvasHitPoint);
-
-        // Create the Hitpoint
-        GameObject hitpoint = Instantiate(HitPointPrefab, canvasHitPoint, Quaternion.identity, this.transform);
-        
-        // Since the Instantiate function uses world space, adjust to local space in canvas
-        hitpoint.GetComponent<RectTransform>().localPosition = canvasHitPoint;
-
-        // Get the TextMesh Component
+        // Get the text component and assign damage text & color
         TMP_Text hitpointMesh = hitpoint.GetComponent<TMP_Text>();
-
-        // Set the data
         hitpointMesh.text = damage.ToString();
         hitpointMesh.color = colorIn;
 
-        // Animation coroutine
-        if(gameObject.activeInHierarchy) StartCoroutine(AnimateHitpoint(hitpoint));
+        // Start the animation coroutine
+        if (gameObject.activeInHierarchy)
+            StartCoroutine(AnimateHitpoint(hitpoint));
     }
 
-    //Animation Coroutine
+    /// <summary>
+    /// Simple upward floating + fade-out or destroy logic for the spawned text.
+    /// </summary>
     private IEnumerator AnimateHitpoint(GameObject hitpoint)
     {
         float timeElapsed = 0f;
         float speed = startingSpeed;
-        float newSpeed;
 
-        // Randomize a Direction Vector and make it always have a pos Y so they go up
-        Vector2 direction = Random.insideUnitCircle.normalized;
-        direction.y = Mathf.Abs(direction.y);
+        // Get a random angle between 60° and 120°
+        float angleDeg = Random.Range(60f, 120f);
+        float angleRad = angleDeg * Mathf.Deg2Rad;
 
-        //Animates the hitpoint going up using gravity
+        // Convert that angle to a direction in the X–Y plane, ensuring it points up
+        Vector2 direction2D = new Vector2(Mathf.Cos(angleRad), Mathf.Sin(angleRad));
+        Vector3 direction = new Vector3(direction2D.x, direction2D.y, 0f);
+
         while (timeElapsed < hitpointStayTime)
         {
-            //Animation
-            newSpeed = Mathf.Lerp(speed, 0, acceleration);
-            hitpoint.transform.Translate(speed * Time.deltaTime * direction);
+            float newSpeed = Mathf.Lerp(speed, 0f, acceleration);
+            hitpoint.transform.Translate(direction * (speed * Time.deltaTime), Space.World);
             speed = newSpeed;
 
             timeElapsed += Time.deltaTime;
-
-            //Wait 1 frame
             yield return null;
         }
 
-        //Destroy the hitpoint object
+        // Destroy the text object
         Destroy(hitpoint);
     }
 }
