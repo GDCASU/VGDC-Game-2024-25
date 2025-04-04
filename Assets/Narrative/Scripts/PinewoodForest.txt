@@ -1,0 +1,29 @@
+# PINEWOOD FOREST CAVE ENTRANCE (OUTSIDE OF TAXI) - NIGHT
+
+TAXI
+Here? Good grief, this is a dump
+
+AUBREY
+Yep, this is the place. I can take it from here, thank you.
+
+Well.. be careful out there, alright? Wherever you’re off to…
+
+TAXI
+Seems like you’re in for a rough trip.
+
+AUBREY
+I’m sure it’s more peaceful than it looks. Nothing more than a few bugs and moss, I’m sure.
+
+TAXI
+Whatever you say, little lady.
+You’re gonna pay me, right?
+
+AUBREY
+Expect a deposit soon. The people I work for will make it worth your trouble.
+
+BREAK
+
+AUBREY
+?!
+
+BREAK
