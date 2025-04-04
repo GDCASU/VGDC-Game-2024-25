@@ -18,7 +18,13 @@ MonoBehaviour:
     fungalMultiplier: 1
     sparkMultiplier: 1
     fireMultiplier: 1
-  burstProjectilePrefab: {fileID: 0}
+  burstProjectilePrefab: {fileID: 3053767172377724150, guid: d6c072ce6c30cb24e9a4a55053fefed4,
+    type: 3}
   burstProjectileCount: 5
   burstAttackSpreadAngle: 30
-  damagePerSecond: 1
+  aimPrefab: {fileID: 0}
+  lazerPrefab: {fileID: 3078216574550125144, guid: 4e4fc0e6db8e50341aac40cf07b4f382,
+    type: 3}
+  beamDamagePerTick: 1
+  beamTickInterval: 0.25
+  beamFriendlyFire: 0

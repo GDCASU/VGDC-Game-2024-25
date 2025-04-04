@@ -9,10 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5742771812754122774}
-  - component: {fileID: 4680368142316700901}
   - component: {fileID: 6863210492710567649}
   - component: {fileID: 3826375535519445642}
-  m_Layer: 8
+  - component: {fileID: 4262720355003426996}
+  m_Layer: 0
   m_Name: Eel Burst Projectile
   m_TagString: Projectile
   m_Icon: {fileID: 0}
@@ -35,25 +35,6 @@ Transform:
   - {fileID: 7754851049789917708}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4680368142316700901
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3053767172377724150}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1684a31844197da4a8741b04dbf9ffcf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 10
-  lifetime: 10
-  damage: 1
-  element: 1
-  doDebugLog: 1
-  ownerTag: 
-  moveDir: {x: 0, y: 0, z: 0}
 --- !u!136 &6863210492710567649
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -104,6 +85,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &4262720355003426996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3053767172377724150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49f01d85ae46f4341a106fed5a980fd2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7168718433730479845
 GameObject:
   m_ObjectHideFlags: 0
@@ -115,7 +108,7 @@ GameObject:
   - component: {fileID: 7754851049789917708}
   - component: {fileID: 8089693375252851276}
   - component: {fileID: 6668803988907411327}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Neutral Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}

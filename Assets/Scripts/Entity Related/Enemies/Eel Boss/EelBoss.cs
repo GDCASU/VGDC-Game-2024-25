@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(ElementStatusHandler), typeof(Animator))]
@@ -17,6 +15,9 @@ public class EelBoss : MonoBehaviour, IDamageable
 
     private PlayerController player;
     private Animator animator;
+
+    private GameObject lazerAimGameObject;
+    private GameObject lazerBeamGameObject;
 
     private void Awake()
     {
@@ -84,14 +85,46 @@ public class EelBoss : MonoBehaviour, IDamageable
         }
     }
 
+    public void SpawnLazerAim()
+    {
+        if (lazerAimGameObject != null)
+            return;
+
+        float angleB = Vector3.Angle(transform.forward, player.transform.position - transform.position);
+
+        float horizontalOffset = Mathf.Sin(angleB * Mathf.Deg2Rad) * Vector3.Distance(transform.position, player.transform.position);
+
+        lazerBeamGameObject = Instantiate(settings.aimPrefab, transform.position + transform.right * horizontalOffset, Quaternion.identity);
+        lazerBeamGameObject.transform.right = transform.right;
+    }
+
+    public void SpawnLazerBeam()
+    {
+        if (lazerBeamGameObject != null || lazerAimGameObject != null)
+            return;
+
+        lazerBeamGameObject = Instantiate(settings.lazerPrefab, lazerAimGameObject.transform.position, lazerAimGameObject.transform.rotation);
+
+        Destroy(lazerAimGameObject);
+        lazerAimGameObject = null;
+    }
+
+    public void EndLazerBeam()
+    {
+        Destroy(lazerBeamGameObject);
+        lazerBeamGameObject = null;
+    }
+
     public void OnBarrierBreak()
     {
 
     }
 
+    // TODO: Add eel death logic
     private void OnDeath()
     {
-
+        animator.SetTrigger("eelDeath");
+        // Some other logic here
     }
 }
 

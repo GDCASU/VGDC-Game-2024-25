@@ -14,5 +14,11 @@ public class EelBossSettings : ScriptableObject
     public float burstAttackSpreadAngle;
 
     [Header("Lazer Settings")]
-    public int damagePerSecond = 1;
+    public GameObject aimPrefab;
+    public GameObject lazerPrefab;
+    public int beamDamagePerTick = 1;
+    public float beamTickInterval = 1;
+    public bool beamFriendlyFire = false;
+    public float aimTime = 2.0f;
+    public float lazerTime = 10.0f;
 }
