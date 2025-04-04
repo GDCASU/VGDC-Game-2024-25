@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 /* -----------------------------------------------------------
 * Author:
 * Chandler Van
 * 
 * Modified By:
+* Ian Fletcher
 */// --------------------------------------------------------
 
 /* -----------------------------------------------------------
@@ -21,10 +23,10 @@ public abstract class NPC : MonoBehaviour
     [Header("Drops")]
     public List<GameObject> drops;
     [SerializeField] private Transform dropPoint;
-
-    public bool showDebug = false;
-
-
+    
+    [Header("Debugging")]
+    [SerializeField] private bool doDebugLog;
+    
     // Local Variables
     protected Dialogue dialog;
 
@@ -74,12 +76,12 @@ public abstract class NPC : MonoBehaviour
     /// <summary>
     /// OnDialogEnd is called when dialog with given npc is finished
     /// </summary>
-    public virtual void OnDialogEnd() { if (showDebug) Debug.Log("Dialog Ended!", this); }
+    public virtual void OnDialogEnd() { if (doDebugLog) Debug.Log("Dialog Ended!", this); }
 
     /// <summary>
     /// OnDialogStart is called when dialog with given npc is started
     /// </summary>
-    public virtual void OnDialogStart() { if (showDebug) Debug.Log("Dialog Started!", this); }
+    public virtual void OnDialogStart() { if (doDebugLog) Debug.Log("Dialog Started!", this); }
 
     public virtual void OnPlayerAttack(float distance, bool canSeePlayer) { }
 }
