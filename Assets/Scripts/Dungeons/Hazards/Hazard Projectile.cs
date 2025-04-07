@@ -22,9 +22,17 @@ using UnityEngine;
 /// </summary>
 public class HazardProjectile : MonoBehaviour
 {
+    [Header("References")]
+    public Rigidbody rb;
+    
+    [Header("Projectile Settings")]
+    public HazardTile tile;
+    public int radius;
+    
     private void OnCollisionEnter(Collision collision)
     {
-        // Check if the collision was of type ground
+        // Create hazard at location
+        GameGridManager.Instance.PlaceHazardTiles(radius, transform.position, tile);
         Destroy(gameObject);
     }
     

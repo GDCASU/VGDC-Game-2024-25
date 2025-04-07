@@ -697,7 +697,7 @@ PrefabInstance:
     - target: {fileID: 2391930757929744352, guid: 3929c72507c5b98469226ce0caeccc72,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 28.88
+      value: -23.79
       objectReference: {fileID: 0}
     - target: {fileID: 2391930757929744352, guid: 3929c72507c5b98469226ce0caeccc72,
         type: 3}
@@ -707,7 +707,7 @@ PrefabInstance:
     - target: {fileID: 2391930757929744352, guid: 3929c72507c5b98469226ce0caeccc72,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -6.7
+      value: -13.5
       objectReference: {fileID: 0}
     - target: {fileID: 2391930757929744352, guid: 3929c72507c5b98469226ce0caeccc72,
         type: 3}
@@ -3781,7 +3781,7 @@ PrefabInstance:
     - target: {fileID: 759770393211581057, guid: 4ce8d7d5333423148bba7bccd6a9a094,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8.67869
+      value: -43.99131
       objectReference: {fileID: 0}
     - target: {fileID: 759770393211581057, guid: 4ce8d7d5333423148bba7bccd6a9a094,
         type: 3}
@@ -3791,7 +3791,7 @@ PrefabInstance:
     - target: {fileID: 759770393211581057, guid: 4ce8d7d5333423148bba7bccd6a9a094,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -17.311224
+      value: -24.111223
       objectReference: {fileID: 0}
     - target: {fileID: 759770393211581057, guid: 4ce8d7d5333423148bba7bccd6a9a094,
         type: 3}
@@ -6802,6 +6802,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Pot Hazard Creator
+      objectReference: {fileID: 0}
+    - target: {fileID: 5283818880534754986, guid: 9dd8fa7e21b9a98479b62cf521a34b0a,
+        type: 3}
+      propertyPath: force
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 6337608892764819640, guid: 9dd8fa7e21b9a98479b62cf521a34b0a,
         type: 3}

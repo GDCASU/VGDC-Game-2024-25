@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 6337608892764819640}
   - component: {fileID: 5283818880534754986}
   - component: {fileID: 3265929940874535864}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Hazard Pot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -130,22 +130,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd4fc1ea931cf7745b4e85f6eb2a67b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hazardSpawnPoint: {fileID: 7320596230827798392}
   modelToDestroy: {fileID: 1552624008613953714}
-  capsuleCollider: {fileID: 3265929940874535864}
-  hazardProjectilePrefab: {fileID: 859316342537781086, guid: 8f9620dc5111e2e48ac1af9e59ab80d3,
+  spawnPoint: {fileID: 7320596230827798392}
+  hazardProjectile: {fileID: 3900597811450203427, guid: 8f9620dc5111e2e48ac1af9e59ab80d3,
     type: 3}
-  hazardTilePrefab: {fileID: 794377156893739889, guid: a3bff8d72d89cea43b140f775556fcf7,
+  hazardTile: {fileID: -6495227936317328588, guid: a3bff8d72d89cea43b140f775556fcf7,
     type: 3}
-  hazardCount: 7
-  hazardCellCount: 1
-  verticalAngle: -56
-  force: 7.12
-  mass: 1
-  drag: 0
-  angularDrag: 0.05
-  maxPoints: 66
-  increment: 0.025
+  hazardRadius: 3
+  force: 7
   doDebugLog: 0
 --- !u!136 &3265929940874535864
 CapsuleCollider:
