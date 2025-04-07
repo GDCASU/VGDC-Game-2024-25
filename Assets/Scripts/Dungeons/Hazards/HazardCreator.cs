@@ -28,7 +28,7 @@ public class HazardCreator : MonoBehaviour, IDamageable
     [SerializeField] private GameObject modelToDestroy;
     [SerializeField] private CapsuleCollider capsuleCollider;
     [SerializeField] private GameObject hazardProjectilePrefab;
-    [SerializeField] private GameObject hazardTilePrefab;
+    [SerializeField] private HazardTile hazardTilePrefab;
     
     [Header("Settings")]
     [SerializeField] private int hazardCount = 3; // How many of the hazards to shoot out
@@ -115,6 +115,7 @@ public class HazardCreator : MonoBehaviour, IDamageable
             // Set the data
             ProjectileThrow projectileThrow = hazardSpawner.GetComponent<ProjectileThrow>();
             projectileThrow.hazardAmount = hazardCount;
+            projectileThrow.hazardTilePrefab = hazardTilePrefab;
             projectileThrow.force = force;
             projectileThrow.verticalAngle = verticalAngle;
             projectileThrow.objectToThrow.drag = drag;

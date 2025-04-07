@@ -27,7 +27,7 @@ public class ProjectileThrow : MonoBehaviour
     
     [Header("References")]
     [SerializeField] private TrajectoryPredictor trajectoryPredictor;
-    [SerializeField] private HazardTile hazardTilePrefab;
+    public HazardTile hazardTilePrefab;
     
     [Header("Settings")]
     [Range(0.0f, 50.0f)] public float force;
