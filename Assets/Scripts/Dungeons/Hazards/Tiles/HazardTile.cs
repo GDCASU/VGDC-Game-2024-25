@@ -29,6 +29,7 @@ public class HazardTile : MonoBehaviour
         Grass = 2,
         Fungal = 3,
         Rock = 4,
+        GrassFire = 5,
     }
     
     [Header("References")]
