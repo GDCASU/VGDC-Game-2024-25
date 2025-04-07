@@ -28,6 +28,7 @@ public class HazardTile : MonoBehaviour
         Water = 1,
         Grass = 2,
         Fungal = 3,
+        Rock = 4,
     }
     
     [Header("References")]
