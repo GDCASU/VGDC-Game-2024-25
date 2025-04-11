@@ -10,7 +10,7 @@ public class EelBossSettings : ScriptableObject
 
     [Header("Aggression Settings")]
     public float aggressionIncreasePercent = 1.5f;
-    public float gamSpawnIncreasePerAggression = 0.25f;
+    public float gamSpawnIncreasePerBarrier = 0.25f;
 
     [Header("Attack Settings")]
     public float minAttackTime = 0.5f;
@@ -35,6 +35,7 @@ public class EelBossSettings : ScriptableObject
 
     [Header("Spawning Settings")]
     public GameObject gamPrefab;
+    public float gamSpawnRadius = 3f;
     public float minSpawnTime = 3;
     public float maxSpawnTime = 6;
 }

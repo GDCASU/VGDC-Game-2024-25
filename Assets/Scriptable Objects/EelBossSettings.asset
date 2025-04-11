@@ -18,6 +18,13 @@ MonoBehaviour:
     fungalMultiplier: 1
     sparkMultiplier: 1
     fireMultiplier: 1
+  aggressionIncreasePercent: 1.5
+  gamSpawnIncreasePerAggression: 0.25
+  minAttackTime: 0.5
+  maxAttackTime: 2
+  burstAttackChance: 0.7
+  lazerAttackChance: 0.3
+  frequencyOffset: 0.05
   burstProjectilePrefab: {fileID: 3053767172377724150, guid: d6c072ce6c30cb24e9a4a55053fefed4,
     type: 3}
   burstProjectileCount: 5
@@ -31,3 +38,6 @@ MonoBehaviour:
   beamFriendlyFire: 0
   aimTime: 2
   lazerTime: 10
+  gamPrefab: {fileID: 0}
+  minSpawnTime: 3
+  maxSpawnTime: 6

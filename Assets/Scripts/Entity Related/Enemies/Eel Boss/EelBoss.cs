@@ -11,9 +11,9 @@ public class EelBoss : MonoBehaviour, IDamageable
 
 
     [Header("Readouts")]
-    [InspectorReadOnly] private int currentHealth;
-    [InspectorReadOnly] private int barriersBroken = 1;
-    [InspectorReadOnly] private int phase = 1;
+    [InspectorReadOnly][SerializeField] private int currentHealth;
+    [InspectorReadOnly][SerializeField] private int barriersBroken = 0;
+    [InspectorReadOnly][SerializeField] private int phase = 1;
 
     private PlayerController player;
     private Animator animator;
@@ -45,9 +45,13 @@ public class EelBoss : MonoBehaviour, IDamageable
         // handle spawn cooldown
         if(currentSpawnTime <= 0 && settings.gamPrefab != null)
         {
-            currentSpawnTime = Random.Range(settings.minSpawnTime, settings.maxSpawnTime);
+            currentSpawnTime = Random.Range(settings.minSpawnTime * (settings.gamSpawnIncreasePerBarrier * barriersBroken), 
+                                            settings.maxSpawnTime * (settings.gamSpawnIncreasePerBarrier * barriersBroken));
 
-            GameObject newMinion = Instantiate(settings.gamPrefab, transform.position, Quaternion.identity);
+            Vector3 spawnDirection = transform.position
+                                     + (Quaternion.AngleAxis(Random.Range(0f,360f), Vector3.up) * transform.forward).normalized * settings.gamSpawnRadius;
+
+            Instantiate(settings.gamPrefab, spawnDirection, Quaternion.identity);
         }
 
         // handle attack cooldown
@@ -58,7 +62,7 @@ public class EelBoss : MonoBehaviour, IDamageable
             float lazerChance = settings.lazerAttackChance + (attackStreak * settings.frequencyOffset * (lastAttack == 1 ? -1 : 1));
             float burstChance = settings.burstAttackChance + (attackStreak * settings.frequencyOffset * (lastAttack == 0 ? -1 : 1));
 
-            float choice = Random.Range(0, 1);
+            float choice = Random.Range(0f, 1f);
 
             if (lazerChance <= burstChance) // Lazer Attack has the lower chance of happening
                 if (choice <= lazerChance) // Lazer Attack
@@ -105,14 +109,17 @@ public class EelBoss : MonoBehaviour, IDamageable
                     attackStreak = 0;
                 }
             }
-            currentAttackTime = Random.Range(settings.minAttackTime, settings.maxAttackTime);
+
+            float minTime = settings.minAttackTime * (phase == 2 ? 1 / settings.aggressionIncreasePercent : 1);
+            float maxTime = settings.maxAttackTime * (phase == 2 ? 1 / settings.aggressionIncreasePercent : 1);
+
+            currentAttackTime = Random.Range(minTime, maxTime);
         }
     }
 
     public ReactionType TakeDamage(int damage, Elements element)
     {
         // Ignore damage if barriers are still active
-        //if (FindObjectsOfType<Barrier>().Length > 0) return;
 
         // Compute damage through multiplier
         int newDamage = settings.damageMultiplier.ComputeDamage(damage, element);
@@ -211,6 +218,14 @@ public class EelBoss : MonoBehaviour, IDamageable
     public void OnBarrierBreak()
     {
         barriersBroken++;
+
+        HazardTile[] possibleBarriers = FindObjectsOfType<HazardTile>();
+
+        foreach(HazardTile tile in possibleBarriers)
+            if (tile.tileType == HazardTile.TileType.Barrier)
+                return;
+
+        phase = 2;
     }
 
     // TODO: Add eel death logic
