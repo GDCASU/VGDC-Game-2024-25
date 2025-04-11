@@ -151,10 +151,30 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7424876006355349309, guid: 80dfcec38c094594da11effd76d3a8a1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7935603920560417448, guid: 80dfcec38c094594da11effd76d3a8a1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8077698986645493871, guid: 80dfcec38c094594da11effd76d3a8a1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9064241163447367110, guid: 80dfcec38c094594da11effd76d3a8a1,
         type: 3}
       propertyPath: m_Name
       value: HealthBar
+      objectReference: {fileID: 0}
+    - target: {fileID: 9064241163447367110, guid: 80dfcec38c094594da11effd76d3a8a1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -257,6 +277,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: crate
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1cc21912c4650cd479383b49dc3c7fb9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -281,6 +306,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 5080945999858009121}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1cc21912c4650cd479383b49dc3c7fb9,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3762678743582284569}
   m_SourcePrefab: {fileID: 100100000, guid: 1cc21912c4650cd479383b49dc3c7fb9, type: 3}
 --- !u!4 &6015507460128442942 stripped
 Transform:
@@ -350,9 +379,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementStatusHandler: {fileID: 2266548915404590409}
   aiPath: {fileID: 0}
-  deathDeleteTarget: {fileID: 0}
+  deathDeleteTarget: {fileID: 4362064101337938082}
   healthBar: {fileID: 8985259357438849090}
-  destroyOnDeath: {fileID: 0}
+  destroyOnDeath: {fileID: 4362064101337938082}
   baseSpeed: 0
   maxHealth: 3
   damageMults:
@@ -404,3 +433,19 @@ MonoBehaviour:
   squishScale: {x: 90, y: 90, z: 130}
   squishDuration: 0.01
   returnDuration: 0.5
+--- !u!114 &3762678743582284569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6354773160605995140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 183748dd497aa473a98ff0cd8cb67fc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 1
+  uniqueID: 1765019782890555473
+  updateError: 1
+  checkTime: 0.2

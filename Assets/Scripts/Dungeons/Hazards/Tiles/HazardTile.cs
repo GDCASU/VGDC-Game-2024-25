@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Serialization;
 
 /* -----------------------------------------------------------
@@ -30,6 +31,7 @@ public class HazardTile : MonoBehaviour
         Fungal = 3,
         Rock = 4,
         GrassFire = 5,
+        Barrier = 6,
     }
     
     [Header("References")]
@@ -40,8 +42,11 @@ public class HazardTile : MonoBehaviour
     public bool isReplaceable = true;
     public bool isPermanent = false; // If set to false, will only last for the duration set
 
-    [Header("Optional")] 
+    [Header("For non permanent")] 
     [SerializeField, Range(0f, 100f)] private float duration;
+
+    [Header("For barrier tiles")] 
+    [SerializeField] private UnityEvent onBarrierDestroyed;
 
     [Header("Debugging")]
     [SerializeField] private bool doDebugLog;
@@ -69,6 +74,11 @@ public class HazardTile : MonoBehaviour
         if (GameGridManager.Instance.placedHazards.TryGetValue(gridPos, out HazardTile tile))
         {
             if (tile == this) GameGridManager.Instance.DeregisterHazard(this);
+        }
+        // For barriers
+        if (tileType == TileType.Barrier)
+        {
+            onBarrierDestroyed?.Invoke();
         }
     }
 
