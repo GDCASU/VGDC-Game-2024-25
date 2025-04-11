@@ -68100,6 +68100,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 850767399}
+  - component: {fileID: 850767402}
   - component: {fileID: 850767401}
   - component: {fileID: 850767400}
   m_Layer: 0
@@ -68283,6 +68284,20 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!114 &850767402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 850767398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 859506a683991894b91ad7ef995476a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tilemap: {fileID: 850767401}
+  doDebugLog: 0
 --- !u!1001 &864840608
 PrefabInstance:
   m_ObjectHideFlags: 0
