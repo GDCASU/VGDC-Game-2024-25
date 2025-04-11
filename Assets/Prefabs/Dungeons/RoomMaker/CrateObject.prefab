@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 4362064101337938082}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 154, y: 0, z: -49.5}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -210,12 +210,12 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 1cc21912c4650cd479383b49dc3c7fb9,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.00000022351743
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1cc21912c4650cd479383b49dc3c7fb9,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.25
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1cc21912c4650cd479383b49dc3c7fb9,
         type: 3}
@@ -313,8 +313,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.020072702, y: 0.019988049, z: 0.019893276}
-  m_Center: {x: 0.000017034356, y: -0.000033586744, z: 0.009871264}
+  m_Size: {x: 0.020072702, y: 0.019988049, z: 0.038783804}
+  m_Center: {x: 0.000017033815, y: -0.000033587217, z: 0.019316535}
 --- !u!114 &4961845800561178426
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -328,6 +328,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dropForceMult: 2
+  launchBias: {x: 0, y: 0, z: 0}
   dropList:
   - dropObj: {fileID: 5522982876249640156, guid: 700483ad52a458d49b5c7fa54b10d348,
       type: 3}
@@ -348,7 +349,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   elementStatusHandler: {fileID: 2266548915404590409}
+  aiPath: {fileID: 0}
+  deathDeleteTarget: {fileID: 0}
   healthBar: {fileID: 8985259357438849090}
+  destroyOnDeath: {fileID: 0}
   baseSpeed: 0
   maxHealth: 3
   damageMults:
@@ -358,6 +362,7 @@ MonoBehaviour:
     fireMultiplier: 1
   currentHealth: 0
   speedMult: 1
+  stunned: 0
   doDebugLog: 0
 --- !u!114 &2266548915404590409
 MonoBehaviour:
@@ -377,6 +382,9 @@ MonoBehaviour:
     burnDmgPerInterval: 1
     sporedDuration: 5
     slowSpeedBy: 0.3
+    chargedDuration: 10
+    stunInterval: 1
+    stunDuration: 0.5
   currentStatusEffect: 0
   timeLeft: 0
   doDebugLog: 0
