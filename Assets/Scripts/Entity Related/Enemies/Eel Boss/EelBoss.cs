@@ -182,12 +182,12 @@ public class EelBoss : MonoBehaviour, IDamageable
         if (lazerAimGameObject != null)
             return;
 
-        float angleB = Vector3.Angle(transform.forward, player.transform.position - transform.position);
+        lazerAimGameObject = Instantiate(settings.aimPrefab, burstFirePoint.position, Quaternion.identity);
 
-        float horizontalOffset = Mathf.Sin(angleB * Mathf.Deg2Rad) * Vector3.Distance(transform.position, player.transform.position);
+        Vector3 targetPosition = player.transform.position;
+        targetPosition.y = burstFirePoint.position.y;
 
-        lazerAimGameObject = Instantiate(settings.aimPrefab, transform.position + transform.right * horizontalOffset, Quaternion.identity);
-        lazerAimGameObject.transform.right = transform.right;
+        lazerAimGameObject.transform.LookAt(targetPosition);
 
         StartCoroutine(DelayedFunction(settings.aimTime, () => animator.SetTrigger("lazerFire")));
     }
