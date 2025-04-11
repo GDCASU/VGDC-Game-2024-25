@@ -8,6 +8,12 @@ public class EelBossSettings : ScriptableObject
     public float maxHealth;
     public DamageMultiplier damageMultiplier;
 
+    [Header("Aggression Settings")]
+    [Tooltip("Reduces the spawn time for boss minions by the multiplier per level of aggression\n(multiplier are applied additive)")]
+    public float spawnMultiplierPerLevel;
+    [Tooltip("Reduces the time between attack by the multiplier per level of aggression\n(multipliers are applied additive)")]
+    public float attackMultiplierPerLevel;
+
     [Header("Burst Settings")]
     public GameObject burstProjectilePrefab;
     public int burstProjectileCount;
@@ -21,4 +27,9 @@ public class EelBossSettings : ScriptableObject
     public bool beamFriendlyFire = false;
     public float aimTime = 2.0f;
     public float lazerTime = 10.0f;
+
+    [Header("Spawning Settings")]
+    public GameObject gamPrefab;
+    public float minSpawnTime = 3;
+    public float maxSpawnTime = 6;
 }

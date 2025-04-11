@@ -19,6 +19,8 @@ public class EelBoss : MonoBehaviour, IDamageable
     private GameObject lazerAimGameObject;
     private GameObject lazerBeamGameObject;
 
+    private float currentSpawnTime;
+
     private void Awake()
     {
         player = FindFirstObjectByType<PlayerController>();
@@ -28,11 +30,19 @@ public class EelBoss : MonoBehaviour, IDamageable
     private void Update()
     {
         // count down cooldowns
-
+        currentSpawnTime -= Time.deltaTime;
 
         // handle spawn cooldown
+        if(currentSpawnTime <= 0)
+        {
+            currentSpawnTime = Random.Range(settings.minSpawnTime, settings.maxSpawnTime);
+
+            GameObject newMinion = Instantiate(settings.gamPrefab, transform.position, Quaternion.identity);
+        }
+
 
         // handle attack cooldown
+        
     }
 
     public ReactionType TakeDamage(int damage, Elements element)
