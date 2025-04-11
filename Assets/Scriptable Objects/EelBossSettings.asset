@@ -22,9 +22,12 @@ MonoBehaviour:
     type: 3}
   burstProjectileCount: 5
   burstAttackSpreadAngle: 30
-  aimPrefab: {fileID: 0}
+  aimPrefab: {fileID: 3078216574550125144, guid: abcf0ea7cc567d94caa2731e9dce2851,
+    type: 3}
   lazerPrefab: {fileID: 3078216574550125144, guid: 4e4fc0e6db8e50341aac40cf07b4f382,
     type: 3}
   beamDamagePerTick: 1
   beamTickInterval: 0.25
   beamFriendlyFire: 0
+  aimTime: 2
+  lazerTime: 10

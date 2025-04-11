@@ -37,6 +37,9 @@ public class EelBoss : MonoBehaviour, IDamageable
 
     public ReactionType TakeDamage(int damage, Elements element)
     {
+        // Ignore damage if barriers are still active
+        //if (FindObjectsOfType<Barrier>().Length > 0) return;
+
         // Compute damage through multiplier
         int newDamage = settings.damageMultiplier.ComputeDamage(damage, element);
         // Ignore if zero/immune
@@ -94,24 +97,24 @@ public class EelBoss : MonoBehaviour, IDamageable
 
         float horizontalOffset = Mathf.Sin(angleB * Mathf.Deg2Rad) * Vector3.Distance(transform.position, player.transform.position);
 
-        lazerBeamGameObject = Instantiate(settings.aimPrefab, transform.position + transform.right * horizontalOffset, Quaternion.identity);
-        lazerBeamGameObject.transform.right = transform.right;
+        lazerAimGameObject = Instantiate(settings.aimPrefab, transform.position + transform.right * horizontalOffset, Quaternion.identity);
+        lazerAimGameObject.transform.right = transform.right;
     }
 
     public void SpawnLazerBeam()
     {
-        if (lazerBeamGameObject != null || lazerAimGameObject != null)
+        if (lazerBeamGameObject != null)
             return;
 
         lazerBeamGameObject = Instantiate(settings.lazerPrefab, lazerAimGameObject.transform.position, lazerAimGameObject.transform.rotation);
 
-        Destroy(lazerAimGameObject);
+        Destroy(lazerAimGameObject.gameObject);
         lazerAimGameObject = null;
     }
 
     public void EndLazerBeam()
     {
-        Destroy(lazerBeamGameObject);
+        Destroy(lazerBeamGameObject.gameObject);
         lazerBeamGameObject = null;
     }
 
