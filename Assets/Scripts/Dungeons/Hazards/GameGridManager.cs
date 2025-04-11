@@ -70,7 +70,7 @@ public class GameGridManager : MonoBehaviour
             placedHazards.Remove(cellPos);
             Destroy(existingHazard.gameObject); 
         }
-        placedHazards[cellPos] = hazard;
+        placedHazards.Add(cellPos, hazard);
         return true;
     }
     
@@ -111,8 +111,8 @@ public class GameGridManager : MonoBehaviour
                     
                     // Instantiate the hazard prefab.
                     HazardTile newHazard = Instantiate(hazardPrefab, worldPos, Quaternion.identity, transform);
-                    newHazard.gridPos = cellPos;  // Set its grid position.
-                    
+                    newHazard.InitializeTile();
+                    placedObjects.Add(newHazard);
                     // The tile registers itself, so no need to do it here
                 }
             }

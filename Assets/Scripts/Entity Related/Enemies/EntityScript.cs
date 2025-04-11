@@ -60,6 +60,8 @@ public class EntityScript : MonoBehaviour, IDamageable
 
     private void LateUpdate()
     {
+        if (aiPath == null) return;
+
         aiPath.maxSpeed = baseSpeed * speedMult;
         aiPath.canMove = !stunned;
     }
