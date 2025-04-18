@@ -156,7 +156,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _minTimeToTarget: 1.5
   _maxTimeToTarget: 2
-  _gravity: -2
+  _gravity: -3
   _groundLayer:
     serializedVersion: 2
     m_Bits: 128
