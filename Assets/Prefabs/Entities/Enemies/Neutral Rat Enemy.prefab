@@ -363,7 +363,7 @@ GameObject:
   - component: {fileID: 805239401150814529}
   - component: {fileID: 8596972973952885235}
   m_Layer: 6
-  m_Name: Rat Enemy
+  m_Name: Neutral Rat Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -429,6 +429,8 @@ MonoBehaviour:
   _maxAttackHeight: 0.25
   _runSpeed: 3
   _detectionAngle: 30
+  _stats: {fileID: 11400000, guid: 5f894187a7b6be24289f024f8f23ac96, type: 2}
+  _dontLoadStats: 0
   _detectedUI: {fileID: 6337221535202532174}
   _spriteObj: {fileID: 132185593873922368}
   doDebugLog: 0
