@@ -1,6 +1,23 @@
 using System.Collections;
 using UnityEngine;
 
+/* -----------------------------------------------------------
+ * Author:
+ * Chandler Van
+ * 
+ * Modified By:
+ * 
+ */// --------------------------------------------------------
+
+/* -----------------------------------------------------------
+ * Purpose:
+ * Script for the second boss logic
+ */// --------------------------------------------------------
+
+
+/// <summary>
+/// Class for the EelBoss
+/// </summary>
 [RequireComponent(typeof(ElementStatusHandler), typeof(Animator))]
 public class EelBoss : MonoBehaviour, IDamageable
 {
@@ -45,12 +62,15 @@ public class EelBoss : MonoBehaviour, IDamageable
         // handle spawn cooldown
         if(currentSpawnTime <= 0 && settings.gamPrefab != null)
         {
+            // reset timer
             currentSpawnTime = Random.Range(settings.minSpawnTime * (settings.gamSpawnIncreasePerBarrier * barriersBroken), 
                                             settings.maxSpawnTime * (settings.gamSpawnIncreasePerBarrier * barriersBroken));
 
+            // chose gam position
             Vector3 spawnDirection = transform.position
                                      + (Quaternion.AngleAxis(Random.Range(0f,360f), Vector3.up) * transform.forward).normalized * settings.gamSpawnRadius;
 
+            // spawn gam
             Instantiate(settings.gamPrefab, spawnDirection, Quaternion.identity);
         }
 
@@ -59,6 +79,7 @@ public class EelBoss : MonoBehaviour, IDamageable
         {
             attacking = true;
 
+            // get chances for each attack
             float lazerChance = settings.lazerAttackChance + (attackStreak * settings.frequencyOffset * (lastAttack == 1 ? -1 : 1));
             float burstChance = settings.burstAttackChance + (attackStreak * settings.frequencyOffset * (lastAttack == 0 ? -1 : 1));
 
@@ -164,6 +185,7 @@ public class EelBoss : MonoBehaviour, IDamageable
 
         float angleOffset = settings.burstAttackSpreadAngle / settings.burstProjectileCount;
 
+        // Spawn and init projectiles
         for (int i = 0; i < settings.burstProjectileCount; i++)
         {
             Vector3 projectileDirection = Quaternion.AngleAxis((-settings.burstAttackSpreadAngle / 2) + angleOffset * i, Vector3.up) * burstFirePoint.forward;
@@ -226,6 +248,7 @@ public class EelBoss : MonoBehaviour, IDamageable
                 return;
 
         phase = 2;
+        // possible animation here?
     }
 
     // TODO: Add eel death logic
