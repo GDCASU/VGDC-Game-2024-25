@@ -36,6 +36,7 @@ public class EelBossSettings : ScriptableObject
     [Header("Spawning Settings")]
     public GameObject gamPrefab;
     public float gamSpawnRadius = 3f;
+    [Tooltip("Set to a negative number for unlimited")]public int maxGams = -1;
     public float minSpawnTime = 3;
     public float maxSpawnTime = 6;
 }

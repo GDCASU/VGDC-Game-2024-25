@@ -71,4 +71,14 @@ public class Amalgam : MonoBehaviour
 
         leapBackCoro = StartCoroutine(LeapBackCoroutine(target));   
     }
+
+    private void OnDestroy()
+    {
+        EelBoss boss = FindAnyObjectByType<EelBoss>();
+
+        if(boss != null)
+        {
+            boss.OnGamDeath();
+        }
+    }
 }

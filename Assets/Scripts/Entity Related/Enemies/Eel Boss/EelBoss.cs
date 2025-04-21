@@ -43,6 +43,7 @@ public class EelBoss : MonoBehaviour, IDamageable
     private int lastAttack; // burst = 0, lazer = 1
     private int attackStreak = 0;
 
+    private int gamCount = 0;
     private bool attacking = false;
 
     private void Awake()
@@ -56,15 +57,20 @@ public class EelBoss : MonoBehaviour, IDamageable
         // count down cooldowns
         currentSpawnTime -= Time.deltaTime;
 
-        if(!attacking)
+        if (!attacking)
             currentAttackTime -= Time.deltaTime;
 
         // handle spawn cooldown
-        if(currentSpawnTime <= 0 && settings.gamPrefab != null)
+        if (currentSpawnTime <= 0 && settings.gamPrefab != null && (gamCount < settings.maxGams || settings.maxGams < -1))
         {
             // reset timer
-            currentSpawnTime = Random.Range(settings.minSpawnTime * (settings.gamSpawnIncreasePerBarrier * barriersBroken), 
-                                            settings.maxSpawnTime * (settings.gamSpawnIncreasePerBarrier * barriersBroken));
+            if (barriersBroken > 0)
+                currentSpawnTime = Random.Range(settings.minSpawnTime * (settings.gamSpawnIncreasePerBarrier * barriersBroken),
+                                                settings.maxSpawnTime * (settings.gamSpawnIncreasePerBarrier * barriersBroken));
+            else
+                currentSpawnTime = Random.Range(settings.minSpawnTime, settings.maxSpawnTime);
+
+            gamCount++;
 
             // chose gam position
             Vector3 spawnDirection = transform.position
@@ -136,6 +142,11 @@ public class EelBoss : MonoBehaviour, IDamageable
 
             currentAttackTime = Random.Range(minTime, maxTime);
         }
+    }
+
+    public void OnGamDeath()
+    {
+        gamCount--;
     }
 
     public ReactionType TakeDamage(int damage, Elements element)
