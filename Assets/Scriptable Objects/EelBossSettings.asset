@@ -19,7 +19,7 @@ MonoBehaviour:
     sparkMultiplier: 1
     fireMultiplier: 1
   aggressionIncreasePercent: 1.5
-  gamSpawnIncreasePerAggression: 0.25
+  gamSpawnIncreasePerBarrier: 0.25
   minAttackTime: 0.5
   maxAttackTime: 2
   burstAttackChance: 0.7
@@ -38,6 +38,9 @@ MonoBehaviour:
   beamFriendlyFire: 0
   aimTime: 2
   lazerTime: 10
-  gamPrefab: {fileID: 0}
+  gamPrefab: {fileID: 3946162516191035350, guid: 5f02833ee97091f43925914bb8858d51,
+    type: 3}
+  gamSpawnRadius: 3
+  maxGams: -1
   minSpawnTime: 3
   maxSpawnTime: 6
