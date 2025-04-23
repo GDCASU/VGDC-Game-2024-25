@@ -101,8 +101,10 @@ public class EntityScript : MonoBehaviour, IDamageable
         {
             HitpointsRenderer.Instance.PrintDamage(transform.position, newDamage, Color.red);
         }
-        // Update health bar
-        healthBar.UpdateHealthBar(currentHealth, maxHealth);
+        // Update health bar if available
+        if(healthBar != null)
+            healthBar.UpdateHealthBar(currentHealth, maxHealth);
+
         if (currentHealth <= 0)
         {
             // Enemy died

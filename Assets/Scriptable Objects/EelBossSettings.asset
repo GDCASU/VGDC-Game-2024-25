@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bf21e45943319e4196a3ae3a3d275b6, type: 3}
+  m_Name: EelBossSettings
+  m_EditorClassIdentifier: 
+  maxHealth: 0
+  damageMultiplier:
+    neutralMultiplier: 1
+    fungalMultiplier: 1
+    sparkMultiplier: 1
+    fireMultiplier: 1
+  aggressionIncreasePercent: 1.5
+  gamSpawnIncreasePerBarrier: 0.25
+  minAttackTime: 0.5
+  maxAttackTime: 2
+  burstAttackChance: 0.7
+  lazerAttackChance: 0.3
+  frequencyOffset: 0.05
+  burstProjectilePrefab: {fileID: 3053767172377724150, guid: d6c072ce6c30cb24e9a4a55053fefed4,
+    type: 3}
+  burstProjectileCount: 5
+  burstAttackSpreadAngle: 30
+  aimPrefab: {fileID: 3078216574550125144, guid: abcf0ea7cc567d94caa2731e9dce2851,
+    type: 3}
+  lazerPrefab: {fileID: 3078216574550125144, guid: 4e4fc0e6db8e50341aac40cf07b4f382,
+    type: 3}
+  beamDamagePerTick: 1
+  beamTickInterval: 0.25
+  beamFriendlyFire: 0
+  aimTime: 2
+  lazerTime: 10
+  gamPrefab: {fileID: 3946162516191035350, guid: 5f02833ee97091f43925914bb8858d51,
+    type: 3}
+  gamSpawnRadius: 3
+  maxGams: -1
+  minSpawnTime: 3
+  maxSpawnTime: 6
