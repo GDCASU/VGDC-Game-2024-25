@@ -30,9 +30,8 @@ public class EelBurstProjectile : MonoBehaviour
         transform.Translate(moveDir * (speed * Time.deltaTime));
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        Collider other = collision.collider;
 
         if (doDebugLog) Debug.Log(gameObject.name + " hit " + other.gameObject.name);
 

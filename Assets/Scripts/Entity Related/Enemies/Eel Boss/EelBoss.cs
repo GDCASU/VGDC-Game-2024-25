@@ -192,6 +192,8 @@ public class EelBoss : MonoBehaviour, IDamageable
 
     public void BurstAttack()
     {
+        // Play SFX here
+
         burstFirePoint.LookAt(player.transform.position);
 
         float angleOffset = settings.burstAttackSpreadAngle / settings.burstProjectileCount;
@@ -215,6 +217,8 @@ public class EelBoss : MonoBehaviour, IDamageable
         if (lazerAimGameObject != null)
             return;
 
+        // Play sfx here
+        
         lazerAimGameObject = Instantiate(settings.aimPrefab, burstFirePoint.position, Quaternion.identity);
 
         Vector3 targetPosition = player.transform.position;
@@ -230,6 +234,8 @@ public class EelBoss : MonoBehaviour, IDamageable
         if (lazerBeamGameObject != null)
             return;
 
+        // Play SFX here
+
         lazerBeamGameObject = Instantiate(settings.lazerPrefab, lazerAimGameObject.transform.position, lazerAimGameObject.transform.rotation);
 
         Destroy(lazerAimGameObject.gameObject);
@@ -242,7 +248,9 @@ public class EelBoss : MonoBehaviour, IDamageable
 
     public void EndLazerBeam()
     {
-        Destroy(lazerBeamGameObject.gameObject);
+        // Play SFX here??? (idk if theres a sfx for this part)
+
+        lazerBeamGameObject.GetComponent<EelLazerBeam>().StartDestroyLaser();
         lazerBeamGameObject = null;
 
         attacking = false;
@@ -262,7 +270,7 @@ public class EelBoss : MonoBehaviour, IDamageable
         // possible animation here?
     }
 
-    // TODO: Add eel death logic
+    // TODO: Finish eel death logic
     private void OnDeath()
     {
         StopAllCoroutines();
