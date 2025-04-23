@@ -68,16 +68,6 @@ public class PlayerController : MonoBehaviour
 	// Update is called once per frame
 	void Update()
     {
-        // DEBUGGING: Dont think we will keep the camera movable
-        if(Input.GetKey(KeyCode.E))
-        {
-            transform.Rotate(0, cameraRotateSpeed * Time.deltaTime, 0);
-        } 
-        else if(Input.GetKey(KeyCode.Q))
-        {
-            transform.Rotate(0, -cameraRotateSpeed * Time.deltaTime, 0);
-        }
-        
         // Get Vector2 Input from Input Manager
         Vector3 input = InputManager.Instance.movementInput;
 
