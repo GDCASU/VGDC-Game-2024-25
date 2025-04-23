@@ -631,6 +631,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Persistent Objects
       objectReference: {fileID: 0}
+    - target: {fileID: 4191605661390615744, guid: 2ea8d9a76f52ca04a840bfe9eee5dd3e,
+        type: 3}
+      propertyPath: waterElement.isInfinite
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5060238407036317655, guid: 2ea8d9a76f52ca04a840bfe9eee5dd3e,
         type: 3}
       propertyPath: m_LocalPosition.x
