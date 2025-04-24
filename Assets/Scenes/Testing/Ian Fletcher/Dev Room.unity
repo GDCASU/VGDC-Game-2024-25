@@ -6282,37 +6282,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fungal Rat Enemy
       objectReference: {fileID: 0}
-    - target: {fileID: 513011287952055205, guid: 581272df666908043818b71f54d2993d,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 513011287952055205, guid: 581272df666908043818b71f54d2993d,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1309044512726605688, guid: 581272df666908043818b71f54d2993d,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1894745114600142800, guid: 581272df666908043818b71f54d2993d,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2575535653892564418, guid: 581272df666908043818b71f54d2993d,
-        type: 3}
-      propertyPath: _stats
-      value: 
-      objectReference: {fileID: 11400000, guid: 5bcb1bd66d880354ba7b6a2f9cd1f32a,
-        type: 2}
-    - target: {fileID: 2801216504713056205, guid: 581272df666908043818b71f54d2993d,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3765537489978794663, guid: 581272df666908043818b71f54d2993d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6371,47 +6340,6 @@ PrefabInstance:
     - target: {fileID: 4850773582691179034, guid: 581272df666908043818b71f54d2993d,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4877379878315611209, guid: 581272df666908043818b71f54d2993d,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4877379878315611209, guid: 581272df666908043818b71f54d2993d,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5095963923639036845, guid: 581272df666908043818b71f54d2993d,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 486e1d11033090a42965de5c7343e924,
-        type: 2}
-    - target: {fileID: 6563326176937228128, guid: 581272df666908043818b71f54d2993d,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6563326176937228128, guid: 581272df666908043818b71f54d2993d,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8994066501422697102, guid: 581272df666908043818b71f54d2993d,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9075801563624725428, guid: 581272df666908043818b71f54d2993d,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9075801563624725428, guid: 581272df666908043818b71f54d2993d,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

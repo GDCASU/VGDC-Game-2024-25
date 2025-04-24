@@ -1304,7 +1304,7 @@ MonoBehaviour:
       ammoAmount: 0
       ammoMaxAmount: 0
     currentAngle: 0
-  cooldownDuration: 1
+  cooldownDuration: 0.1
   maxDisplayScale: 1
   displayRadius: 0.2
   rotationDuration: 0.2
