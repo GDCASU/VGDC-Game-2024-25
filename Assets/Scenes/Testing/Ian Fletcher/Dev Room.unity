@@ -702,7 +702,7 @@ PrefabInstance:
     - target: {fileID: 2391930757929744352, guid: 3929c72507c5b98469226ce0caeccc72,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -33.1
+      value: 31.8
       objectReference: {fileID: 0}
     - target: {fileID: 2391930757929744352, guid: 3929c72507c5b98469226ce0caeccc72,
         type: 3}
@@ -3780,12 +3780,12 @@ PrefabInstance:
     - target: {fileID: 759770393211581057, guid: 4ce8d7d5333423148bba7bccd6a9a094,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -53.301308
+      value: 11.598692
       objectReference: {fileID: 0}
     - target: {fileID: 759770393211581057, guid: 4ce8d7d5333423148bba7bccd6a9a094,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 8.169499
+      value: 8.169498
       objectReference: {fileID: 0}
     - target: {fileID: 759770393211581057, guid: 4ce8d7d5333423148bba7bccd6a9a094,
         type: 3}
@@ -6282,6 +6282,37 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fungal Rat Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 513011287952055205, guid: 581272df666908043818b71f54d2993d,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 513011287952055205, guid: 581272df666908043818b71f54d2993d,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1309044512726605688, guid: 581272df666908043818b71f54d2993d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1894745114600142800, guid: 581272df666908043818b71f54d2993d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2575535653892564418, guid: 581272df666908043818b71f54d2993d,
+        type: 3}
+      propertyPath: _stats
+      value: 
+      objectReference: {fileID: 11400000, guid: 5bcb1bd66d880354ba7b6a2f9cd1f32a,
+        type: 2}
+    - target: {fileID: 2801216504713056205, guid: 581272df666908043818b71f54d2993d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3765537489978794663, guid: 581272df666908043818b71f54d2993d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6342,11 +6373,47 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6832470383321918893, guid: 581272df666908043818b71f54d2993d,
+    - target: {fileID: 4877379878315611209, guid: 581272df666908043818b71f54d2993d,
         type: 3}
-      propertyPath: m_Controller
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4877379878315611209, guid: 581272df666908043818b71f54d2993d,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5095963923639036845, guid: 581272df666908043818b71f54d2993d,
+        type: 3}
+      propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 9100000, guid: c9dd743ac956f0a4ca76cc6c3240c3d4, type: 2}
+      objectReference: {fileID: 21300000, guid: 486e1d11033090a42965de5c7343e924,
+        type: 2}
+    - target: {fileID: 6563326176937228128, guid: 581272df666908043818b71f54d2993d,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6563326176937228128, guid: 581272df666908043818b71f54d2993d,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8994066501422697102, guid: 581272df666908043818b71f54d2993d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9075801563624725428, guid: 581272df666908043818b71f54d2993d,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9075801563624725428, guid: 581272df666908043818b71f54d2993d,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
