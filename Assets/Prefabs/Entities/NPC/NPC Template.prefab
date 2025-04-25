@@ -201,7 +201,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3280161214251933727}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 19.53, y: 0.469, z: 5.61}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -294,15 +294,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogueOptions: 0
-  hasCharacterPortrait: 0
-  pressToStart: 1
+  playOnAwake: 0
   charactersPerSecond: 30
-  dialogueEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  script: {fileID: 0}
-  dialogueBackground: {fileID: 0}
-  characterNames: []
+  script: {fileID: 4900000, guid: 466e9f916b76bf346a78ae5e0d9016e0, type: 3}
+  dialogueBackground: {fileID: 4865018503416313322}
+  characterNames:
+  - Ian
+  - Cami
   onDialogEnd:
     m_PersistentCalls:
       m_Calls: []
@@ -381,7 +379,7 @@ GameObject:
   - component: {fileID: 7260043116593617000}
   - component: {fileID: 7582268331429752240}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
