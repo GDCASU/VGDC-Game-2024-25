@@ -34,13 +34,13 @@ public class EntityScript : MonoBehaviour, IDamageable
     
     [Header("Entity Stats")]
     [SerializeField] private float baseSpeed;
-    [SerializeField] protected const int maxHealth = 10;
+    [SerializeField] protected int maxHealth = 10;
 
     [Header("Multipliers")] 
     [SerializeField] private DamageMultiplier damageMults;
     
     [Header("Readouts")]
-    [InspectorReadOnly] [SerializeField] protected int currentHealth = maxHealth;
+    [InspectorReadOnly] [SerializeField] protected int currentHealth;
     [InspectorReadOnly] public float speedMult = 1f; // Used by statuses to slow down the entity
     [InspectorReadOnly] public bool stunned = false;
     
@@ -54,6 +54,7 @@ public class EntityScript : MonoBehaviour, IDamageable
     private void Start()
     {
         // Set stats and references
+        currentHealth = maxHealth;
         elementStatusHandler.entityScript = this;
     }
 

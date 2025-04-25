@@ -145677,12 +145677,6 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 739016980400360937, guid: 59def51ea1d32be428738d8233a85050,
-        type: 3}
-      propertyPath: _ratPrefab
-      value: 
-      objectReference: {fileID: 4817063602568806315, guid: 63efab5bef2b9524eab9bf79f18429d1,
-        type: 3}
     - target: {fileID: 2769620268543809792, guid: 59def51ea1d32be428738d8233a85050,
         type: 3}
       propertyPath: m_LocalPosition.x
