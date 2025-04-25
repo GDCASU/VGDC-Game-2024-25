@@ -132,15 +132,15 @@ public class PlayerObject : MonoBehaviour, IDamageable
     {
         // TODO: The player doesnt trigger reactions right?
         // Damage health
+        int previousHealth = currentHealth;
         currentHealth -= damage;
         // Check for death
         if (currentHealth <= 0)
         {
-            // Player died
+            currentHealth = 0;
             OnDeath();
             return ReactionType.Undefined;
         }
-        
         // Return undefined
         return ReactionType.Undefined;
     }

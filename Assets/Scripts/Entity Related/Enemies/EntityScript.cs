@@ -60,6 +60,8 @@ public class EntityScript : MonoBehaviour, IDamageable
 
     private void LateUpdate()
     {
+        if (aiPath == null) return;
+
         aiPath.maxSpeed = baseSpeed * speedMult;
         aiPath.canMove = !stunned;
     }
@@ -77,12 +79,25 @@ public class EntityScript : MonoBehaviour, IDamageable
         // Ignore if zero/immune
         if (newDamage <= 0) return ReactionType.Undefined;
         // Damage health
+        int previousHealth = currentHealth;
         currentHealth -= newDamage;
-        // Update health bar
-        healthBar.UpdateHealthBar(currentHealth, maxHealth);
+        if (currentHealth <= 0)
+        {
+            // Render damage
+            HitpointsRenderer.Instance.PrintDamage(transform.position, currentHealth, Color.red);
+        }
+        else
+        {
+            HitpointsRenderer.Instance.PrintDamage(transform.position, newDamage, Color.red);
+        }
+        // Update health bar if available
+        if(healthBar != null)
+            healthBar.UpdateHealthBar(currentHealth, maxHealth);
+
         if (currentHealth <= 0)
         {
             // Enemy died
+            currentHealth = 0;
             OnDeath();
             // FIXME: Return undefined?
             return ReactionType.Undefined;
@@ -97,9 +112,19 @@ public class EntityScript : MonoBehaviour, IDamageable
     public void StatusDamage(int damage)
     {
         // Damage health
+        int previousHealth = currentHealth;
         currentHealth -= damage;
+        if (currentHealth <= 0)
+        {
+            currentHealth = 0;
+            // Render damage
+            HitpointsRenderer.Instance.PrintDamage(transform.position, currentHealth, Color.red);
+            OnDeath(); // Enemy died
+            return;
+        }
+        // Else update health bar
         healthBar.UpdateHealthBar(currentHealth, maxHealth);
-        if (currentHealth <= 0) OnDeath(); // Enemy died
+        HitpointsRenderer.Instance.PrintDamage(transform.position, damage, Color.red);
     }
 
     /// <summary>
