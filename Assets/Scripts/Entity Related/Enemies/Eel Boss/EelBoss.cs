@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 /* -----------------------------------------------------------
  * Author:
@@ -26,6 +27,9 @@ public class EelBoss : MonoBehaviour, IDamageable
     [SerializeField] private EelBossSettings settings;
     [SerializeField] private Transform burstFirePoint;
 
+    [Header("Events")]
+    [SerializeField] private UnityEvent onDeathStart;
+    [SerializeField] private UnityEvent onDeathEnd;
 
     [Header("Readouts")]
     [InspectorReadOnly][SerializeField] private int currentHealth;
@@ -275,7 +279,13 @@ public class EelBoss : MonoBehaviour, IDamageable
     {
         StopAllCoroutines();
         animator.SetTrigger("eelDeath");
+        onDeathStart?.Invoke();
         // Some other logic here
+    }
+
+    public void OnDeathFinish()
+    {
+        onDeathEnd?.Invoke();
     }
 }
 
