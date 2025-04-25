@@ -69,8 +69,8 @@ public class Dialogue : Interactable
         {
             switch ((int)dialogueOptions)
             {
-                case 0: OnFocusEnter += PauseGameTime; break;
-                case 1: OnFocusEnter += TextBox; break;
+                case 0: OnInteractionExecuted += PauseGameTime; break;
+                case 1: OnInteractionExecuted += TextBox; break;
                 case 2: OnFocusEnter += StartTimeline; break;
             }
         }
@@ -90,6 +90,7 @@ public class Dialogue : Interactable
     private void OnDestroy()
     {
         OnFocusEnter = null;
+        OnInteractionExecuted = null;
     }
 
     /// <summary> SetDialogScript changes and Loads a new dialog script </summary>

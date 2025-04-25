@@ -21,21 +21,27 @@ public class WiffleNPC : NPC
 
     void MoveToNextLocation()
     {
-        if (this.transform.position == nextLocation)
+        if (Vector3.Distance(this.transform.position, nextLocation) < 1)
         {
-            index++; nextLocation = locations[index];
+            index++;
+
+            if (locations != null && index < locations.Count) { nextLocation = locations[index]; }
+            else { isMoving = false; return; }
         }
 
-        Vector3 direction = (this.transform.position - nextLocation).normalized;
-        float offset = 1;
+        Vector3 direction = (nextLocation - this.transform.position).normalized;
+        float offset = 0.1f;
         this.transform.position += direction * offset;
     }
 
     void FindLocationPath(Vector3 location)
     {
-        float distance = 5;
+        float distance = 1;
+        location.y = this.transform.position.y;
 
         locations = FindShortestPath(this.transform.position, location, distance);
+        resetLocation = false;
+        isMoving = true;
     }
 
     /// <summary> Creates the shortest path between the current location and the next one </summary>
@@ -51,7 +57,8 @@ public class WiffleNPC : NPC
             List<Vector3> path = new List<Vector3>();
             path.Add(successor);
             int cost = 1;
-            fringe.Push((successor, path, cost), (int)Vector3.Distance(successor, pos2) + cost);
+            int heuristic = (int)(Mathf.Abs(pos2.x - successor.x) + Mathf.Abs(pos2.y - successor.y));
+            fringe.Push((successor, path, cost), heuristic + cost);
         }
 
         List<Vector3> closed = new List<Vector3>();
@@ -76,6 +83,11 @@ public class WiffleNPC : NPC
                 return solution;
             }
 
+            if (2*Vector3.Distance(pos1, pos2) < Vector3.Distance(pos2, currentState))
+            {
+                break;
+            }
+
             // Check if state is already expanded
             if (!closed.Contains(currentState))
             {
@@ -85,7 +97,8 @@ public class WiffleNPC : NPC
                 {
                     List<Vector3> path = new(currentPath);
                     path.Add(successor);
-                    fringe.Push((successor, path, currentCost + 1), (int)Vector3.Distance(successor, pos2) + currentCost + 1); // change to heuristic later
+                    int heuristic = (int)(Mathf.Abs(pos2.x - successor.x) + Mathf.Abs(pos2.y - successor.y));
+                    fringe.Push((successor, path, currentCost + 1), heuristic + currentCost + 1);
                 }
             }
         }
