@@ -32,6 +32,12 @@ public class RatEnemyControl : MonoBehaviour
 	[SerializeField] private float _runSpeed = 3f;
 	// The rat will detect the player if the player is within x degrees of the direction it is looking
 	[SerializeField] private float _detectionAngle = 30f;
+    [SerializeField] private float _moveDistance = 5f;
+    
+    [Header("Data")]
+    [SerializeField] private RatStats _stats;
+// Bool that will make it so it uses values set in the inspector
+    [SerializeField] private bool _dontLoadStats; 
 
 	[Header("Objects")]
 	[SerializeField] private GameObject _detectedUI;
@@ -54,8 +60,20 @@ public class RatEnemyControl : MonoBehaviour
 		_aiPath = GetComponent<AIPath>();
 		_target = transform.Find("Target");
 		_target.parent = null;
-
-		_aiPath.maxSpeed = _runSpeed;
+        
+        // Load the data
+        if (!_dontLoadStats)
+        {
+            _minIdleTime = _stats.minIdleTime;
+            _maxIdleTime = _stats.maxIdleTime;
+            _minRunTime = _stats.minRunTime;
+            _maxRunTime = _stats.maxRunTime;
+            _attackTime = _stats.attackTime;
+            _maxAttackHeight = _stats.maxAttackHeight;
+            _aiPath.maxSpeed = _stats.baseSpeed;
+            _detectionAngle = _stats.detectionAngle;
+        }
+		
 		_aiPath.maxAcceleration = 999999999f;
 		_lookDir = 0;
 		GetComponent<AIDestinationSetter>().target = _target;
@@ -127,7 +145,7 @@ public class RatEnemyControl : MonoBehaviour
 			yield return _anim.PlayBlocking("IdleToSide");
 			_anim.Play("RunSide");
 		}
-		_target.position = transform.position + 50f * _dirToVector[_lookDir];
+		_target.position = transform.position + _moveDistance * _dirToVector[_lookDir];
 
 		// Move in the cardinal direction
 		_aiPath.canMove = true;

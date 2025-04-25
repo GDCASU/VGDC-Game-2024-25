@@ -27,6 +27,8 @@ public class FlytrapArmControl : MonoBehaviour
     private Animator _handAnim;
 	private Collider _hitbox;
 
+    private bool doDebugLog = false;
+
     private void Start()
     {
         _initialAngle = transform.rotation.eulerAngles.y;
@@ -62,7 +64,7 @@ public class FlytrapArmControl : MonoBehaviour
 		}
 
 		// Attack if player is in range
-		Debug.Log(offset.magnitude);
+		if (doDebugLog) Debug.Log(offset.magnitude);
 		_attackCooldown -= Time.deltaTime;
 		if(!_attacking && _attackCooldown < 0f && Mathf.Abs(difference) < ATTACK_ANGLE && offset.magnitude < ATTACK_AGGRO_RANGE)
 		{

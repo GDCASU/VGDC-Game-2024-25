@@ -26,6 +26,12 @@ using UnityEngine.Serialization;
 /// </summary>
 public class ElementStatusHandler : MonoBehaviour
 {
+    [Header("References")] 
+    [SerializeField] private GameObject fireStatusDisplay;
+    [SerializeField] private GameObject waterStatusDisplay;
+    [SerializeField] private GameObject sparkStatusDisplay;
+    [SerializeField] private GameObject fungalStatusDisplay;
+    
     [Header("Settings")]
     [SerializeField] private StatusSettings statusSettings;
     
@@ -82,6 +88,7 @@ public class ElementStatusHandler : MonoBehaviour
         {
             // No status effect present, inflict it
             currentStatusEffect = statusEffect;
+            ShowStatusEffectDisplay(element);
             statusEffectCo = StartCoroutine(targetRoutine());
             
             // Since there wasnt any other status present, no reaction happens
@@ -93,6 +100,8 @@ public class ElementStatusHandler : MonoBehaviour
         {
             // Refresh routine
             StopCoroutine(statusEffectCo);
+            DisableAllStatusEffectDisplay();
+            ShowStatusEffectDisplay(element);
             statusEffectCo = StartCoroutine(targetRoutine());
 
             if (doDebugLog) Debug.Log("Status Effect Refreshed: " + currentStatusEffect.ToString(), gameObject);
@@ -107,11 +116,48 @@ public class ElementStatusHandler : MonoBehaviour
         if (result == ReactionType.Undefined) return ReactionType.Undefined;
         // Else it caused a reaction, stop the current status and return the reaction
         if (doDebugLog) Debug.Log("REACTION CAUSED! Reaction type: " + result.ToString());
+        DisableAllStatusEffectDisplay();
         StopCoroutine(statusEffectCo);
         entityScript.healthBar.ResetHealthBarColor();
         statusEffectCo = null;
         currentStatusEffect = StatusEffect.Undefined;
         return result;
+    }
+
+    /// <summary>
+    /// Function to enable the display of the specific status effect
+    /// </summary>
+    private void ShowStatusEffectDisplay(Elements element)
+    {
+        switch (element)
+        {
+            case Elements.Fire:
+                fireStatusDisplay.SetActive(true);
+                break;
+            case Elements.Fungal:
+                fungalStatusDisplay.SetActive(true);
+                break; 
+            case Elements.Water:
+                waterStatusDisplay.SetActive(true);
+                break;
+            case Elements.Sparks:
+                sparkStatusDisplay.SetActive(true);
+                break;
+            default:
+                Debug.Log("ERROR! DISPLAY NOT FOUND");
+                break;
+        }
+    }
+    
+    /// <summary>
+    /// Disables all displays of element status
+    /// </summary>
+    private void DisableAllStatusEffectDisplay()
+    {
+        fireStatusDisplay.SetActive(false);
+        waterStatusDisplay.SetActive(false);
+        sparkStatusDisplay.SetActive(false);
+        fungalStatusDisplay.SetActive(false);
     }
 
     /// <summary>
@@ -145,6 +191,7 @@ public class ElementStatusHandler : MonoBehaviour
 
         timeLeft = 0f;
         currentStatusEffect = StatusEffect.Undefined;
+        DisableAllStatusEffectDisplay();
         statusEffectCo = null;
     }
 
@@ -177,6 +224,7 @@ public class ElementStatusHandler : MonoBehaviour
         timeLeft = 0f;
         currentStatusEffect = StatusEffect.Undefined;
         entityScript.healthBar.ResetHealthBarColor();
+        DisableAllStatusEffectDisplay();
         statusEffectCo = null;
     }
     
@@ -201,6 +249,7 @@ public class ElementStatusHandler : MonoBehaviour
         entityScript.speedMult = 1f;
         entityScript.healthBar.ResetHealthBarColor();
         currentStatusEffect = StatusEffect.Undefined;
+        DisableAllStatusEffectDisplay();
         statusEffectCo = null;
     }
 }
