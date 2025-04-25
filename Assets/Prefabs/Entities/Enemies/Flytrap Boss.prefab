@@ -2670,6 +2670,7 @@ MonoBehaviour:
   healthBar: {fileID: 8029029530634037989}
   destroyOnDeath: {fileID: 0}
   baseSpeed: 0
+  maxHealth: 10
   damageMults:
     neutralMultiplier: 1
     fungalMultiplier: 1

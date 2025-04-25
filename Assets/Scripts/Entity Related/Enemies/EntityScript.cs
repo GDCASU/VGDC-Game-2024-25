@@ -51,7 +51,7 @@ public class EntityScript : MonoBehaviour, IDamageable
     // Local Variables
     
 
-    private void Start()
+    protected void Start()
     {
         // Set stats and references
         currentHealth = maxHealth;

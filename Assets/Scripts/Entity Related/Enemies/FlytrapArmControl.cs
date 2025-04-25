@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using static UnityEditor.Rendering.FilterWindow;
@@ -19,6 +20,7 @@ public class FlytrapArmControl : MonoBehaviour
 
 	private float _attackCooldown = 0f;
 	private bool _attacking = false;
+	private bool _lunging = false;
 	private bool _skipAntic = false;
 
     private LineRenderer _lineRenderer;
@@ -52,10 +54,10 @@ public class FlytrapArmControl : MonoBehaviour
 		{
 			newAngle = startAngle + difference;
 		}
-		transform.rotation = Quaternion.Euler(0f, newAngle, 0f);
+		// Only set angle if not in the lunging animation
+		if(!_lunging) transform.rotation = Quaternion.Euler(0f, newAngle, 0f);
 
 		// Attack if player is in range
-		Debug.Log(gameObject.name + " " + Mathf.Abs(difference));
 		_attackCooldown -= Time.deltaTime;
 		if(!_attacking && _attackCooldown < 0f && Mathf.Abs(difference) < ATTACK_ANGLE && offset.magnitude < ATTACK_AGGRO_RANGE)
 		{
@@ -89,6 +91,7 @@ public class FlytrapArmControl : MonoBehaviour
 		_handAnim.speed = 1f;
 		_handAnim.Play("snap");
 		_hitbox.enabled = true;
+		_lunging = true;
 		float z = _hand.transform.localPosition.z;
 		timer = 0f;
 		while(timer < ATTACK_TIME)
@@ -111,6 +114,7 @@ public class FlytrapArmControl : MonoBehaviour
 			timer += Time.deltaTime;
 			yield return null;
 		}
+		_lunging = false;
 
 		// Begin attack cooldown
 		_attackCooldown = Random.Range(MIN_ATTACK_CD, MAX_ATTACK_CD);

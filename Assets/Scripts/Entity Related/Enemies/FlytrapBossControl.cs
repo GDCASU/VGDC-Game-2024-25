@@ -25,14 +25,15 @@ public class FlytrapBossControl : EntityScript
     private Collider _bodyHitbox;
     private Transform _ratSpawnPoints;
 
-	private void Start()
+	private new void Start()
 	{
 		_anim = transform.Find("Head").GetComponent<Animator>();
         _burrowHitbox = transform.Find("Hitbox").GetComponent<Collider>();
         _bodyHitbox = GetComponent<Collider>();
         _ratSpawnPoints = transform.Find("Rat Spawn Points");
-
 		_ratSpawnCooldown = Random.Range(RAT_SPAWN_MIN_CD, RAT_SPAWN_MAX_CD);
+
+        base.Start();
 	}
 
 	private void Update()
@@ -52,7 +53,7 @@ public class FlytrapBossControl : EntityScript
 			}
 
             // At below 50% hp, chase player by burrowing underneath them
-            if(currentHealth / maxHealth < 0.5f && _burrowCooldown < 0f)
+            if((float)currentHealth / maxHealth <= 0.5f && _burrowCooldown < 0f)
             {
                 StartCoroutine(Burrow());
             }
