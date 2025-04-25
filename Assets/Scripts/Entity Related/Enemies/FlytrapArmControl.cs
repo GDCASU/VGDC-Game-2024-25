@@ -6,18 +6,17 @@ using static UnityEditor.Rendering.FilterWindow;
 
 public class FlytrapArmControl : MonoBehaviour
 {
-    private const float MIN_ATTACK_CD = 1.5f;
-    private const float MAX_ATTACK_CD = 3f;
-    private const float TURN_SPEED = 15f;
-    private const float MAX_ANGLE_OFFSET = 45f;
-	private const float ATTACK_ANGLE = 15f;
-	private const float ATTACK_AGGRO_RANGE = 8f;
-	private const float ATTACK_DISTANCE = 4f;
+    private const float MIN_ATTACK_CD = 3f;
+    private const float MAX_ATTACK_CD = 5f;
+    private const float TURN_SPEED = 50f;
+    private const float ATTACKING_TURN_SPEED = 15f;
+	private const float ATTACK_ANGLE = 20f;
+	private const float ATTACK_AGGRO_RANGE = 10f;
+	private const float ATTACK_DISTANCE = 7f;
 	private const float ATTACK_ANTIC_TIME = 2f;
-	private const float ATTACK_TIME = 0.3f;
+	private const float ATTACK_TIME = 0.6f;
 	private const float ATTACK_RECOVER_TIME = 1f;
 
-	private float _initialAngle;
 	private float _attackCooldown = 0f;
 	private bool _attacking = false;
 	private bool _skipAntic = false;
@@ -29,7 +28,6 @@ public class FlytrapArmControl : MonoBehaviour
 
     private void Start()
     {
-        _initialAngle = transform.rotation.eulerAngles.y;
 		_lineRenderer = transform.Find("Vine").GetComponent<LineRenderer>();
 		_hand = transform.Find("Hand").gameObject;
 		_handAnim = _hand.GetComponent<Animator>();
@@ -46,23 +44,18 @@ public class FlytrapArmControl : MonoBehaviour
 		float targetAngle = Vector3.SignedAngle(offset, Vector3.back, Vector3.down);
 
 		// Normalize angle between -180f and 180f
-		float difference = Mathf.Rad2Deg * Mathf.Asin(Mathf.Sin(Mathf.Deg2Rad * (targetAngle - startAngle)));
-		float turnAmount = Mathf.Sign(difference) * TURN_SPEED * Time.deltaTime;
+		float difference = targetAngle - startAngle;
+		if(Mathf.Abs(difference) > 180f) difference -= Mathf.Sign(difference) * 360f;
+		float turnAmount = Mathf.Sign(difference) * (_attacking ? ATTACKING_TURN_SPEED : TURN_SPEED) * Time.deltaTime;
 		float newAngle = startAngle + turnAmount;
 		if(Mathf.Abs(turnAmount) > Mathf.Abs(difference))
 		{
 			newAngle = startAngle + difference;
 		}
-
-		// Clamp turn angle to within 45f of starting rotation
-		float differenceFromInitial = Mathf.Rad2Deg * Mathf.Asin(Mathf.Sin(Mathf.Deg2Rad * (newAngle - _initialAngle)));
-		if(Mathf.Abs(differenceFromInitial) < MAX_ANGLE_OFFSET)
-		{
-			transform.rotation = Quaternion.Euler(0f, newAngle, 0f);
-		}
+		transform.rotation = Quaternion.Euler(0f, newAngle, 0f);
 
 		// Attack if player is in range
-		Debug.Log(offset.magnitude);
+		Debug.Log(gameObject.name + " " + Mathf.Abs(difference));
 		_attackCooldown -= Time.deltaTime;
 		if(!_attacking && _attackCooldown < 0f && Mathf.Abs(difference) < ATTACK_ANGLE && offset.magnitude < ATTACK_AGGRO_RANGE)
 		{
