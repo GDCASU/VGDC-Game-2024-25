@@ -369,7 +369,7 @@ GameObject:
   - component: {fileID: 2361428746271117927}
   m_Layer: 10
   m_Name: Magnet Attraction Collider
-  m_TagString: Player
+  m_TagString: Collectible
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -402,7 +402,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attractionSpeed: 2
-  pickupRadius: 0.28
+  pickupRadius: 1.02
 --- !u!135 &2361428746271117927
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -422,7 +422,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1.2
+  m_Radius: 0.69
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2483792640609784494
 GameObject:

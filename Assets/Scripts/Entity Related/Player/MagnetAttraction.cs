@@ -36,6 +36,7 @@ public class MagnetAttraction : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log(other.name + " FOUND!");
         // Check if the collider is already cached
         if (cachedScripts.ContainsKey(other)) return; // It does, dont need to do anything
         
@@ -47,6 +48,7 @@ public class MagnetAttraction : MonoBehaviour
         if (scr == null) return; // dont add if null
         if (!scr.isMagnetAttractable) return; // Dont add if not magnet attractable
         cachedScripts.Add(other, scr);
+        Debug.Log(other.name + " FOUND!");
     }
     
     // Runs per collider found within the sphere

@@ -32,6 +32,7 @@ public class RatEnemyControl : MonoBehaviour
 	[SerializeField] private float _runSpeed = 3f;
 	// The rat will detect the player if the player is within x degrees of the direction it is looking
 	[SerializeField] private float _detectionAngle = 30f;
+    [SerializeField] private float _moveDistance = 5f;
     
     [Header("Data")]
     [SerializeField] private RatStats _stats;
@@ -144,7 +145,7 @@ public class RatEnemyControl : MonoBehaviour
 			yield return _anim.PlayBlocking("IdleToSide");
 			_anim.Play("RunSide");
 		}
-		_target.position = transform.position + 50f * _dirToVector[_lookDir];
+		_target.position = transform.position + _moveDistance * _dirToVector[_lookDir];
 
 		// Move in the cardinal direction
 		_aiPath.canMove = true;
