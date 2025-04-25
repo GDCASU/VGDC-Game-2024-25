@@ -9,8 +9,8 @@ public class FlytrapArmControl : MonoBehaviour
 {
     private const float MIN_ATTACK_CD = 3f;
     private const float MAX_ATTACK_CD = 5f;
-    private const float TURN_SPEED = 50f;
-    private const float ATTACKING_TURN_SPEED = 15f;
+    private const float TURN_SPEED = 30f;
+    private const float ATTACKING_TURN_SPEED = 10f;
 	private const float ATTACK_ANGLE = 20f;
 	private const float ATTACK_AGGRO_RANGE = 10f;
 	private const float ATTACK_DISTANCE = 7f;

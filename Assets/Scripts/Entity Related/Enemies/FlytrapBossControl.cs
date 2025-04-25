@@ -13,6 +13,7 @@ public class FlytrapBossControl : EntityScript
     private const float BURROW_MAX_CD = 10f;
     private const float BURROW_DOWN_SPEED = 7f;
     private const float BURROW_UP_SPEED = 13f;
+    private const float DEATH_DOWN_SPEED = 3f;
     private const float BURROW_TIME = 1f;
     private const float BURROW_ANTIC_TIME = 2f;
 
@@ -22,6 +23,7 @@ public class FlytrapBossControl : EntityScript
 
     private Animator _anim;
     private Collider _burrowHitbox;
+    private ParticleSystem _burrowParticles;
     private Collider _bodyHitbox;
     private Transform _ratSpawnPoints;
 
@@ -29,7 +31,8 @@ public class FlytrapBossControl : EntityScript
 	{
 		_anim = transform.Find("Head").GetComponent<Animator>();
         _burrowHitbox = transform.Find("Hitbox").GetComponent<Collider>();
-        _bodyHitbox = GetComponent<Collider>();
+        _burrowParticles = transform.parent.Find("Dust").GetComponent<ParticleSystem>();
+		_bodyHitbox = GetComponent<Collider>();
         _ratSpawnPoints = transform.Find("Rat Spawn Points");
 		_ratSpawnCooldown = Random.Range(RAT_SPAWN_MIN_CD, RAT_SPAWN_MAX_CD);
 
@@ -57,32 +60,58 @@ public class FlytrapBossControl : EntityScript
             {
                 StartCoroutine(Burrow());
             }
-        }
+
+			if(currentHealth <= 0)
+			{
+				StopAllCoroutines();
+				StartCoroutine(Death());
+			}
+		}
+	}
+
+	private IEnumerator Death()
+    {
+        _burrowing = true;
+		_anim.Play("close");
+		_burrowParticles.Play();
+
+		while(transform.position.y > -5f)
+		{
+			transform.position += DEATH_DOWN_SPEED * Time.deltaTime * Vector3.down;
+			yield return null;
+		}
+		_burrowParticles.Stop();
+
+		Destroy(this);
 	}
 
     private IEnumerator Burrow()
     {
         _burrowing = true;
 
-		// Close and move underground, could use particles
-		_anim.Play("close");
+        // Close and move underground
+        _anim.Play("close");
+        _burrowParticles.Play();
 
-        float surfaceY = transform.position.y;
+		float surfaceY = transform.position.y;
         float undergroundY = surfaceY - 7f;
         while(transform.position.y > undergroundY)
         {
-            transform.position += BURROW_DOWN_SPEED * Vector3.down * Time.deltaTime;
+            transform.position += BURROW_DOWN_SPEED * Time.deltaTime * Vector3.down;
             yield return null;
         }
+        _burrowParticles.Stop();
 
-        yield return new WaitForSeconds(BURROW_TIME);
+		yield return new WaitForSeconds(BURROW_TIME);
 
         float targetX = PlayerObject.Instance.transform.position.x;
         float targetZ = PlayerObject.Instance.transform.position.z;
         transform.position = new Vector3(targetX, undergroundY, targetZ);
+        _burrowParticles.gameObject.transform.position = new Vector3(targetX, 0f, targetZ);
 
-        // Show particles to telegraph?
-        yield return new WaitForSeconds(BURROW_ANTIC_TIME);
+		// Show particles to telegraph?
+		_burrowParticles.Play();
+		yield return new WaitForSeconds(BURROW_ANTIC_TIME);
 
         // Burrow up
         _anim.Play("close", -1, 0f);
@@ -90,11 +119,12 @@ public class FlytrapBossControl : EntityScript
         _bodyHitbox.enabled = false; // Disable so the player doesn't get pushed up
 		while(transform.position.y < surfaceY)
         {
-			transform.position += BURROW_UP_SPEED * Vector3.up * Time.deltaTime;
+			transform.position += BURROW_UP_SPEED * Time.deltaTime * Vector3.up;
 			yield return null;
 		}
         transform.position = new Vector3(targetX, surfaceY, targetZ);
-        yield return _anim.PlayBlocking("open");
+        _burrowParticles.Stop();
+		yield return _anim.PlayBlocking("open");
 
 		_anim.Play("idle");
         _burrowHitbox.enabled = false;
