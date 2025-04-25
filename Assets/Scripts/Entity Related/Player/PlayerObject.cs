@@ -137,12 +137,10 @@ public class PlayerObject : MonoBehaviour, IDamageable
         // Check for death
         if (currentHealth <= 0)
         {
-            HitpointsRenderer.Instance.PrintDamage(transform.position, previousHealth, Color.red);
             currentHealth = 0;
             OnDeath();
             return ReactionType.Undefined;
         }
-        HitpointsRenderer.Instance.PrintDamage(transform.position, damage, Color.red);
         // Return undefined
         return ReactionType.Undefined;
     }

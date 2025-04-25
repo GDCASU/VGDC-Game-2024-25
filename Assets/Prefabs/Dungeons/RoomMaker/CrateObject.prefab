@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 4362064101337938082}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 154, y: 0, z: -49.5}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -151,10 +151,30 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7424876006355349309, guid: 80dfcec38c094594da11effd76d3a8a1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7935603920560417448, guid: 80dfcec38c094594da11effd76d3a8a1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8077698986645493871, guid: 80dfcec38c094594da11effd76d3a8a1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9064241163447367110, guid: 80dfcec38c094594da11effd76d3a8a1,
         type: 3}
       propertyPath: m_Name
       value: HealthBar
+      objectReference: {fileID: 0}
+    - target: {fileID: 9064241163447367110, guid: 80dfcec38c094594da11effd76d3a8a1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -210,12 +230,12 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 1cc21912c4650cd479383b49dc3c7fb9,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.00000022351743
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1cc21912c4650cd479383b49dc3c7fb9,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.25
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1cc21912c4650cd479383b49dc3c7fb9,
         type: 3}
@@ -257,6 +277,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: crate
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1cc21912c4650cd479383b49dc3c7fb9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -281,6 +306,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 5080945999858009121}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1cc21912c4650cd479383b49dc3c7fb9,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3762678743582284569}
   m_SourcePrefab: {fileID: 100100000, guid: 1cc21912c4650cd479383b49dc3c7fb9, type: 3}
 --- !u!4 &6015507460128442942 stripped
 Transform:
@@ -313,8 +342,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.020072702, y: 0.019988049, z: 0.019893276}
-  m_Center: {x: 0.000017034356, y: -0.000033586744, z: 0.009871264}
+  m_Size: {x: 0.020072702, y: 0.019988049, z: 0.06144562}
+  m_Center: {x: 0.000017033815, y: -0.000033587217, z: 0.030647444}
 --- !u!114 &4961845800561178426
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -328,6 +357,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dropForceMult: 2
+  launchBias: {x: 0, y: 0, z: 0}
   dropList:
   - dropObj: {fileID: 5522982876249640156, guid: 700483ad52a458d49b5c7fa54b10d348,
       type: 3}
@@ -348,7 +378,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   elementStatusHandler: {fileID: 2266548915404590409}
+  aiPath: {fileID: 0}
+  deathDeleteTarget: {fileID: 4362064101337938082}
   healthBar: {fileID: 8985259357438849090}
+  destroyOnDeath: {fileID: 4362064101337938082}
   baseSpeed: 0
   maxHealth: 3
   damageMults:
@@ -358,6 +391,7 @@ MonoBehaviour:
     fireMultiplier: 1
   currentHealth: 0
   speedMult: 1
+  stunned: 0
   doDebugLog: 0
 --- !u!114 &2266548915404590409
 MonoBehaviour:
@@ -377,6 +411,9 @@ MonoBehaviour:
     burnDmgPerInterval: 1
     sporedDuration: 5
     slowSpeedBy: 0.3
+    chargedDuration: 10
+    stunInterval: 1
+    stunDuration: 0.5
   currentStatusEffect: 0
   timeLeft: 0
   doDebugLog: 0
@@ -396,3 +433,19 @@ MonoBehaviour:
   squishScale: {x: 90, y: 90, z: 130}
   squishDuration: 0.01
   returnDuration: 0.5
+--- !u!114 &3762678743582284569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6354773160605995140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 183748dd497aa473a98ff0cd8cb67fc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 1
+  uniqueID: 1765019782890555473
+  updateError: 1
+  checkTime: 0.2
