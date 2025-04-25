@@ -52,7 +52,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dropForceMult: 2
   launchBias: {x: 0, y: 0, z: 0}
-  dropList: []
+  dropList:
+  - dropObj: {fileID: 8692477955163535053, guid: e99bc9f738a426d43920cb054a125146,
+      type: 3}
+    minDropAmount: 1
+    maxDropAmount: 1
+    dropChance: 0.3333333
+  - dropObj: {fileID: 7777355130633929680, guid: fd8c0f1ebf0f5b944972b18fdc3afd5b,
+      type: 3}
+    minDropAmount: 1
+    maxDropAmount: 1
+    dropChance: 0.3333333
+  - dropObj: {fileID: 5522982876249640156, guid: 700483ad52a458d49b5c7fa54b10d348,
+      type: 3}
+    minDropAmount: 1
+    maxDropAmount: 1
+    dropChance: 0.3333333
   doDebugLog: 0
 --- !u!114 &5537305406085432694
 MonoBehaviour:
@@ -309,7 +324,6 @@ MonoBehaviour:
   healthBar: {fileID: 0}
   destroyOnDeath: {fileID: 3946162516191035350}
   baseSpeed: 5
-  maxHealth: 2
   damageMults:
     neutralMultiplier: 1
     fungalMultiplier: 1
