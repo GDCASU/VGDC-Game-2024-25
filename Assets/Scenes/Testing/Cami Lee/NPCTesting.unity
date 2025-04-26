@@ -4347,11 +4347,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4438702110152936887, guid: 132d06b811cc61b408444724b062569b,
-        type: 3}
-      propertyPath: drops.Array.data[0]
-      value: 
-      objectReference: {fileID: 1353596970}
     - target: {fileID: 7344079997084811221, guid: 132d06b811cc61b408444724b062569b,
         type: 3}
       propertyPath: m_Camera
@@ -4362,11 +4357,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ElderMushroomTimeline
       objectReference: {fileID: 0}
-    - target: {fileID: 8754601273244838434, guid: 132d06b811cc61b408444724b062569b,
+    - target: {fileID: 7891994250296823101, guid: 132d06b811cc61b408444724b062569b,
         type: 3}
-      propertyPath: timelinePlayer
-      value: 
-      objectReference: {fileID: 501713678}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

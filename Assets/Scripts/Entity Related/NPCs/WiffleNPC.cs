@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class WiffleNPC : NPC
 {
+    (Vector3 startLocation, Vector3 stopLocation)[] movementPoints;
     Vector3 nextLocation;
     List<Vector3> locations;
     int index;
@@ -120,7 +121,10 @@ public class WiffleNPC : NPC
         return successors;
     }
 
+    void SwitchLocation()
+    {
 
+    }
 }
 
 
