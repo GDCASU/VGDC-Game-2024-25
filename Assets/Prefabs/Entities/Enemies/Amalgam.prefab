@@ -52,8 +52,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49948451bbfcd804dbd20598470a7d7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dropForceMult: 2
-  launchBias: {x: 0, y: 1, z: 0}
+  dropForceMult: 1
+  launchBias: {x: 0, y: 0, z: 0}
   dropList:
   - dropObj: {fileID: 8692477955163535053, guid: e99bc9f738a426d43920cb054a125146,
       type: 3}
