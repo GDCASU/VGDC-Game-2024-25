@@ -241,7 +241,7 @@ GameObject:
   - component: {fileID: 1388372623087843072}
   - component: {fileID: 488691887416741693}
   - component: {fileID: 9190686658133613472}
-  - component: {fileID: 8826877187325909418}
+  - component: {fileID: 7452845352467119924}
   m_Layer: 10
   m_Name: Fire Orb Pickup
   m_TagString: Collectible
@@ -325,26 +325,26 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &8826877187325909418
-BoxCollider:
+--- !u!135 &7452845352467119924
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5522982876249640156}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 843e6273ba4a1cc40a9cb27229a9a9d5, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Radius: 2
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6317077217813410252
 GameObject:

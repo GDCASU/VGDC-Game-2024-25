@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 796474283295002854}
   - component: {fileID: 5628011158829030746}
   - component: {fileID: 9201680621111844789}
-  - component: {fileID: 3369879208754259270}
   - component: {fileID: 6728845119969205970}
+  - component: {fileID: 6516562557178629704}
   m_Layer: 10
   m_Name: Water Orb Pickup
   m_TagString: Collectible
@@ -80,27 +80,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &3369879208754259270
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 236636415742791442}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 1024
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &6728845119969205970
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117,6 +96,27 @@ MonoBehaviour:
   lockX: 0
   lockY: 0
   lockZ: 0
+--- !u!135 &6516562557178629704
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 236636415742791442}
+  m_Material: {fileID: 13400000, guid: 843e6273ba4a1cc40a9cb27229a9a9d5, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5469504599112829521
 GameObject:
   m_ObjectHideFlags: 0
