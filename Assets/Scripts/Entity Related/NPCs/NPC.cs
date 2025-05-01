@@ -22,7 +22,7 @@ public abstract class NPC : MonoBehaviour
 {
     [Header("Drops")]
     public List<GameObject> drops;
-    [SerializeField] private Transform dropPoint;
+    [SerializeField] public Transform dropPoint;
     
     [Header("Debugging")]
     [SerializeField] private bool doDebugLog;
