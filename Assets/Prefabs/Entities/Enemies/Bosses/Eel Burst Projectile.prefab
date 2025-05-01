@@ -45,7 +45,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 100872
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 17728
@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
-  lifetime: 1e+15
+  lifetime: 10
   damage: 1
   element: 1
   doDebugLog: 1

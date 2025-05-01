@@ -1558,6 +1558,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Eel Burst Projectile
       objectReference: {fileID: 0}
+    - target: {fileID: 4262720355003426996, guid: d6c072ce6c30cb24e9a4a55053fefed4,
+        type: 3}
+      propertyPath: lifetime
+      value: 1000000
+      objectReference: {fileID: 0}
     - target: {fileID: 5742771812754122774, guid: d6c072ce6c30cb24e9a4a55053fefed4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1991,6 +1996,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 84841835}
     m_Modifications:
+    - target: {fileID: 2344377123844442254, guid: 3929c72507c5b98469226ce0caeccc72,
+        type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2391930757929744352, guid: 3929c72507c5b98469226ce0caeccc72,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2061,10 +2071,20 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -1.701252
       objectReference: {fileID: 0}
-    - target: {fileID: 6697751668706597001, guid: 3929c72507c5b98469226ce0caeccc72,
+    - target: {fileID: 5704535376199298561, guid: 3929c72507c5b98469226ce0caeccc72,
         type: 3}
-      propertyPath: _durationOfAcceleration
-      value: 0
+      propertyPath: m_Height
+      value: 0.48828
+      objectReference: {fileID: 0}
+    - target: {fileID: 5704535376199298561, guid: 3929c72507c5b98469226ce0caeccc72,
+        type: 3}
+      propertyPath: m_Radius
+      value: 0.19
+      objectReference: {fileID: 0}
+    - target: {fileID: 5704535376199298561, guid: 3929c72507c5b98469226ce0caeccc72,
+        type: 3}
+      propertyPath: m_Center.y
+      value: -0.25585997
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

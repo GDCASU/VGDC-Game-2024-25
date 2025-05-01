@@ -38,6 +38,8 @@ public class EelBurstProjectile : MonoBehaviour
         // Dont collide if on the same tag
         if (other.CompareTag(ownerTag)) return; // Same tag, dont damage owner
 
+        if (other.TryGetComponent(out InteractionManager manager)) return;
+
         // Try to damage the other object
         IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
         if (damageable == null)
