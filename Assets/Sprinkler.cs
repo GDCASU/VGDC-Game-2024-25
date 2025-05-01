@@ -7,14 +7,19 @@ public class Sprinkler : MonoBehaviour
     [Header("References")]
     [SerializeField] private GameObject waterParticleSystem;
     [SerializeField] private GameObject[] sprinklersVisuals;
+    [SerializeField] private GameObject[] barriers;
 
     [Header("Timers and Cooldowns")]
     [SerializeField] private float sprinklingTime = 5.0f;
     [SerializeField] private float sprinklerCooldown = 3.0f;
     [SerializeField] private float sprinklerRotationSpeed = -2.0f;
+    [SerializeField] private float barriersWetDuration = 7f;
 
     private bool activated = false;
     private bool onCooldown = false;
+    private bool barriersWet = false;
+    private int barrierIndex = 0;
+    private Coroutine wetBarriersCoro = null;
 
     private void Update()
     {
@@ -38,7 +43,17 @@ public class Sprinkler : MonoBehaviour
         activated = true;
 
         // apply water effect to barriers
+        barriersWet = true;
+        if (wetBarriersCoro != null)
+            StopCoroutine(wetBarriersCoro);
+
+        wetBarriersCoro = StartCoroutine(DelayedFunction(barriersWetDuration, () =>
+        {
+            wetBarriersCoro = null;
+            barriersWet = false;
+        }));
         
+
         foreach(GameObject sprinker in sprinklersVisuals)
         {
             GameObject particleSystem = Instantiate(waterParticleSystem, sprinker.transform.position, sprinker.transform.rotation);
@@ -52,6 +67,19 @@ public class Sprinkler : MonoBehaviour
 
                 StartCoroutine(DelayedFunction(sprinklerCooldown, () => onCooldown = false));
             }));
+        }
+    }
+
+    public void OnBarriersHit()
+    {
+        if (barriersWet)
+        {
+            Destroy(barriers[barrierIndex]);
+            barrierIndex++;
+
+            StopCoroutine(wetBarriersCoro);
+            wetBarriersCoro = null;
+            barriersWet = false;
         }
     }
 

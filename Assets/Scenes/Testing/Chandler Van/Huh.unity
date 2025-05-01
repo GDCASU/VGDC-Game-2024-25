@@ -412,25 +412,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 84841835}
     m_Modifications:
-    - target: {fileID: 379257855705388019, guid: 5f02833ee97091f43925914bb8858d51,
+    - target: {fileID: 354294310835874211, guid: 5f02833ee97091f43925914bb8858d51,
         type: 3}
-      propertyPath: launchBias.y
-      value: 1
+      propertyPath: m_AnchorMax.x
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 379257855705388019, guid: 5f02833ee97091f43925914bb8858d51,
+    - target: {fileID: 354294310835874211, guid: 5f02833ee97091f43925914bb8858d51,
         type: 3}
-      propertyPath: dropForceMult
-      value: 3
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3946162516191035350, guid: 5f02833ee97091f43925914bb8858d51,
         type: 3}
       propertyPath: m_Name
       value: Amalgam
-      objectReference: {fileID: 0}
-    - target: {fileID: 7578590409108243178, guid: 5f02833ee97091f43925914bb8858d51,
-        type: 3}
-      propertyPath: maxHealth
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8710657894322121121, guid: 5f02833ee97091f43925914bb8858d51,
         type: 3}
@@ -1669,9 +1664,11 @@ MonoBehaviour:
   sprinklersVisuals:
   - {fileID: 2076971178}
   - {fileID: 172806263}
+  barriers: []
   sprinklingTime: 5
   sprinklerCooldown: 3
   sprinklerRotationSpeed: -720
+  barriersWetDuration: 7
 --- !u!4 &1921311529
 Transform:
   m_ObjectHideFlags: 0
