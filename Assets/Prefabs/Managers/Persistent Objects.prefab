@@ -305,29 +305,29 @@ MonoBehaviour:
     projectilePrefab: {fileID: 3053767172377724150, guid: 6eb9c05bffffbc94f9a309647537321e,
       type: 3}
     isInfinite: 0
-    ammoAmount: 3
-    ammoMaxAmount: 3
+    ammoAmount: 0
+    ammoMaxAmount: 9
   fungalElement:
     element: 4
     projectilePrefab: {fileID: 3053767172377724150, guid: 113cdedee7ea18a45980cc12a26193ea,
       type: 3}
     isInfinite: 0
-    ammoAmount: 3
-    ammoMaxAmount: 3
+    ammoAmount: 0
+    ammoMaxAmount: 9
   sparkElement:
     element: 5
     projectilePrefab: {fileID: 3053767172377724150, guid: 6f2a4c5b0a56de54d980e2be044ed07c,
       type: 3}
     isInfinite: 0
-    ammoAmount: 3
-    ammoMaxAmount: 3
+    ammoAmount: 0
+    ammoMaxAmount: 9
   waterElement:
     element: 3
     projectilePrefab: {fileID: 3053767172377724150, guid: 26681894572615b4fb8d14e7e25408f2,
       type: 3}
     isInfinite: 0
-    ammoAmount: 5
-    ammoMaxAmount: 5
+    ammoAmount: 0
+    ammoMaxAmount: 9
   doDebugLog: 0
 --- !u!1 &6582798097405661628
 GameObject:

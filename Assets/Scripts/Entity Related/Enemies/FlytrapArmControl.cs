@@ -28,6 +28,8 @@ public class FlytrapArmControl : MonoBehaviour
     private Animator _handAnim;
 	private Collider _hitbox;
 
+    private bool doDebugLog = false;
+
     private void Start()
     {
 		_lineRenderer = transform.Find("Vine").GetComponent<LineRenderer>();
@@ -58,6 +60,7 @@ public class FlytrapArmControl : MonoBehaviour
 		if(!_lunging) transform.rotation = Quaternion.Euler(0f, newAngle, 0f);
 
 		// Attack if player is in range
+		if (doDebugLog) Debug.Log(offset.magnitude);
 		_attackCooldown -= Time.deltaTime;
 		if(!_attacking && _attackCooldown < 0f && Mathf.Abs(difference) < ATTACK_ANGLE && offset.magnitude < ATTACK_AGGRO_RANGE)
 		{

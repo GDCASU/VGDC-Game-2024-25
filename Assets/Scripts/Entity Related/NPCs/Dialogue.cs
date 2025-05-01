@@ -7,6 +7,7 @@ using TMPro;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Playables;
 using UnityEngine.UI;
 
 /* -----------------------------------------------------------
@@ -22,7 +23,6 @@ using UnityEngine.UI;
  * Handle the Dialogue System for NPCs
  */// --------------------------------------------------------
 
-//[RequireComponent(typeof(Interactions))]
 public class Dialogue : Interactable
 {
     public enum DialogueOptions
@@ -38,13 +38,16 @@ public class Dialogue : Interactable
     public float charactersPerSecond = 30;
     // If forgetting to toggle this to false was the issue: Flame Chandler 
 
-    [Header("Optional Additions")]
-    public UnityEvent dialogueEvent; // only needed if the dialogue type is TriggerEvent
+    [Header("Optional Additions")] 
+    PlayableDirector timeline;
+    bool timelinePlaying;
+
 
     [Header("External Objects")]
     [SerializeField] private TextAsset script;
     TMP_Text dialogueText;
     public GameObject dialogueBackground;
+    [SerializeField] TimelinePlayer timelinePlayer;
 
     [Header("Preset Options")]
     public string[] characterNames;
@@ -66,9 +69,9 @@ public class Dialogue : Interactable
         {
             switch ((int)dialogueOptions)
             {
-                case 0: OnFocusEnter += PauseGameTime; break;
-                case 1: OnFocusEnter += TextBox; break;
-                case 2: OnFocusEnter += TriggerEvent; break;
+                case 0: OnInteractionExecuted += PauseGameTime; break;
+                case 1: OnInteractionExecuted += TextBox; break;
+                case 2: OnFocusEnter += StartTimeline; break;
             }
         }
 
@@ -78,12 +81,16 @@ public class Dialogue : Interactable
         dialogueText.text = "";
 
         // Initializes current dialogue sequence
-        SetDialogScript(script);
+        SetDialogScript(script);        
+        // Instantitates timeline object
+        timeline = GetComponent<PlayableDirector>();
+
     }
 
     private void OnDestroy()
     {
         OnFocusEnter = null;
+        OnInteractionExecuted = null;
     }
 
     /// <summary> SetDialogScript changes and Loads a new dialog script </summary>
@@ -107,7 +114,7 @@ public class Dialogue : Interactable
                     {
                         case 0: PauseGameTime(); break;
                         case 1: TextBox(); break;
-                        case 2: TriggerEvent(); break;
+                        case 2: Debug.LogError("TriggerEvent cannot be play on awake"); break;
                     }
             }
         }
@@ -141,7 +148,6 @@ public class Dialogue : Interactable
     {
         Debug.Log("Called TriggerEvent");
         StartDialogue();
-        dialogueEvent?.Invoke();
     }
 
     //-- Dialogue Controllers --//
@@ -159,6 +165,7 @@ public class Dialogue : Interactable
         if (dialogue[currentLineNo+1] == null && currentLine == dialogueText.text) { ExitDialogue(); }
         else if (currentLine == dialogueText.text) // If the typewriter effect has finished
         {
+            if (dialogue[currentLineNo + 1][0] == "BREAK") { StartTimeline(); return; } // if an action
             currentLineNo++;
             currentLine = dialogue[currentLineNo][0] + ": " + dialogue[currentLineNo][1];
             StartCoroutine(TypewriterText(currentLine));
@@ -235,6 +242,14 @@ public class Dialogue : Interactable
              
             else if (IsCharacterName(line)) { currentSpeaker = line;} // If is a name
 
+            else if (line == "BREAK") // If needs to stop for timeline
+            {
+                act[dialogueIndex] = new string[2];
+                act[dialogueIndex][0] = line;
+                act[dialogueIndex][1] = "";
+                dialogueIndex++;
+            }
+
             else
             {
                 string finalString = line;
@@ -258,4 +273,26 @@ public class Dialogue : Interactable
         }
         return false;
     }
+
+
+    public void TimelineIsPaused()
+    {
+        timelinePlaying = false;
+        timelinePlayer.EndTimelinePlayer();
+        timeline.Pause();
+        TriggerEvent();
+        InputManager.OnChangeDialogue += ChangeDialogue;
+    }
+
+    private void StartTimeline()
+    {
+        timelinePlaying = true;
+        timelinePlayer.StartTimelinePlayer();
+        timeline.Resume();
+        InputManager.OnChangeDialogue -= ChangeDialogue;
+
+        currentLineNo += 2;
+        currentLine = dialogue[currentLineNo][0] + ": " + dialogue[currentLineNo][1];
+    }
+
 }

@@ -32,6 +32,11 @@ public class EntityScript : MonoBehaviour, IDamageable
     public FloatingHealthBar healthBar;
     public GameObject destroyOnDeath;
     
+    [Header("Data")]
+    [SerializeField] private ScriptableEntity entityData;
+    // Bool that will make it so it uses values set in the inspector
+    [SerializeField] private bool _dontLoadStats; 
+    
     [Header("Entity Stats")]
     [SerializeField] private float baseSpeed;
     [SerializeField] protected int maxHealth = 10;
@@ -56,6 +61,12 @@ public class EntityScript : MonoBehaviour, IDamageable
         // Set stats and references
         currentHealth = maxHealth;
         elementStatusHandler.entityScript = this;
+
+        // Load data
+        if (!_dontLoadStats)
+        {
+            
+        }
     }
 
     private void LateUpdate()

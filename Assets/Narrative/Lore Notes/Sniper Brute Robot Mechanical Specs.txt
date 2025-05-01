@@ -1,0 +1,8 @@
+// Printed .txt Instruction File for General Intelligence
+
+CLASS: SNIPER BRUTE
+APPEARANCE: Bulky [CORRUPTED TEXT] with a sturdy, protruding neck used for spotting intruders from far-away distances. 
+DIRECTIVE: To function as security for the Overseer grounds. You, the Sniper Brutes are among many varied types of [CORRUPTED TEXT]. Unlike the others, you are calculating and [CORRUPTED TEXT]. Your equipment is to be used with the utmost [CORRUPTED TEXT].
+PRIORITY LIST: 1. [CORRUPTED TEXT]. 2. Protect [CORRUPTED TEXT] 3. Regulate systems and perform regular maintenance. Stay alive.
+
+// Last Accessed Time: [CORRUPTED TEXT]
