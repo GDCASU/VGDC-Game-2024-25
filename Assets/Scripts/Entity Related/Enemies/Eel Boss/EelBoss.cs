@@ -38,12 +38,13 @@ public class EelBoss : MonoBehaviour, IDamageable
 
     private PlayerController player;
     private Animator animator;
+    private Sprinkler sprinkler;
 
     private GameObject lazerAimGameObject;
     private GameObject lazerBeamGameObject;
 
-    private float currentSpawnTime;
-    private float currentAttackTime;
+    [InspectorReadOnly][SerializeField] private float currentSpawnTime;
+    [InspectorReadOnly][SerializeField] private float currentAttackTime;
     private int lastAttack; // burst = 0, lazer = 1
     private int attackStreak = 0;
 
@@ -54,6 +55,7 @@ public class EelBoss : MonoBehaviour, IDamageable
     {
         player = FindFirstObjectByType<PlayerController>();
         animator = GetComponent<Animator>();
+        sprinkler = FindFirstObjectByType<Sprinkler>();
     }
 
     private void Update()
@@ -65,7 +67,7 @@ public class EelBoss : MonoBehaviour, IDamageable
             currentAttackTime -= Time.deltaTime;
 
         // handle spawn cooldown
-        if (currentSpawnTime <= 0 && settings.gamPrefab != null && (gamCount < settings.maxGams || settings.maxGams < -1))
+        if (currentSpawnTime <= 0 && settings.gamPrefab != null && (gamCount < settings.maxGams || settings.maxGams <= -1))
         {
             // reset timer
             if (barriersBroken > 0)
@@ -80,8 +82,10 @@ public class EelBoss : MonoBehaviour, IDamageable
             Vector3 spawnDirection = transform.position
                                      + (Quaternion.AngleAxis(Random.Range(0f,360f), Vector3.up) * transform.forward).normalized * settings.gamSpawnRadius;
 
+            spawnDirection.y = transform.position.y;
+
             // spawn gam
-            Instantiate(settings.gamPrefab, spawnDirection, Quaternion.identity);
+            GameObject gam = Instantiate(settings.gamPrefab, spawnDirection, Quaternion.identity);
         }
 
         // handle attack cooldown
@@ -155,7 +159,9 @@ public class EelBoss : MonoBehaviour, IDamageable
 
     public ReactionType TakeDamage(int damage, Elements element)
     {
-        // Ignore damage if barriers are still active
+        // Ignore damage if not in phase 2
+        if (phase == 1)
+            return ReactionType.Undefined;
 
         // Compute damage through multiplier
         int newDamage = settings.damageMultiplier.ComputeDamage(damage, element);

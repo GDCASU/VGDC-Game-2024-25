@@ -1,6 +1,7 @@
 using Pathfinding;
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 /* -----------------------------------------------------------
  * Author:
@@ -40,6 +41,9 @@ public class EntityScript : MonoBehaviour, IDamageable
     [Header("Entity Stats")]
     [SerializeField] private float baseSpeed;
     [SerializeField] protected int maxHealth = 10;
+
+    [Header("Events")]
+    public UnityEvent<ReactionType> onDamageTaken = new UnityEvent<ReactionType>();
 
     [Header("Multipliers")] 
     [SerializeField] private DamageMultiplier damageMults;
@@ -113,8 +117,11 @@ public class EntityScript : MonoBehaviour, IDamageable
             // FIXME: Return undefined?
             return ReactionType.Undefined;
         }
+
+        ReactionType finalReaction = elementStatusHandler.HandleElementStatus(element);
+        onDamageTaken?.Invoke(finalReaction);
         // Send the element to the status handler and return a reaction if caused
-        return elementStatusHandler.HandleElementStatus(element);
+        return finalReaction;
     }
     
     /// <summary>
