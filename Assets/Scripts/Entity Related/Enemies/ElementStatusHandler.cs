@@ -88,7 +88,7 @@ public class ElementStatusHandler : MonoBehaviour
         {
             // No status effect present, inflict it
             currentStatusEffect = statusEffect;
-            ShowStatusEffectDisplay(element);
+            //ShowStatusEffectDisplay(element);
             statusEffectCo = StartCoroutine(targetRoutine());
             
             // Since there wasnt any other status present, no reaction happens
@@ -99,9 +99,10 @@ public class ElementStatusHandler : MonoBehaviour
         if (currentStatusEffect == statusEffect)
         {
             // Refresh routine
-            StopCoroutine(statusEffectCo);
-            DisableAllStatusEffectDisplay();
-            ShowStatusEffectDisplay(element);
+            if(statusEffectCo != null)
+                StopCoroutine(statusEffectCo);
+            //DisableAllStatusEffectDisplay();
+            //ShowStatusEffectDisplay(element);
             statusEffectCo = StartCoroutine(targetRoutine());
 
             if (doDebugLog) Debug.Log("Status Effect Refreshed: " + currentStatusEffect.ToString(), gameObject);
@@ -116,9 +117,11 @@ public class ElementStatusHandler : MonoBehaviour
         if (result == ReactionType.Undefined) return ReactionType.Undefined;
         // Else it caused a reaction, stop the current status and return the reaction
         if (doDebugLog) Debug.Log("REACTION CAUSED! Reaction type: " + result.ToString());
-        DisableAllStatusEffectDisplay();
-        StopCoroutine(statusEffectCo);
-        entityScript.healthBar.ResetHealthBarColor();
+        //DisableAllStatusEffectDisplay();
+        if(statusEffectCo != null)
+            StopCoroutine(statusEffectCo);
+        
+        //entityScript.healthBar.ResetHealthBarColor();
         statusEffectCo = null;
         currentStatusEffect = StatusEffect.Undefined;
         return result;
@@ -191,7 +194,7 @@ public class ElementStatusHandler : MonoBehaviour
 
         timeLeft = 0f;
         currentStatusEffect = StatusEffect.Undefined;
-        DisableAllStatusEffectDisplay();
+        //DisableAllStatusEffectDisplay();
         statusEffectCo = null;
     }
 
@@ -224,7 +227,7 @@ public class ElementStatusHandler : MonoBehaviour
         timeLeft = 0f;
         currentStatusEffect = StatusEffect.Undefined;
         entityScript.healthBar.ResetHealthBarColor();
-        DisableAllStatusEffectDisplay();
+        //DisableAllStatusEffectDisplay();
         statusEffectCo = null;
     }
     
@@ -249,7 +252,7 @@ public class ElementStatusHandler : MonoBehaviour
         entityScript.speedMult = 1f;
         entityScript.healthBar.ResetHealthBarColor();
         currentStatusEffect = StatusEffect.Undefined;
-        DisableAllStatusEffectDisplay();
+        //DisableAllStatusEffectDisplay();
         statusEffectCo = null;
     }
 }

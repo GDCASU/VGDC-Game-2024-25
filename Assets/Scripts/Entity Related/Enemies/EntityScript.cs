@@ -43,7 +43,7 @@ public class EntityScript : MonoBehaviour, IDamageable
     [SerializeField] protected int maxHealth = 10;
 
     [Header("Events")]
-    public UnityEvent<ReactionType> onDamageTaken = new UnityEvent<ReactionType>();
+    public UnityEvent<ReactionType> onDamageTaken = new();
 
     [Header("Multipliers")] 
     [SerializeField] private DamageMultiplier damageMults;
@@ -109,6 +109,10 @@ public class EntityScript : MonoBehaviour, IDamageable
         if(healthBar != null)
             healthBar.UpdateHealthBar(currentHealth, maxHealth);
 
+        // Send the element to the status handler and return a reaction if caused
+        ReactionType finalReaction = elementStatusHandler.HandleElementStatus(element);
+        onDamageTaken?.Invoke(finalReaction);
+
         if (currentHealth <= 0)
         {
             // Enemy died
@@ -118,9 +122,6 @@ public class EntityScript : MonoBehaviour, IDamageable
             return ReactionType.Undefined;
         }
 
-        ReactionType finalReaction = elementStatusHandler.HandleElementStatus(element);
-        onDamageTaken?.Invoke(finalReaction);
-        // Send the element to the status handler and return a reaction if caused
         return finalReaction;
     }
     

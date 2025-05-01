@@ -301,7 +301,7 @@ MonoBehaviour:
   entityData: {fileID: 0}
   _dontLoadStats: 0
   baseSpeed: 5
-  maxHealth: 1
+  maxHealth: 2
   onDamageTaken:
     m_PersistentCalls:
       m_Calls:
