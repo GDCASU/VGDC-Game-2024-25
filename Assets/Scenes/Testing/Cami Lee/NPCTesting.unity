@@ -4221,6 +4221,18 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 8c002eca83a03114eb15b90f9144686c, type: 3}
+--- !u!114 &5830726890515314516 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7963967425213656084, guid: 8c002eca83a03114eb15b90f9144686c,
+    type: 3}
+  m_PrefabInstance: {fileID: 5830726890515314515}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffcd616a5fb7fee48ac2374f3425fb0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6149264427306872804
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4289,6 +4301,79 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a4ff205148987774aaa5fca89368e114, type: 3}
+--- !u!1001 &6337013330727640266
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 675194842634982933, guid: fed0a177030c3484692139924f5bb0d1,
+        type: 3}
+      propertyPath: m_Name
+      value: WiffleBox
+      objectReference: {fileID: 0}
+    - target: {fileID: 1586892474659508618, guid: fed0a177030c3484692139924f5bb0d1,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 30.19
+      objectReference: {fileID: 0}
+    - target: {fileID: 1586892474659508618, guid: fed0a177030c3484692139924f5bb0d1,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 1586892474659508618, guid: fed0a177030c3484692139924f5bb0d1,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 4.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 1586892474659508618, guid: fed0a177030c3484692139924f5bb0d1,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1586892474659508618, guid: fed0a177030c3484692139924f5bb0d1,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1586892474659508618, guid: fed0a177030c3484692139924f5bb0d1,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1586892474659508618, guid: fed0a177030c3484692139924f5bb0d1,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1586892474659508618, guid: fed0a177030c3484692139924f5bb0d1,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1586892474659508618, guid: fed0a177030c3484692139924f5bb0d1,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1586892474659508618, guid: fed0a177030c3484692139924f5bb0d1,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4650550962809203957, guid: fed0a177030c3484692139924f5bb0d1,
+        type: 3}
+      propertyPath: wiffle
+      value: 
+      objectReference: {fileID: 5830726890515314516}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fed0a177030c3484692139924f5bb0d1, type: 3}
 --- !u!1001 &6501794760021649216
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4347,11 +4432,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4438702110152936887, guid: 132d06b811cc61b408444724b062569b,
-        type: 3}
-      propertyPath: drops.Array.data[0]
-      value: 
-      objectReference: {fileID: 1353596970}
     - target: {fileID: 7344079997084811221, guid: 132d06b811cc61b408444724b062569b,
         type: 3}
       propertyPath: m_Camera
@@ -4362,19 +4442,15 @@ PrefabInstance:
       propertyPath: m_Name
       value: ElderMushroomTimeline
       objectReference: {fileID: 0}
-    - target: {fileID: 8754601273244838434, guid: 132d06b811cc61b408444724b062569b,
+    - target: {fileID: 7891994250296823101, guid: 132d06b811cc61b408444724b062569b,
         type: 3}
-      propertyPath: timelinePlayer
-      value: 
-      objectReference: {fileID: 501713678}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5105439250976223244, guid: 132d06b811cc61b408444724b062569b,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 132d06b811cc61b408444724b062569b, type: 3}
 --- !u!1001 &6976982523340615262
 PrefabInstance:
@@ -4529,3 +4605,4 @@ SceneRoots:
   - {fileID: 1081202401}
   - {fileID: 1754870289}
   - {fileID: 325896736}
+  - {fileID: 6337013330727640266}

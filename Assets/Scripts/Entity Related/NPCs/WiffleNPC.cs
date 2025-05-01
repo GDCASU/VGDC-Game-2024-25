@@ -3,20 +3,34 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+/* -----------------------------------------------------------
+* Author:
+* Cami
+* 
+* Modified By:
+*/// --------------------------------------------------------
+
+/* -----------------------------------------------------------
+ * Purpose:
+ * Creates a way for the Wiffle NPC to go from place to place
+*/// --------------------------------------------------------
 
 public class WiffleNPC : NPC
 {
-    Vector3 nextLocation;
+    List<int> finishedPaths = new List<int>();
+
+    Vector3 nextLocation; // local location where wiffle should go next
     List<Vector3> locations;
+    Vector3 newLocation; // final destination where wiffle should head towards
+    GameObject newDrop;
     int index;
+
     bool isMoving;
-    public bool resetLocation;
-    public Vector3 newLocation;
+    bool resetLocation; // creates new path between two points
 
     private void Update()
     {
-        if (resetLocation) { FindLocationPath(newLocation); }
-        else if (isMoving) { MoveToNextLocation(); }
+        if (isMoving) { MoveToNextLocation(); }
     }
 
     void MoveToNextLocation()
@@ -26,7 +40,7 @@ public class WiffleNPC : NPC
             index++;
 
             if (locations != null && index < locations.Count) { nextLocation = locations[index]; }
-            else { isMoving = false; return; }
+            else { isMoving = false; DropItem(); return; }
         }
 
         Vector3 direction = (nextLocation - this.transform.position).normalized;
@@ -34,13 +48,13 @@ public class WiffleNPC : NPC
         this.transform.position += direction * offset;
     }
 
+    /// <summary> Creates new path based on start and stop locations </summary>
     void FindLocationPath(Vector3 location)
     {
         float distance = 1;
         location.y = this.transform.position.y;
 
         locations = FindShortestPath(this.transform.position, location, distance);
-        resetLocation = false;
         isMoving = true;
     }
 
@@ -120,7 +134,25 @@ public class WiffleNPC : NPC
         return successors;
     }
 
+    /// <summary> Changes the path start & stop locations </summary>
+    public void SwitchLocation(int index, Vector3 startLocation, Vector3 stopLocation, Transform newDropPoint)
+    {
+        if (!finishedPaths.Contains(index))
+        {
+            transform.position = startLocation;
+            newLocation = stopLocation;
+            FindLocationPath(newLocation);
+            newDrop = drops[index];
+            dropPoint = newDropPoint;
+            finishedPaths.Add(index);
+        }
+    }
 
+    /// <summary> Determine whether or not to drop an item at end of path </summary>
+    private void DropItem()
+    {
+        if (newDrop != null) { DropItems(); }
+    }
 }
 
 
