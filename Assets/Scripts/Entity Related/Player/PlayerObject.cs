@@ -128,13 +128,12 @@ public class PlayerObject : MonoBehaviour, IDamageable
     /// <summary>
     /// Function called when the player is hit by a projectile.
     /// </summary>
-    public ReactionType TakeDamage(int damage, Elements element, Vector3 direction)
+    public ReactionType TakeDamage(int damage, Elements element)
     {
         // TODO: The player doesnt trigger reactions right?
         // Damage health
         int previousHealth = currentHealth;
         currentHealth -= damage;
-        playerController.Knockback(direction, damage);
         // Check for death
         if (currentHealth <= 0)
         {
