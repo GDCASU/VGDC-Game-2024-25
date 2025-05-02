@@ -304,7 +304,39 @@ public class EelBoss : MonoBehaviour, IDamageable
 
     ReactionType IDamageable.TakeDamage(int damage, Elements element)
     {
-        throw new System.NotImplementedException();
+        // Ignore damage if not in phase 2
+        if (phase == 1)
+            return ReactionType.Undefined;
+
+        // Compute damage through multiplier
+        int newDamage = settings.damageMultiplier.ComputeDamage(damage, element);
+        // Ignore if zero/immune
+        if (newDamage <= 0) return ReactionType.Undefined;
+        // Damage health
+        int previousHealth = currentHealth;
+        currentHealth -= newDamage;
+        /*if (currentHealth <= 0)
+        {
+            // Render damage
+            HitpointsRenderer.Instance.PrintDamage(transform.position, currentHealth, Color.red);
+        }
+        else
+        {
+            HitpointsRenderer.Instance.PrintDamage(transform.position, newDamage, Color.red);
+        }*/
+        // Update health bar
+        //healthBar.UpdateHealthBar(currentHealth, maxHealth);
+
+        if (currentHealth <= 0)
+        {
+            // Enemy died
+            currentHealth = 0;
+            OnDeath();
+            // FIXME: Return undefined?
+            return ReactionType.Undefined;
+        }
+        // Send the element to the status handler and return a reaction if caused
+        return elementStatusHandler.HandleElementStatus(element);
     }
 }
 

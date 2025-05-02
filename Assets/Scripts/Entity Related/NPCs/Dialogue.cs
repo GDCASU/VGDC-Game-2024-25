@@ -57,6 +57,7 @@ public class Dialogue : Interactable
     int currentLineNo;
     string[][] dialogue;
     bool finishedTyping;
+    bool isFirst;
 
     [HideInInspector] public UnityEvent onDialogEnd;
     [HideInInspector] public UnityEvent onDialogStart;
@@ -64,6 +65,7 @@ public class Dialogue : Interactable
     
     void Start()
     {
+        isFirst = true;
         // Instantiates interactions script 
         if (pressToStart) // dialogue changes with button press
         {
@@ -165,17 +167,10 @@ public class Dialogue : Interactable
         if (dialogue[currentLineNo+1] == null && currentLine == dialogueText.text) { ExitDialogue(); }
         else if (currentLine == dialogueText.text) // If the typewriter effect has finished
         {
-            if (dialogue[currentLineNo + 1][0] == "BREAK") { StartTimeline(); return; } // if an action
+            if (dialogue[currentLineNo + 1][0] == "BREAK") { isFirst = false; StartTimeline(); return; } // if an action
             currentLineNo++;
             currentLine = dialogue[currentLineNo][0] + ": " + dialogue[currentLineNo][1];
             StartCoroutine(TypewriterText(currentLine));
-        }
-        else
-        {
-            // Skip to the end of the effect
-            StopCoroutine(TypewriterText(currentLine));
-            dialogueText.text = currentLine;
-            finishedTyping = true;
         }
     }
 
@@ -200,27 +195,31 @@ public class Dialogue : Interactable
         // as they will not work with a frozen time scale
 
         float timer = 0;
-        float interval = 1 / charactersPerSecond;
+        float interval = 0.001f * charactersPerSecond;
         string textBuffer = null;
         char[] chars = line.ToCharArray();
         int i = 0;
         finishedTyping = false;
 
+        /*
         while (i < chars.Length && !finishedTyping)
         {
-            if (timer < 0.01f)
+            if (timer > 0.01f)
             {
                 textBuffer += chars[i];
                 dialogueText.text = textBuffer;
-                timer += interval;
+                timer = 0;
                 i++;
             }
             else
             {
-                timer -= 0.01f;
+                timer += interval;
                 yield return null;
             }
         }
+        */
+        yield return new WaitForSeconds(0.1f);
+        dialogueText.text = line;
 
         currentDialogCoroutine = null;
     }
@@ -248,6 +247,11 @@ public class Dialogue : Interactable
                 act[dialogueIndex][0] = line;
                 act[dialogueIndex][1] = "";
                 dialogueIndex++;
+            }
+
+            else if (line == "END") // stop
+            {
+                return act;
             }
 
             else
@@ -286,13 +290,25 @@ public class Dialogue : Interactable
 
     private void StartTimeline()
     {
-        timelinePlaying = true;
-        timelinePlayer.StartTimelinePlayer();
-        timeline.Resume();
-        InputManager.OnChangeDialogue -= ChangeDialogue;
+        if (!isFirst)
+        {
+            timelinePlaying = true;
+            timeline.Resume();
+            InputManager.OnChangeDialogue -= ChangeDialogue;
 
-        currentLineNo += 2;
-        currentLine = dialogue[currentLineNo][0] + ": " + dialogue[currentLineNo][1];
+            currentLineNo += 2;
+            if (currentLineNo < dialogue.Length)
+            {
+                currentLine = dialogue[currentLineNo][0] + ": " + dialogue[currentLineNo][1];
+            }
+        }
+        else
+        {
+            timelinePlaying = true;
+            timelinePlayer.StartTimelinePlayer();
+            timeline.Play();
+            InputManager.OnChangeDialogue -= ChangeDialogue;
+        }
     }
 
 }

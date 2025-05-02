@@ -13,7 +13,7 @@ Fine, keep your secrets. And for your information, I was born down here, this wa
 AUBREY
 What is stopping you from just walking out of here?
 
-LYNE shows her tail behind her, revealing that she is a mermaid-like creature.
+BREAK
 
 LYNE
 Does it make sense now? If I could, I wouldn’t be here dude. I mean look at this place.
@@ -24,15 +24,17 @@ Sorry about that. I gotta get going, I’m in a rush.
 LYNE
 Before you go, take this as a gift.
 
-# LYNE tosses her hairpin, which AUBREY collects as the WATER CHARGE.
 BREAK
 
-# Additional Dialogue
+AUBREY
+Um... thanks.
+
+END
 
 LYNE
 I miss having gills, breathing water through lungs is TERRIBLE!
 
-# Player interacts with LYNE again
+END
 
 LYNE
 What kinds of stuff have you been?
@@ -40,20 +42,20 @@ What kinds of stuff have you been?
 AUBREY
 … I don’t know what that means.
 
-# Player interacts with LYNE again
+END
 
 LYNE
 Have you seen Z-7 around lately? He’s my crush. I hope he’s still down here…
 
-# Player interacts with LYNE again
+END
 
 LYNE
 You like to stop and think for a while huh? All you gotta do is move forward!
 
-# Player interacts with LYNE again
+END
 
 Lyne
 You remind me of her… but that’s not possible...
 
-# LYNE repeats this dialogue after this point.
+END
 

@@ -55,6 +55,13 @@ public class HazardPot : MonoBehaviour, IDamageable
 
     ReactionType IDamageable.TakeDamage(int damage, Elements element)
     {
-        throw new NotImplementedException();
+        // Spawn hazard pellets
+        HazardProjectile hazardSpawner = Instantiate(hazardProjectile, spawnPoint.position, Quaternion.identity);
+        hazardSpawner.radius = hazardRadius;
+        hazardSpawner.tile = hazardTile;
+        hazardSpawner.rb.AddForce(Vector3.up * force, ForceMode.Impulse);
+
+        Destroy(gameObject);
+        return ReactionType.Undefined;
     }
 }
