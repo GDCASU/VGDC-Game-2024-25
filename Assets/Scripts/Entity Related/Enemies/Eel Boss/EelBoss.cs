@@ -157,7 +157,7 @@ public class EelBoss : MonoBehaviour, IDamageable
         gamCount--;
     }
 
-    public ReactionType TakeDamage(int damage, Elements element)
+    public ReactionType TakeDamage(int damage, Elements element, Vector3 direction)
     {
         // Ignore damage if not in phase 2
         if (phase == 1)
@@ -272,9 +272,14 @@ public class EelBoss : MonoBehaviour, IDamageable
 
         HazardTile[] possibleBarriers = FindObjectsOfType<HazardTile>();
 
+        bool foundBarrier = false;
+
         foreach(HazardTile tile in possibleBarriers)
             if (tile.tileType == HazardTile.TileType.Barrier)
-                return;
+            {
+                if (foundBarrier) return;
+                else foundBarrier = true;
+            }
 
         phase = 2;
         // possible animation here?
@@ -285,6 +290,8 @@ public class EelBoss : MonoBehaviour, IDamageable
     {
         StopAllCoroutines();
         animator.SetTrigger("eelDeath");
+        if (lazerAimGameObject != null) Destroy(lazerAimGameObject);
+        if (lazerBeamGameObject != null) Destroy(lazerBeamGameObject);
         onDeathStart?.Invoke();
         // Some other logic here
     }
@@ -292,6 +299,7 @@ public class EelBoss : MonoBehaviour, IDamageable
     public void OnDeathFinish()
     {
         onDeathEnd?.Invoke();
+        Destroy(gameObject);
     }
 }
 

@@ -51,7 +51,7 @@ public class PushableObjectController : MonoBehaviour, IDamageable
         }
     }
 
-    public ReactionType TakeDamage(int damage, Elements element)
+    public ReactionType TakeDamage(int damage, Elements element, Vector3 dir)
     {
         if (!elementMask.Contains(element)) return ReactionType.Undefined;
         Vector3 hitDirection = GetRelativeDirection(transform.position, player.transform.position);

@@ -6,6 +6,7 @@ using UnityEngine;
 public class FlytrapBossControl : EntityScript
 {
     [SerializeField] private GameObject _ratPrefab;
+    [SerializeField] private GameObject _bossVineGate;
 
     private const float RAT_SPAWN_MIN_CD = 3f;
     private const float RAT_SPAWN_MAX_CD = 5f;
@@ -26,6 +27,7 @@ public class FlytrapBossControl : EntityScript
     private ParticleSystem _burrowParticles;
     private Collider _bodyHitbox;
     private Transform _ratSpawnPoints;
+    private FlytrapArmControl[] _arms;
 
 	private new void Start()
 	{
@@ -35,6 +37,7 @@ public class FlytrapBossControl : EntityScript
 		_bodyHitbox = GetComponent<Collider>();
         _ratSpawnPoints = transform.Find("Rat Spawn Points");
 		_ratSpawnCooldown = Random.Range(RAT_SPAWN_MIN_CD, RAT_SPAWN_MAX_CD);
+        _arms = transform.parent.GetComponentsInChildren<FlytrapArmControl>();
 
         base.Start();
 	}
@@ -75,6 +78,11 @@ public class FlytrapBossControl : EntityScript
 		_anim.Play("close");
 		_burrowParticles.Play();
 
+		foreach(FlytrapArmControl arm in _arms)
+		{
+            arm.StartCoroutine(arm.Death());
+		}
+
 		while(transform.position.y > -5f)
 		{
 			transform.position += DEATH_DOWN_SPEED * Time.deltaTime * Vector3.down;
@@ -82,6 +90,7 @@ public class FlytrapBossControl : EntityScript
 		}
 		_burrowParticles.Stop();
 
+        Destroy(_bossVineGate);
 		Destroy(this);
 	}
 

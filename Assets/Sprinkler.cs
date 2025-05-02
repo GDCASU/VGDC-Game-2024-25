@@ -6,6 +6,7 @@ public class Sprinkler : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private GameObject waterParticleSystem;
+    [SerializeField] private GameObject barrierWetParticleSystem;
     [SerializeField] private GameObject[] sprinklersVisuals;
     [SerializeField] private GameObject[] barriers;
 
@@ -17,9 +18,10 @@ public class Sprinkler : MonoBehaviour
 
     private bool activated = false;
     private bool onCooldown = false;
-    private bool barriersWet = false;
+    [InspectorReadOnly] [SerializeField] private bool barriersWet = false;
     private int barrierIndex = 0;
     private Coroutine wetBarriersCoro = null;
+    private GameObject currentWetBarrierPS;
 
     private void Update()
     {
@@ -44,6 +46,7 @@ public class Sprinkler : MonoBehaviour
 
         // apply water effect to barriers
         barriersWet = true;
+        currentWetBarrierPS = Instantiate(barrierWetParticleSystem, barriers[barrierIndex].transform);
         if (wetBarriersCoro != null)
             StopCoroutine(wetBarriersCoro);
 
@@ -51,6 +54,7 @@ public class Sprinkler : MonoBehaviour
         {
             wetBarriersCoro = null;
             barriersWet = false;
+            Destroy(currentWetBarrierPS);
         }));
         
 
@@ -70,9 +74,9 @@ public class Sprinkler : MonoBehaviour
         }
     }
 
-    public void OnBarriersHit()
+    public void OnBarriersHit(int damage, Elements element)
     {
-        if (barriersWet)
+        if (barriersWet && element == Elements.Sparks)
         {
             Destroy(barriers[barrierIndex]);
             barrierIndex++;

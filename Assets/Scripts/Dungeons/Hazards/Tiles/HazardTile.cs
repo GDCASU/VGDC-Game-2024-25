@@ -21,7 +21,7 @@ using UnityEngine.Serialization;
 /// <summary>
 /// class that handles a hazard tile
 /// </summary>
-public class HazardTile : MonoBehaviour, IDamageable
+public class HazardTile : MonoBehaviour
 {
     // Class to categorize the tiles
     public enum TileType
@@ -47,7 +47,6 @@ public class HazardTile : MonoBehaviour, IDamageable
 
     [Header("For barrier tiles")] 
     [SerializeField] private UnityEvent onBarrierDestroyed;
-    [SerializeField] private UnityEvent<Elements> onDamageTaken;
 
     [Header("Debugging")]
     [SerializeField] private bool doDebugLog;
@@ -70,16 +69,15 @@ public class HazardTile : MonoBehaviour, IDamageable
 
     private void OnDestroy()
     {
+        // For barriers
+        if (tileType == TileType.Barrier)
+            onBarrierDestroyed?.Invoke();
+
         if (!GameGridManager.Instance) return; // Make sure is not null
         // Check if we need to de-register it
         if (GameGridManager.Instance.placedHazards.TryGetValue(gridPos, out HazardTile tile))
         {
             if (tile == this) GameGridManager.Instance.DeregisterHazard(this);
-        }
-        // For barriers
-        if (tileType == TileType.Barrier)
-        {
-            onBarrierDestroyed?.Invoke();
         }
     }
 
@@ -123,11 +121,5 @@ public class HazardTile : MonoBehaviour, IDamageable
     {
         yield return new WaitForSeconds(duration);
         Destroy(gameObject);
-    }
-
-    public ReactionType TakeDamage(int damage, Elements element)
-    {
-        onDamageTaken?.Invoke(element);
-        return ReactionType.Undefined;
     }
 }

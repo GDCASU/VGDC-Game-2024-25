@@ -50,7 +50,10 @@ public class PlayerController : MonoBehaviour
     private PlayerAmmoManager ammoManager;
     private float _elapsedMovementTime = 0; // Time since movement in the current direction started
     private Vector3 _previousInputVector = Vector3.zero;
-    private readonly int IsMoving = Animator.StringToHash("IsMoving");
+    private readonly int IsMoving = Animator.StringToHash("isMoving");
+    private readonly int IsMovingForward = Animator.StringToHash("isMovingForward");
+    private readonly int IsAttacking = Animator.StringToHash("isAttacking");
+    private readonly int IsAttackingAndMoving = Animator.StringToHash("isAttackingAndMoving");
     
 	private void Start()
 	{
@@ -98,13 +101,26 @@ public class PlayerController : MonoBehaviour
 
         // Play walking animation if moving
         moveController.SetBool(IsMoving, Mathf.Abs(input.x) > 0 || Mathf.Abs(input.y) > 0);
+        moveController.SetBool(IsMovingForward, input.y < 0);
+        moveController.SetBool(IsAttacking, InputManager.Instance.isAttacking);
+        
+        // Check for attack strafing
+        if (moveController.GetBool(IsMoving) && moveController.GetBool(IsAttacking))
+        {
+            // Is moving and attacking, set strafe
+            moveController.SetBool(IsAttackingAndMoving, true);
+        }
+        else
+        {
+            moveController.SetBool(IsAttackingAndMoving, false);
+        }
 
         //Set sprite direction
-        if (input.x < 0)
+        if (input.x < -0.01f)
         {
             playerRenderer.flipX = true;
         } 
-        else if (input.x > 0)
+        else if (input.x > 0.01f)
         {
             playerRenderer.flipX = false;
         }
@@ -158,6 +174,7 @@ public class PlayerController : MonoBehaviour
         
         // Call the fire function on the ammo manager
         ammoManager.FireCurrentElement(transform.position, direction);
+        moveController.SetBool(IsAttacking, true);
     }
 
     /// <summary>

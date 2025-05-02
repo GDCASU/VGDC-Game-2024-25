@@ -37,6 +37,7 @@ public class InputManager : MonoBehaviour
 
     // Input-Updated Values
     [HideInInspector] public Vector2 movementInput; // Vector2 for movement
+    [HideInInspector] public bool isAttacking = false;
 
     // Local Variables
     private PlayerControls _playerControls;
@@ -61,7 +62,8 @@ public class InputManager : MonoBehaviour
     {
         // Subscribe to input events
         _playerControls.OnFoot.Move.performed += i => HandleMovementInput(i);
-        _playerControls.PlayerActions.Attack.performed += i => HandleAttackInput(i);
+        _playerControls.PlayerActions.Attack.started += i => HandleAttackInput(i);
+        _playerControls.PlayerActions.Attack.canceled += i => HandleAttackInput(i);
         _playerControls.PlayerActions.ChangeNextElement.performed += i => HandleChangeElementInput(i, true);
         _playerControls.PlayerActions.ChangePreviousElement.performed += i => HandleChangeElementInput(i, false);
     }
@@ -102,6 +104,9 @@ public class InputManager : MonoBehaviour
             BindPlayerEvents();
             BindUIEvents();
         }
+        
+        // Start Coroutines
+        StartCoroutine(AttackRoutine());
 
         // Enable controls once all setup is done
         _playerControls.Enable();
@@ -134,8 +139,30 @@ public class InputManager : MonoBehaviour
 
     private void HandleAttackInput(InputAction.CallbackContext context)
     {
-        if (_doDebugLog) Debug.Log("Attacked");
-        OnAttack?.Invoke();
+        if (context.started)
+        {
+            isAttacking = true;
+        }
+        else
+        {
+            isAttacking = false;
+        }
+    }
+    
+    /// <summary>
+    /// Helper Routine to be able to hold down attack
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator AttackRoutine()
+    {
+        while (true)
+        {
+            if (isAttacking)
+            {
+                OnAttack?.Invoke();
+            }
+            yield return null;
+        }
     }
 
     private void HandleChangeElementInput(InputAction.CallbackContext context, bool doGoRight)

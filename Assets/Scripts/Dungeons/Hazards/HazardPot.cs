@@ -40,7 +40,7 @@ public class HazardPot : MonoBehaviour, IDamageable
     /// <summary>
     /// Function so projectiles can break the pot
     /// </summary>
-    public ReactionType TakeDamage(int damage, Elements element)
+    public ReactionType TakeDamage(int damage, Elements element, Vector3 direction)
     {
         
         // Spawn hazard pellets

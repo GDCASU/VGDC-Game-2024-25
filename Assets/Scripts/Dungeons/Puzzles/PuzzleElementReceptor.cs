@@ -48,7 +48,7 @@ public class PuzzleElementReceptor : MonoBehaviour, IDamageable
     }
     
     // We have been hit by an element
-    public ReactionType TakeDamage(int damage, Elements element)
+    public ReactionType TakeDamage(int damage, Elements element, Vector3 direction)
     {
         // Check if its the matching element
         if (element != receptorElement) return ReactionType.Undefined;

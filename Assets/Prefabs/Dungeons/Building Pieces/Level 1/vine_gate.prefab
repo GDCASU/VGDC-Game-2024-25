@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6977198437818989750}
   - component: {fileID: 2677008706784123852}
   - component: {fileID: 4303767398190526376}
-  - component: {fileID: 6447826235191694343}
+  - component: {fileID: 5381438221529342713}
   m_Layer: 0
   m_Name: vine_gate
   m_TagString: Untagged
@@ -84,8 +84,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &6447826235191694343
-MeshCollider:
+--- !u!65 &5381438221529342713
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -102,7 +102,6 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -462981019419857548, guid: 429a02e4b6b89a84a86f1e12ab65e823, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 2.0000005, y: 0, z: 2.797464}
+  m_Center: {x: 1.0000002, y: 0.00000007549792, z: 0}
