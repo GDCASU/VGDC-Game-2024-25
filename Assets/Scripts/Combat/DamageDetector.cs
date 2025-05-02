@@ -12,4 +12,9 @@ public class DamageDetector : MonoBehaviour, IDamageable
 
         return ReactionType.Undefined;
     }
+
+    ReactionType IDamageable.TakeDamage(int damage, Elements element)
+    {
+        throw new System.NotImplementedException();
+    }
 }

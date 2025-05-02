@@ -154,6 +154,11 @@ public class EntityScript : MonoBehaviour, IDamageable
         // TODO: UNFINISHED
         Destroy(deathDeleteTarget);
     }
+
+    ReactionType IDamageable.TakeDamage(int damage, Elements element, Vector3 position)
+    {
+        throw new NotImplementedException();
+    }
 }
 
 /// <summary>

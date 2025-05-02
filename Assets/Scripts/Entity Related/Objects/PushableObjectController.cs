@@ -130,5 +130,8 @@ public class PushableObjectController : MonoBehaviour, IDamageable
         transform.localScale = squishedScale;
     }
 
-    
+    ReactionType IDamageable.TakeDamage(int damage, Elements element)
+    {
+        throw new System.NotImplementedException();
+    }
 }
