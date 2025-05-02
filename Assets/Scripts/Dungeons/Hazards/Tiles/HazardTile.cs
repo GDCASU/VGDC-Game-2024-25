@@ -69,16 +69,15 @@ public class HazardTile : MonoBehaviour
 
     private void OnDestroy()
     {
+        // For barriers
+        if (tileType == TileType.Barrier)
+            onBarrierDestroyed?.Invoke();
+
         if (!GameGridManager.Instance) return; // Make sure is not null
         // Check if we need to de-register it
         if (GameGridManager.Instance.placedHazards.TryGetValue(gridPos, out HazardTile tile))
         {
             if (tile == this) GameGridManager.Instance.DeregisterHazard(this);
-        }
-        // For barriers
-        if (tileType == TileType.Barrier)
-        {
-            onBarrierDestroyed?.Invoke();
         }
     }
 

@@ -8,7 +8,7 @@ public class MushroomProjectile : MonoBehaviour
     [SerializeField] private float _minTimeToTarget = 1.5f;
     [SerializeField] private float _maxTimeToTarget = 2f;
     // Negative value - will determine how fast the projectile falls/how high it goes before starting to fall
-    [SerializeField] private float _gravity = -1f;
+    [SerializeField] private float _gravity = -3f;
 
     [Header("Util")]
     [SerializeField] private LayerMask _groundLayer;

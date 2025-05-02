@@ -42,6 +42,7 @@ public enum StatusEffect
 /// <summary>
 /// Enum that defines the reactions possbile from element combinations
 /// </summary>
+[System.Serializable]
 public enum ReactionType
 {
     Undefined,

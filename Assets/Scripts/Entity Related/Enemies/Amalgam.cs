@@ -15,11 +15,13 @@ public class Amalgam : MonoBehaviour
     public float idleTime = 0.5f;
 
     private PlayerController player;
+    private Animator animator;
     private Coroutine leapBackCoro = null;
 
     private void Awake()
     {
         player = FindAnyObjectByType<PlayerController>();
+        animator = GetComponent<Animator>();
     }
 
     private void Start()
@@ -44,8 +46,11 @@ public class Amalgam : MonoBehaviour
 
         transform.position = targetPosition;
 
+        animator.SetBool("moving", false);
+
         yield return new WaitForSeconds(idleTime);
 
+        animator.SetBool("moving", true);
         leapBackCoro = null;
         destinationSetter.target = player.transform;
     }
@@ -70,6 +75,14 @@ public class Amalgam : MonoBehaviour
             StopCoroutine(leapBackCoro);
 
         leapBackCoro = StartCoroutine(LeapBackCoroutine(target));   
+    }
+
+    public void OnTakeDamage(ReactionType reaction)
+    {
+        if(reaction == ReactionType.Fireworks)
+        {
+            FindObjectOfType<Sprinkler>().OnGamFireworkReaction();
+        }
     }
 
     private void OnDestroy()
