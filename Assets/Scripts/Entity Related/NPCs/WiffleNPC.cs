@@ -27,10 +27,13 @@ public class WiffleNPC : NPC
 
     bool isMoving;
     bool resetLocation; // creates new path between two points
+    public float speed;
+    [SerializeField] Animator animator;
 
     private void Update()
     {
         if (isMoving) { MoveToNextLocation(); }
+        else { animator.SetFloat("x", 0); animator.SetFloat("y", 0); }
     }
 
     void MoveToNextLocation()
@@ -44,7 +47,11 @@ public class WiffleNPC : NPC
         }
 
         Vector3 direction = (nextLocation - this.transform.position).normalized;
-        float offset = 0.1f;
+        direction.y = 0;
+        Debug.Log(direction);
+        animator.SetFloat("x", direction.x > 0 ? 1 : direction.x < 0 ? -1 : 0);
+        animator.SetFloat("y", direction.z > 0 ? 1 : direction.z < 0 ? -1 : 0);
+        float offset = speed * 0.1f;
         this.transform.position += direction * offset;
     }
 
@@ -151,7 +158,10 @@ public class WiffleNPC : NPC
     /// <summary> Determine whether or not to drop an item at end of path </summary>
     private void DropItem()
     {
-        if (newDrop != null) { DropItems(); }
+        if (newDrop != null)
+        {
+            Instantiate(newDrop, dropPoint.position, Quaternion.identity);
+        }
     }
 }
 

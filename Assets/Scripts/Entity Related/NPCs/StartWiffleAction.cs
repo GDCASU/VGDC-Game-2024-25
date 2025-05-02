@@ -31,6 +31,7 @@ public class StartWiffleAction : Interactable
     private void PerformAction()
     {
         wiffle.SwitchLocation(index, startLocation.position, stopLocation.position, dropLocation);
+        GetComponent<Collider>().isTrigger = true;
     }
 
     private void OnDestroy()

@@ -272,6 +272,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 1cc21912c4650cd479383b49dc3c7fb9,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 117157e708dd2934d9a2586ab5d5e03c, type: 2}
     - target: {fileID: 919132149155446097, guid: 1cc21912c4650cd479383b49dc3c7fb9,
         type: 3}
       propertyPath: m_Name
@@ -382,8 +387,13 @@ MonoBehaviour:
   deathDeleteTarget: {fileID: 4362064101337938082}
   healthBar: {fileID: 8985259357438849090}
   destroyOnDeath: {fileID: 4362064101337938082}
+  entityData: {fileID: 0}
+  _dontLoadStats: 0
   baseSpeed: 0
   maxHealth: 3
+  onDamageTaken:
+    m_PersistentCalls:
+      m_Calls: []
   damageMults:
     neutralMultiplier: 1
     fungalMultiplier: 1
@@ -405,6 +415,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5babba0e4336ee34298625fcbeb31cd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fireStatusDisplay: {fileID: 0}
+  waterStatusDisplay: {fileID: 0}
+  sparkStatusDisplay: {fileID: 0}
+  fungalStatusDisplay: {fileID: 0}
   statusSettings:
     burnDuration: 5
     burnIntervalTime: 1
@@ -446,6 +460,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   version: 1
-  uniqueID: 1765019782890555473
+  uniqueID: 3028632915839512568
   updateError: 1
   checkTime: 0.2
