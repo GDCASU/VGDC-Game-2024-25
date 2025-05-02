@@ -21,6 +21,7 @@ public class TimelinePlayer : MonoBehaviour
         controller.enabled = false;
         ammoManager.enabled = false;
         animator.runtimeAnimatorController = timelineController;
+        animator.applyRootMotion = false;
     }
 
     public void EndTimelinePlayer()
@@ -28,5 +29,6 @@ public class TimelinePlayer : MonoBehaviour
         controller.enabled = true;
         ammoManager.enabled = true;
         animator.runtimeAnimatorController = defaultPlayerController;
+        animator.applyRootMotion = true;
     }
 }
