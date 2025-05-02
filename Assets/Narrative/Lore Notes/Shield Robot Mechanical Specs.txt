@@ -1,0 +1,8 @@
+// Printed .txt Instruction File for General Intelligence
+
+CLASS: SHIELDER
+APPEARANCE: Short and nimble [CORRUPTED TEXT] with a back-mounted shield generator.
+DIRECTIVE: To function as security for the Overseer grounds. You, the [CORRUPTED TEXT] are among many varied types of [CORRUPTED TEXT]. Unlike the others, you are selfless and [CORRUPTED TEXT]. Your equipment is to be used to protect [CORRUPTED TEXT] and other robots.
+PRIORITY LIST: 1. [CORRUPTED TEXT]. 2. Protect Robots 3. Regulate systems and perform regular maintenance. Stay alive.
+
+// Last Accessed Time: [CORRUPTED TEXT]
