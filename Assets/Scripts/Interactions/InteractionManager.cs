@@ -1,7 +1,5 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using AssetUsageDetectorNamespace;
 using UnityEngine;
 using AYellowpaper.SerializedCollections;
 
@@ -69,7 +67,7 @@ public class InteractionManager : MonoBehaviour
     private void FindClosestInteraction()
     {
         // Check if empty, if so, return early
-        if (interactablesList.IsEmpty())
+        if (interactablesList.Count <= 0)
         {
             if (focusedInteractable)
             {

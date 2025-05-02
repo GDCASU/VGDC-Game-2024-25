@@ -1,10 +1,7 @@
-using System;
+
 using Pathfinding;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using DG.Tweening;
 using UnityEditor;
 
 /// <summary>
@@ -93,9 +90,11 @@ public class AIDetection : MonoBehaviour
         detectedUI.SetActive(false);
     }
     
+    
     /// <summary>
     /// Draw the detection radius in the scene view for better calibration
     /// </summary>
+    /*
     private void OnDrawGizmosSelected()
     {
         Handles.color = Color.yellow;
@@ -105,5 +104,5 @@ public class AIDetection : MonoBehaviour
 
         Handles.DrawWireArc(transform.position, Vector3.up, startDirection, 360, detectionRadius);
     }
-
+    */
 }
