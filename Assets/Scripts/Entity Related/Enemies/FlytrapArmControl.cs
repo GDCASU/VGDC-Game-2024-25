@@ -17,11 +17,13 @@ public class FlytrapArmControl : MonoBehaviour
 	private const float ATTACK_ANTIC_TIME = 2f;
 	private const float ATTACK_TIME = 0.6f;
 	private const float ATTACK_RECOVER_TIME = 1f;
+	private const float DEATH_ANIM_TIME = 3f;
 
 	private float _attackCooldown = 0f;
 	private bool _attacking = false;
 	private bool _lunging = false;
 	private bool _skipAntic = false;
+	private bool _dead = false;
 
     private LineRenderer _lineRenderer;
     private GameObject _hand;
@@ -40,6 +42,8 @@ public class FlytrapArmControl : MonoBehaviour
 
 	private void Update()
 	{
+		if(_dead) return;
+
 		// Head follows player movements
 		Vector3 target = PlayerObject.Instance.transform.position;
 		Vector3 offset = target - transform.position;
@@ -69,6 +73,21 @@ public class FlytrapArmControl : MonoBehaviour
 
 		// Force vine to follow position of head
 		_lineRenderer.SetPosition(1, _hand.transform.localPosition);
+	}
+
+	public IEnumerator Death()
+	{
+		_dead = true;
+
+		// Slow animation speed to a stop
+		float timer = 0f;
+		while(timer < DEATH_ANIM_TIME)
+		{
+			_handAnim.speed = Mathf.Lerp(1f, 0f, timer / DEATH_ANIM_TIME);
+			timer += Time.deltaTime;
+			yield return null;
+		}
+		_handAnim.speed = 0f;
 	}
 
 	private IEnumerator Attack()
