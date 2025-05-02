@@ -74,6 +74,25 @@ public class PuzzleElementReceptor : MonoBehaviour, IDamageable
 
     ReactionType IDamageable.TakeDamage(int damage, Elements element)
     {
-        throw new System.NotImplementedException();
+        // Check if its the matching element
+        if (element != receptorElement) return ReactionType.Undefined;
+
+        // Else it did match, light up sprite and 
+        Color color = spriteRenderer.color;
+        color.a = 255f;
+        spriteRenderer.color = color;
+
+        // Change status pillars to green
+        foreach (MeshRenderer statusMeshRenderer in statusMeshRenderers)
+        {
+            Color finalColor = Color.green * 5f;
+            statusMeshRenderer.material.color = finalColor;
+            statusMeshRenderer.material.SetColor(emissionColor, finalColor);
+        }
+
+        // Raise event
+        OnRequirementCompleted?.Invoke();
+
+        return ReactionType.Undefined;
     }
 }

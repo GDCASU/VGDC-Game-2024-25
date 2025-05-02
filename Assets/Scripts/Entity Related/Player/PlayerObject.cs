@@ -169,7 +169,20 @@ public class PlayerObject : MonoBehaviour, IDamageable
     }
 
     ReactionType IDamageable.TakeDamage(int damage, Elements element)
-    {
-        throw new System.NotImplementedException();
+    { 
+        // TODO: The player doesnt trigger reactions right?
+        // Damage health
+        int previousHealth = currentHealth;
+        currentHealth -= damage;
+        //playerController.Knockback(direction, damage);
+        // Check for death
+        if (currentHealth <= 0)
+        {
+            currentHealth = 0;
+            OnDeath();
+            return ReactionType.Undefined;
+        }
+        // Return undefined
+        return ReactionType.Undefined;
     }
 }

@@ -132,6 +132,24 @@ public class PushableObjectController : MonoBehaviour, IDamageable
 
     ReactionType IDamageable.TakeDamage(int damage, Elements element)
     {
-        throw new System.NotImplementedException();
+        if (!elementMask.Contains(element)) return ReactionType.Undefined;
+        Vector3 hitDirection = GetRelativeDirection(transform.position, player.transform.position);
+
+        // Check if there's a wall behind the cube in the hit direction
+        if (IsWallInDirection(-hitDirection))
+        {
+            moveDirection = hitDirection;
+        }
+        else
+        {
+            moveDirection = -hitDirection;
+        }
+
+        // Set the target position
+        targetPos += moveDirection * moveAmount;
+        Squish();
+        isMoving = true;
+
+        return ReactionType.Undefined;
     }
 }

@@ -15,6 +15,8 @@ public class DamageDetector : MonoBehaviour, IDamageable
 
     ReactionType IDamageable.TakeDamage(int damage, Elements element)
     {
-        throw new System.NotImplementedException();
+        onDamageTaken?.Invoke(damage, element);
+
+        return ReactionType.Undefined;
     }
 }

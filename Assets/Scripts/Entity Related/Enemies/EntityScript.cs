@@ -157,7 +157,40 @@ public class EntityScript : MonoBehaviour, IDamageable
 
     ReactionType IDamageable.TakeDamage(int damage, Elements element, Vector3 position)
     {
-        throw new NotImplementedException();
+        // Compute damage through multiplier
+        int newDamage = damageMults.ComputeDamage(damage, element);
+        // Ignore if zero/immune
+        if (newDamage <= 0) return ReactionType.Undefined;
+        // Damage health
+        int previousHealth = currentHealth;
+        currentHealth -= newDamage;
+        if (currentHealth <= 0)
+        {
+            // Render damage
+            HitpointsRenderer.Instance.PrintDamage(transform.position, currentHealth, Color.red);
+        }
+        else
+        {
+            HitpointsRenderer.Instance.PrintDamage(transform.position, newDamage, Color.red);
+        }
+        // Update health bar if available
+        if (healthBar != null)
+            healthBar.UpdateHealthBar(currentHealth, maxHealth);
+
+        // Send the element to the status handler and return a reaction if caused
+        ReactionType finalReaction = elementStatusHandler.HandleElementStatus(element);
+        onDamageTaken?.Invoke(finalReaction);
+
+        if (currentHealth <= 0)
+        {
+            // Enemy died
+            currentHealth = 0;
+            OnDeath();
+            // FIXME: Return undefined?
+            return ReactionType.Undefined;
+        }
+
+        return finalReaction;
     }
 }
 

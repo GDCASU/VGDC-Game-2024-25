@@ -72,6 +72,26 @@ public class PuzzleChargeReceptor : MonoBehaviour, IDamageable
 
     ReactionType IDamageable.TakeDamage(int damage, Elements element)
     {
-        throw new System.NotImplementedException();
+        // Check if its the spark element
+        if (element == Elements.Sparks && !isActivated)
+        {
+            // It was and it wasnt activated, activate
+            isActivated = true;
+            ChangeReceptorColor(Color.yellow);
+            onActivate?.Invoke();
+            return ReactionType.Undefined;
+        }
+
+        // Check if its water
+        if (element == Elements.Water && isActivated)
+        {
+            isActivated = false;
+            ChangeReceptorColor(Color.cyan);
+            onDeactivate?.Invoke();
+            return ReactionType.Undefined;
+        }
+
+        // Else do nothing
+        return ReactionType.Undefined;
     }
 }
