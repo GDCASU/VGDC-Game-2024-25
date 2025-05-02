@@ -25,5 +25,5 @@ public interface IDamageable
     /// Deal damage through interface. Returns a reaction if provoked
     /// so the projectile can do changes to the environment
     /// </summary>
-    public abstract ReactionType TakeDamage(int damage, Elements element);
+    public abstract ReactionType TakeDamage(int damage, Elements element, Vector3 direction);
 }
