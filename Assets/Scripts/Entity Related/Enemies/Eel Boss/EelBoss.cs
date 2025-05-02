@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 /* -----------------------------------------------------------
  * Author:
@@ -26,6 +27,9 @@ public class EelBoss : MonoBehaviour, IDamageable
     [SerializeField] private EelBossSettings settings;
     [SerializeField] private Transform burstFirePoint;
 
+    [Header("Events")]
+    [SerializeField] private UnityEvent onDeathStart;
+    [SerializeField] private UnityEvent onDeathEnd;
 
     [Header("Readouts")]
     [InspectorReadOnly][SerializeField] private int currentHealth;
@@ -34,12 +38,13 @@ public class EelBoss : MonoBehaviour, IDamageable
 
     private PlayerController player;
     private Animator animator;
+    private Sprinkler sprinkler;
 
     private GameObject lazerAimGameObject;
     private GameObject lazerBeamGameObject;
 
-    private float currentSpawnTime;
-    private float currentAttackTime;
+    [InspectorReadOnly][SerializeField] private float currentSpawnTime;
+    [InspectorReadOnly][SerializeField] private float currentAttackTime;
     private int lastAttack; // burst = 0, lazer = 1
     private int attackStreak = 0;
 
@@ -50,6 +55,7 @@ public class EelBoss : MonoBehaviour, IDamageable
     {
         player = FindFirstObjectByType<PlayerController>();
         animator = GetComponent<Animator>();
+        sprinkler = FindFirstObjectByType<Sprinkler>();
     }
 
     private void Update()
@@ -61,7 +67,7 @@ public class EelBoss : MonoBehaviour, IDamageable
             currentAttackTime -= Time.deltaTime;
 
         // handle spawn cooldown
-        if (currentSpawnTime <= 0 && settings.gamPrefab != null && (gamCount < settings.maxGams || settings.maxGams < -1))
+        if (currentSpawnTime <= 0 && settings.gamPrefab != null && (gamCount < settings.maxGams || settings.maxGams <= -1))
         {
             // reset timer
             if (barriersBroken > 0)
@@ -76,8 +82,10 @@ public class EelBoss : MonoBehaviour, IDamageable
             Vector3 spawnDirection = transform.position
                                      + (Quaternion.AngleAxis(Random.Range(0f,360f), Vector3.up) * transform.forward).normalized * settings.gamSpawnRadius;
 
+            spawnDirection.y = transform.position.y;
+
             // spawn gam
-            Instantiate(settings.gamPrefab, spawnDirection, Quaternion.identity);
+            GameObject gam = Instantiate(settings.gamPrefab, spawnDirection, Quaternion.identity);
         }
 
         // handle attack cooldown
@@ -151,7 +159,9 @@ public class EelBoss : MonoBehaviour, IDamageable
 
     public ReactionType TakeDamage(int damage, Elements element)
     {
-        // Ignore damage if barriers are still active
+        // Ignore damage if not in phase 2
+        if (phase == 1)
+            return ReactionType.Undefined;
 
         // Compute damage through multiplier
         int newDamage = settings.damageMultiplier.ComputeDamage(damage, element);
@@ -192,6 +202,8 @@ public class EelBoss : MonoBehaviour, IDamageable
 
     public void BurstAttack()
     {
+        // Play SFX here
+
         burstFirePoint.LookAt(player.transform.position);
 
         float angleOffset = settings.burstAttackSpreadAngle / settings.burstProjectileCount;
@@ -215,6 +227,8 @@ public class EelBoss : MonoBehaviour, IDamageable
         if (lazerAimGameObject != null)
             return;
 
+        // Play sfx here
+        
         lazerAimGameObject = Instantiate(settings.aimPrefab, burstFirePoint.position, Quaternion.identity);
 
         Vector3 targetPosition = player.transform.position;
@@ -230,6 +244,8 @@ public class EelBoss : MonoBehaviour, IDamageable
         if (lazerBeamGameObject != null)
             return;
 
+        // Play SFX here
+
         lazerBeamGameObject = Instantiate(settings.lazerPrefab, lazerAimGameObject.transform.position, lazerAimGameObject.transform.rotation);
 
         Destroy(lazerAimGameObject.gameObject);
@@ -242,7 +258,9 @@ public class EelBoss : MonoBehaviour, IDamageable
 
     public void EndLazerBeam()
     {
-        Destroy(lazerBeamGameObject.gameObject);
+        // Play SFX here??? (idk if theres a sfx for this part)
+
+        lazerBeamGameObject.GetComponent<EelLazerBeam>().StartDestroyLaser();
         lazerBeamGameObject = null;
 
         attacking = false;
@@ -262,12 +280,18 @@ public class EelBoss : MonoBehaviour, IDamageable
         // possible animation here?
     }
 
-    // TODO: Add eel death logic
+    // TODO: Finish eel death logic
     private void OnDeath()
     {
         StopAllCoroutines();
         animator.SetTrigger("eelDeath");
+        onDeathStart?.Invoke();
         // Some other logic here
+    }
+
+    public void OnDeathFinish()
+    {
+        onDeathEnd?.Invoke();
     }
 }
 
