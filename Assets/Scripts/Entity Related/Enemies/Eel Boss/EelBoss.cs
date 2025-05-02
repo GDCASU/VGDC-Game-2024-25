@@ -149,7 +149,7 @@ public class EelBoss : MonoBehaviour, IDamageable
         gamCount--;
     }
 
-    public ReactionType TakeDamage(int damage, Elements element)
+    public ReactionType TakeDamage(int damage, Elements element, Vector3 direction)
     {
         // Ignore damage if barriers are still active
 

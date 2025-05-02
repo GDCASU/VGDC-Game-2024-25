@@ -134,7 +134,7 @@ public class PlayerObject : MonoBehaviour, IDamageable
         // Damage health
         int previousHealth = currentHealth;
         currentHealth -= damage;
-        playerController.Knockback(direction, damage);
+        //playerController.Knockback(direction, damage);
         // Check for death
         if (currentHealth <= 0)
         {

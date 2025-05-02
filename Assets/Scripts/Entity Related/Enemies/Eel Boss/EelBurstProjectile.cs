@@ -58,7 +58,7 @@ public class EelBurstProjectile : MonoBehaviour
             return;
         }
         // Otherwise it did, deal damage and see if we need to generate a reaction
-        ReactionType reaction = damageable.TakeDamage(damage, element);
+        ReactionType reaction = damageable.TakeDamage(damage, element, transform.position);
 
         // There is a reaction do perform
         // TODO: GENERATE REACTION IN THE WORLD

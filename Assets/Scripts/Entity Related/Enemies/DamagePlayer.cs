@@ -14,7 +14,7 @@ public class DamagePlayer : MonoBehaviour
 	{
 		if(other.CompareTag("Player"))
 		{
-			other.GetComponent<IDamageable>().TakeDamage(damage, element);
+			other.GetComponent<IDamageable>().TakeDamage(damage, element, transform.position);
 			onPlayerHit?.Invoke();
 		}
 	}
