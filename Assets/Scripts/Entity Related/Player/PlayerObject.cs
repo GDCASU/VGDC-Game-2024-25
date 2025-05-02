@@ -167,5 +167,9 @@ public class PlayerObject : MonoBehaviour, IDamageable
     {
         // TODO: Unfinished
     }
-    
+
+    ReactionType IDamageable.TakeDamage(int damage, Elements element)
+    {
+        throw new System.NotImplementedException();
+    }
 }

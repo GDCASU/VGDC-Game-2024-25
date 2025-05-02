@@ -69,4 +69,9 @@ public class PuzzleChargeReceptor : MonoBehaviour, IDamageable
         meshRenderer.material.color = finalColor;
         meshRenderer.material.SetColor(emissionColor, finalColor);
     }
+
+    ReactionType IDamageable.TakeDamage(int damage, Elements element)
+    {
+        throw new System.NotImplementedException();
+    }
 }

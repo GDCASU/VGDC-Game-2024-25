@@ -52,4 +52,9 @@ public class HazardPot : MonoBehaviour, IDamageable
         Destroy(gameObject);
         return ReactionType.Undefined;
     }
+
+    ReactionType IDamageable.TakeDamage(int damage, Elements element)
+    {
+        throw new NotImplementedException();
+    }
 }

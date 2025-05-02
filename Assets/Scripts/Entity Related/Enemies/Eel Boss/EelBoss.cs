@@ -301,5 +301,10 @@ public class EelBoss : MonoBehaviour, IDamageable
         onDeathEnd?.Invoke();
         Destroy(gameObject);
     }
+
+    ReactionType IDamageable.TakeDamage(int damage, Elements element)
+    {
+        throw new System.NotImplementedException();
+    }
 }
 
