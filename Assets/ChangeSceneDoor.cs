@@ -11,8 +11,9 @@ public class ChangeSceneDoor : Interactable
         OnInteractionExecuted += EndLevel;
     }
 
-    void EndLevel()
+    public void EndLevel()
     {
+        if (level == 0) { SceneManager.LoadScene(2); }
         if (level == 1) { SceneManager.LoadScene(0); }
         if (level == 2) { SceneManager.LoadScene(4); }
     }
