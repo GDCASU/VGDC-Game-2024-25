@@ -7,7 +7,13 @@ public class EelLazerBeam : MonoBehaviour
 {
     public EelBossSettings settings;
 
+    private Animator animator;
     private List<IDamageable> damageTickImmunity = new();
+
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
 
     private void OnTriggerStay(Collider other)
     {
@@ -31,6 +37,16 @@ public class EelLazerBeam : MonoBehaviour
     {
         yield return new WaitForSeconds(settings.beamTickInterval);
         damageTickImmunity.Remove(damageable);
+    }
+
+    public void StartDestroyLaser()
+    {
+        animator.SetTrigger("laserEnd");
+    }
+
+    public void FinishDestroyLaser()
+    {
+        Destroy(gameObject);
     }
 
 }

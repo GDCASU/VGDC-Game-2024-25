@@ -1,6 +1,7 @@
 using Pathfinding;
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 /* -----------------------------------------------------------
  * Author:
@@ -39,13 +40,16 @@ public class EntityScript : MonoBehaviour, IDamageable
     
     [Header("Entity Stats")]
     [SerializeField] private float baseSpeed;
-    [SerializeField] private int maxHealth = 10;
+    [SerializeField] protected int maxHealth = 10;
+
+    [Header("Events")]
+    public UnityEvent<ReactionType> onDamageTaken = new();
 
     [Header("Multipliers")] 
     [SerializeField] private DamageMultiplier damageMults;
     
     [Header("Readouts")]
-    [InspectorReadOnly] [SerializeField] private int currentHealth;
+    [InspectorReadOnly] [SerializeField] protected int currentHealth;
     [InspectorReadOnly] public float speedMult = 1f; // Used by statuses to slow down the entity
     [InspectorReadOnly] public bool stunned = false;
     
@@ -56,7 +60,7 @@ public class EntityScript : MonoBehaviour, IDamageable
     // Local Variables
     
 
-    private void Start()
+    protected void Start()
     {
         // Set stats and references
         currentHealth = maxHealth;
@@ -105,6 +109,10 @@ public class EntityScript : MonoBehaviour, IDamageable
         if(healthBar != null)
             healthBar.UpdateHealthBar(currentHealth, maxHealth);
 
+        // Send the element to the status handler and return a reaction if caused
+        ReactionType finalReaction = elementStatusHandler.HandleElementStatus(element);
+        onDamageTaken?.Invoke(finalReaction);
+
         if (currentHealth <= 0)
         {
             // Enemy died
@@ -113,8 +121,8 @@ public class EntityScript : MonoBehaviour, IDamageable
             // FIXME: Return undefined?
             return ReactionType.Undefined;
         }
-        // Send the element to the status handler and return a reaction if caused
-        return elementStatusHandler.HandleElementStatus(element);
+
+        return finalReaction;
     }
     
     /// <summary>

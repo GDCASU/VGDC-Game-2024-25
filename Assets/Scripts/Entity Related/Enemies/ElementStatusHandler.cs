@@ -99,7 +99,8 @@ public class ElementStatusHandler : MonoBehaviour
         if (currentStatusEffect == statusEffect)
         {
             // Refresh routine
-            StopCoroutine(statusEffectCo);
+            if(statusEffectCo != null)
+                StopCoroutine(statusEffectCo);
             DisableAllStatusEffectDisplay();
             ShowStatusEffectDisplay(element);
             statusEffectCo = StartCoroutine(targetRoutine());
@@ -117,7 +118,9 @@ public class ElementStatusHandler : MonoBehaviour
         // Else it caused a reaction, stop the current status and return the reaction
         if (doDebugLog) Debug.Log("REACTION CAUSED! Reaction type: " + result.ToString());
         DisableAllStatusEffectDisplay();
-        StopCoroutine(statusEffectCo);
+        if(statusEffectCo != null)
+            StopCoroutine(statusEffectCo);
+        
         entityScript.healthBar.ResetHealthBarColor();
         statusEffectCo = null;
         currentStatusEffect = StatusEffect.Undefined;

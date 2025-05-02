@@ -30,14 +30,15 @@ public class EelBurstProjectile : MonoBehaviour
         transform.Translate(moveDir * (speed * Time.deltaTime));
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        Collider other = collision.collider;
 
         if (doDebugLog) Debug.Log(gameObject.name + " hit " + other.gameObject.name);
 
         // Dont collide if on the same tag
         if (other.CompareTag(ownerTag)) return; // Same tag, dont damage owner
+
+        if (other.TryGetComponent(out InteractionManager manager)) return;
 
         // Try to damage the other object
         IDamageable damageable = other.gameObject.GetComponent<IDamageable>();

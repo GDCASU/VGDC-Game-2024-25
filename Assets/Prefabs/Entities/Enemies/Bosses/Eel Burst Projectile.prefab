@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6863210492710567649}
   - component: {fileID: 3826375535519445642}
   - component: {fileID: 4262720355003426996}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Eel Burst Projectile
   m_TagString: Projectile
   m_Icon: {fileID: 0}
@@ -45,10 +45,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 100872
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 17728
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
@@ -97,6 +97,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49f01d85ae46f4341a106fed5a980fd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 10
+  lifetime: 10
+  damage: 1
+  element: 1
+  doDebugLog: 1
+  ownerTag: 
+  moveDir: {x: 0, y: 0, z: 0}
 --- !u!1 &7168718433730479845
 GameObject:
   m_ObjectHideFlags: 0
@@ -108,7 +115,7 @@ GameObject:
   - component: {fileID: 7754851049789917708}
   - component: {fileID: 8089693375252851276}
   - component: {fileID: 6668803988907411327}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Neutral Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
