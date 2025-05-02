@@ -25,7 +25,7 @@ public abstract class NPC : MonoBehaviour
     [SerializeField] public Transform dropPoint;
     
     [Header("Debugging")]
-    [SerializeField] private bool doDebugLog;
+    [SerializeField] protected bool doDebugLog;
     
     // Local Variables
     protected Dialogue dialog;

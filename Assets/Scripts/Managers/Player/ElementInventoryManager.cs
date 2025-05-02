@@ -57,7 +57,8 @@ public class ElementInventoryManager : MonoBehaviour
     private void OnDestroy()
     {
         // null Singleton field
-        Instance = null;
+        if (Instance == this) Instance = null;
+        
     }
 
     /// <summary>

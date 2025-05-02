@@ -48,7 +48,7 @@ public class WiffleNPC : NPC
 
         Vector3 direction = (nextLocation - this.transform.position).normalized;
         direction.y = 0;
-        Debug.Log(direction);
+        if (doDebugLog) Debug.Log(direction);
         animator.SetFloat("x", direction.x > 0 ? 1 : direction.x < 0 ? -1 : 0);
         animator.SetFloat("y", direction.z > 0 ? 1 : direction.z < 0 ? -1 : 0);
         float offset = speed * 0.1f;
