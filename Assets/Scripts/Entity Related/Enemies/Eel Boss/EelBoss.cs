@@ -157,7 +157,7 @@ public class EelBoss : MonoBehaviour, IDamageable
         gamCount--;
     }
 
-    public ReactionType TakeDamage(int damage, Elements element)
+    public ReactionType TakeDamage(int damage, Elements element, Vector3 direction)
     {
         // Ignore damage if not in phase 2
         if (phase == 1)

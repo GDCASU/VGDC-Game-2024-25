@@ -87,7 +87,7 @@ public class EntityScript : MonoBehaviour, IDamageable
     /// <param name="damage">The damage to deal</param>
     /// <param name="element">The element the damage represents</param>
     /// <returns></returns>
-    public ReactionType TakeDamage(int damage, Elements element)
+    public ReactionType TakeDamage(int damage, Elements element, Vector3 direction)
     {
         // Compute damage through multiplier
         int newDamage = damageMults.ComputeDamage(damage, element);

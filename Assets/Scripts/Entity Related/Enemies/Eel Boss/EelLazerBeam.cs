@@ -26,7 +26,7 @@ public class EelLazerBeam : MonoBehaviour
             if (!damageTickImmunity.Contains(damageable))
             {
                 damageTickImmunity.Add(damageable);
-                damageable.TakeDamage(settings.beamDamagePerTick, Elements.Neutral);
+                damageable.TakeDamage(settings.beamDamagePerTick, Elements.Neutral, transform.position);
                 StartCoroutine(DamageTickImmunityCoro(damageable));
             }
         }

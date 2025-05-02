@@ -38,7 +38,7 @@ public class PuzzleChargeReceptor : MonoBehaviour, IDamageable
     // Local fields
     private static readonly int emissionColor = Shader.PropertyToID("_EmissionColor");
 
-    public ReactionType TakeDamage(int damage, Elements element)
+    public ReactionType TakeDamage(int damage, Elements element, Vector3 direction)
     {
         // Check if its the spark element
         if (element == Elements.Sparks && !isActivated)
